@@ -1,0 +1,389 @@
+
+html,body {
+  background-color: #FFFFFF;
+  padding: 0px; margin: 0px;
+}
+
+/*Text*/
+.backText{
+	font-size: 12.5px;
+	font-family: "Roboto";
+	color: rgba(76,183,255,1.0);
+	letter-spacing: 0.018em;
+}
+.tabText{
+	font-size: 12.5px;
+	font-family: "Roboto";
+	color: rgba(76,183,255,1.0);
+	letter-spacing: 0.018em;
+	margin: 20px;
+	cursor: pointer;
+}
+.tabSelectedText{
+	font-weight: 700;
+	font-size: 12.5px;
+	font-family: "Roboto";
+	color: rgba(76,183,255,1.0);
+	letter-spacing: 0.018em;
+	margin: 20px;
+	cursor: default;
+}
+.subText{
+	font-weight: 300;
+	color: #242d33;
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto";
+
+}
+.clipText{
+	font-weight: 300;
+	letter-spacing: 0.018em;
+	position: relative; 
+	top: -87px;
+	font-size: 20px;
+	font-family: "Roboto";
+	color: rgb(255, 255, 255);
+}
+
+.questionText{
+	font-weight: 200;
+	letter-spacing: 0.018em;
+	font-size: 20px;
+	font-family: "Roboto";
+	color: rgb(36, 45, 51);
+	text-align: center;
+	margin: 0px 20px 40px 20px;
+}
+
+.blockStateText{
+	font-weight: 300;
+	color: #a3bccc;
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto";
+	cursor: pointer;
+}
+
+.questionElementText{
+	font-weight: 300;
+	margin:0px;
+	color: #a3bccc;
+	letter-spacing: 0.018em;
+	font-size: 15px;
+	font-family: "Roboto";
+}
+
+.organisationText{
+	color: #a3bccc;
+	letter-spacing: 0.018em;
+	font-size: 20px;
+	font-family: "Roboto";
+}
+
+.profileText{
+	font-weight: 300;
+	color: #000000;
+	letter-spacing: 0.018em;
+	font-size: 20px;
+	font-family: "Roboto";
+	text-align: left;
+	margin: 50px;
+}
+
+.profileTitleText{
+	color: #000000;
+	letter-spacing: 0.018em;
+	font-size: 20px;
+	font-family: "Roboto";
+	text-align: center;
+}
+
+.profileStateText{
+	font-weight: 300;
+	color: #000000;
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto";
+	cursor: pointer;
+}
+
+.profileStateSelectedText{
+	font-weight: 500;
+	color: #000000;
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto";
+	cursor: auto;
+}
+
+/*Layout panels*/
+.background{
+  	background-color: rgba(76,183,255,0.1);
+  	overflow-x: hidden;
+  	overflow-y: hidden;
+}
+.middlePanel{
+	width: 720px;		
+}
+.card{
+	padding: 0px;
+	background-color: white;
+	-webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
+}
+.qSelector{
+	width: 200px;
+	padding: 5px;
+}
+.organisationPanel{
+	height: 210px;
+	margin: 30px;
+}
+.settingsPanel{
+	margin: 30px;
+}
+
+#sidePanel{
+	position: relative;
+	top: 1500px;
+	-webkit-transition: top 1s; 
+    transition: top 1s;
+}
+#enquete{
+	position: relative;
+	top: 1500px;
+	-webkit-transition: top 1s; 
+    transition: top 1s;
+}
+
+
+.settings{
+	margin-left:25px;
+}
+
+/*Questionary*/
+.clipContainer{
+	position: relative;
+	top: -45px;
+}
+.qPicker{
+	position: absolute;
+	top: 0px;
+}
+.buttonContainer{
+	padding-top: 60px;
+	padding-bottom: 5px;
+
+	border-top-style: solid;
+	border-top-width: 2px;
+	border-top-color: #f1edf1;
+
+}
+.seperator{
+	width:370px;
+	height:0px;
+
+	position: relative;
+	top:2px;
+
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
+	border-bottom-color: #f1edf1;
+}
+
+/*Profile page*/
+
+/*Switch*/
+.tabActivated{
+	display: table;
+	width:125px;
+	height:45px;
+
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgba(76,183,255,1.0);
+	-webkit-transition: width 0.3s, height 0.3s, margin 0.3s; 
+    transition: width 0.3s, height 0.3s, margin 0.3s;
+
+    text-align:center;
+}
+.tab{
+	display: table;
+	width:110px;
+	height:30px;	
+
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgba(76,183,255,0.5);
+	-webkit-transition: width 0.3s, height 0.3s, margin 0.3s; 
+    transition: width 0.3s, height 0.3s, margin 0.3s;
+
+    text-align: center;
+}
+#rightTab{
+	position: relative;
+	left: -2px;
+}
+
+.tab span{
+  	display: table-cell;
+  	vertical-align: middle;
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto";
+	color: rgba(76,183,255,1.0);
+	cursor: pointer;
+}
+
+.tabActivated span{
+  	display: table-cell;
+  	vertical-align: middle;
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto";
+	color: rgba(76,183,255,1.0);
+	font-weight: bold;
+	cursor: auto;
+}
+
+/*Icons*/
+
+.arrowIcon{
+	color: rgba(76,183,255,1.0);
+	margin-right: 10px;
+	font-size: 12px;
+}
+
+.profileStateIcon{
+	border-radius: 50%;
+	width: 3px;
+	height: 3px;
+
+	margin: 2.5px;
+	margin-right: 12.5px;
+
+	border-style: solid;
+	border-width: 1px;
+	cursor: pointer;
+}
+
+.profileStateBigIcon{
+	border-radius: 50%;
+	width: 8px;
+	height: 8px;
+
+	margin: 0px;
+	margin-right: 10px;
+
+	border-style: solid;
+	border-width: 1px;
+}
+
+.blockStateIcon{
+	border-radius: 50%;
+	width: 3px;
+	height: 3px;
+
+	margin: 2.5px;
+	margin-right: 12.5px;
+
+	border-style: solid;
+	border-width: 1px;
+	border-color: #a3bccc;
+	cursor: pointer;
+}
+
+.qSelectedBigIcon{
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+
+	margin: 0px;
+	margin-right: 4px;
+
+	background-color: rgba(76,183,255,1.0);
+	-webkit-transition: width 0.2s, height 0.2s, margin 0.2s, background-color 0.5s; 
+    transition: width 0.2s, height 0.2s, margin 0.2s, background-color 0.5s;
+    cursor: auto;
+}
+
+.qBigIcon{
+	border-radius: 50%;
+	width: 8px;
+	height: 8px;
+
+	margin: 5px;
+	margin-right: 9px;
+
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(76,183,255,1.0);
+	-webkit-transition: width 0.2s, height 0.2s, margin 0.2s, background-color 0.5s; 
+    transition: width 0.2s, height 0.2s, margin 0.2s, background-color 0.5s;
+    cursor: pointer;
+}
+
+.qBigIcon:hover{
+	border-radius: 50%;
+	width: 18px;
+	height: 18px;
+
+	margin: 0px;
+	margin-right: 4px;
+
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(76,183,255,1.0);
+	cursor: pointer;
+}
+
+.qSelectedSmallIcon{
+	border-radius: 50%;
+	width: 10px;
+	height: 10px;
+
+	margin: 5px;
+
+	background-color: rgba(76,183,255,1.0);
+	-webkit-transition: width 0.2s, height 0.2s, margin 0.2s, background-color 0.5s; 
+    transition: width 0.2s, height 0.2s, margin 0.2s, background-color 0.5s;
+    cursor: auto;
+}
+
+.qSmallIcon{
+	border-radius: 50%;
+	width: 3px;
+	height: 3px;
+
+	margin: 7.5px;
+
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(76,183,255,1.0);
+	-webkit-transition: width 0.2s, height 0.2s, margin 0.2s, background-color 0.5s; 
+    transition: width 0.2s, height 0.2s, margin 0.2s, background-color 0.5s;
+    cursor: pointer;
+}
+
+.qSmallIcon:hover{
+	border-radius: 50%;
+	width: 8px;
+	height: 8px;
+
+	margin: 5px;
+
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(76,183,255,1.0);
+	cursor: pointer;
+}
+
+.infoIcon{
+	color: rgba(76,183,255,1.0);
+	margin-left: 5px;
+	visibility: hidden;
+	margin-top: 2px;
+	cursor: pointer;
+}

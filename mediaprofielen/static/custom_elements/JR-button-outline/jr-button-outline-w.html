@@ -1,0 +1,146 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-behaviors/paper-button-behavior.html">
+<link rel="import" href="../../bower_components/paper-behaviors/paper-inky-focus-behavior.html">
+
+<dom-module id="jr-button-outline-w">
+  <style>
+    :host {
+      outline: none;
+      display: inline-block;
+      position: relative;
+      padding: 0px;      
+
+      z-index: 0;
+    }
+
+    #ink {
+      color: white;
+    }
+
+    #icon{
+      margin: auto;
+      position: absolute;
+      top: 0px; left: 0px; bottom: 0px; right: 0px;
+      color: white;
+      -webkit-transition-delay: color 0.2s; /* Safari */
+      transition-delay: color 0.2s;
+    }
+
+    #outline:active #icon{
+      margin: auto;
+      position: absolute;
+      top: 0px; left: 0px; bottom: 0px; right: 0px;
+      color: rgba(76,183,255,1.0);
+    }
+
+    :host([disabled]) #icon{
+      margin: auto;
+      position: absolute;
+      top: 0px; left: 0px; bottom: 0px; right: 0px;
+      color: #DDDDDD;
+    }
+
+    #outline {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      margin: 7px;
+
+      border-radius: 48px;
+      border-style: solid;
+      border-width: 2px;
+      border-color: white; 
+      cursor: pointer;
+      
+      -webkit-transition: background-color 0.2s, width 0.2s, height 0.2s, margin 0.2s; 
+      transition: background-color 0.2s, width 0.2s, height 0.2s, margin 0.2s;
+    }
+
+    #outline:hover {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin: 0px;
+
+      border-radius: 48px;
+      border-style: solid;
+      border-width: 2px;
+      border-color: white;
+
+      cursor: pointer;
+    }
+
+    #outline:active {
+      
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin: 0px;
+      background-color: white;
+
+      border-radius: 48px;
+      border-style: solid;
+      border-width: 2px;
+      border-color: rgba(76,183,255,1.0);
+
+      cursor: pointer;
+      -webkit-transition-delay: background-color 0.2s; /* Safari */
+      transition-delay: background-color 0.2s;
+    }
+
+    :host([disabled]) #outline {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      margin: 7px;
+
+      border-radius: 48px;
+      border-style: solid;
+      border-width: 2px;
+      border-color: #DDDDDD;
+
+      pointer-events: none;
+      cursor: auto;
+      -webkit-transition-delay: background-color 0.2s; /* Safari */
+      transition-delay: background-color 0.2s;
+    }
+
+  </style>
+  <template>
+    <div id="outline">
+      <paper-ripple id="ink" class="circle" center></paper-ripple>
+      <iron-icon id="icon" src="[[src]]" icon="[[icon]]"></iron-icon>
+    </div>
+  </template>
+
+</dom-module>
+<script>
+  Polymer({
+    is: "jr-button-outline-w",
+
+    hostAttributes: {
+      role: 'button',
+      tabindex: '0'
+    },
+
+    behaviors: [
+      Polymer.PaperInkyFocusBehavior
+    ],
+
+    properties: {
+      src: {
+        type: String
+      },
+      icon: {
+        type: String
+      },
+      disabled: {
+        type: Boolean
+      }
+    }
+  });
+</script>

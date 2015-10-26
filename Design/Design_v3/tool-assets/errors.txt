@@ -1,0 +1,6 @@
+[Mon Oct 26 2015 14:15:59 GMT+0100 (West-Europa (standaardtijd))] layer "100% pijl.png, 100% pijl.svg": Duplicate path: pijl.png
+[Mon Oct 26 2015 14:15:59 GMT+0100 (West-Europa (standaardtijd))] layer "100% pijl.png, 100% pijl.svg": Duplicate path: pijl.svg
+[Mon Oct 26 2015 14:15:59 GMT+0100 (West-Europa (standaardtijd))] layer "50% logoBlauw.png, 100% logoBlauw@2x.png, 150% logoBlauw@3x.png": Duplicate path: logoBlauw.png
+[Mon Oct 26 2015 14:15:59 GMT+0100 (West-Europa (standaardtijd))] layer "50% logoBlauw.png, 100% logoBlauw@2x.png, 150% logoBlauw@3x.png": Duplicate path: logoBlauw@2x.png
+[Mon Oct 26 2015 14:15:59 GMT+0100 (West-Europa (standaardtijd))] layer "50% logoBlauw.png, 100% logoBlauw@2x.png, 150% logoBlauw@3x.png": Duplicate path: logoBlauw@3x.png
+[Mon Oct 26 2015 14:16:02 GMT+0100 (West-Europa (standaardtijd))] layer "100% pijl.png, 100% pijl.svg": Fonts may render inconsistently and text wrapping is unsupported which can result in clipped text. Convert text to a shape to maintain fidelity.

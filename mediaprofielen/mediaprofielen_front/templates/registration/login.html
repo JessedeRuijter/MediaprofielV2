@@ -1,0 +1,115 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>	   <html class="no-js"> <![endif]-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <title>Mediaprofiel</title>
+    <meta name="description" content="Mediaprofielen.nl">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <script src="{% static 'bower_components/webcomponentsjs/webcomponents-lite.min.js' %}"></script>
+    <link rel="import" ref="{% static 'bower_components/polymer/polymer.html' %}">
+  	<link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}">
+  	<link rel="import" href="{% static 'bower_components/font-roboto/roboto.html' %}">
+  	<link rel="import" href="{% static 'bower_components/iron-flex-layout/classes/iron-flex-layout.html' %}">
+  	<link rel="import" href="{% static 'bower_components/iron-fit-behavior/iron-fit-behavior.html' %}">
+    <link rel="stylesheet" href="{% static 'css/input.css' %}">
+    <style is="custom-style">
+	    :root{
+	    	--paper-input-container-color: white;
+	    	--paper-input-container-focus-color: white;
+	    	--paper-input-container-input-color: white;
+
+	    }
+  	</style>
+</head>
+<body class="background">
+	<div class="vertical layout">
+		<div class="horizontal layout center header">
+			<div class="flex"></div>
+			<div style="margin-right: 30px;">
+				<p class="buttonText" onclick="scrollBottom()">contact</p>
+			</div>
+			<div class="vertical layout">
+				<p class="buttonText" onclick="showLogin()">log in</p>
+			</div>
+		</div>
+		<div class="horizontal layout">
+			<div class="flex"></div>
+			<div id="loginPanel">
+				<form method="post" name="inlogForm" action="{% url 'django.contrib.auth.views.login' %}">
+					{% csrf_token %}
+					<link rel="import" href="{% static 'bower_components/paper-material/paper-material.html' %}">
+					<div class="vertical layout center" style="margin:20px;">
+						{% if form.errors %}
+							<p style="max-width: 200px; color: red;">Uw gebruikersnaam of wachtwoord zijn niet gevonden. Probeer het opnieuw!</p>
+						{% endif %}
+						<link rel="import" href="{% static 'bower_components/paper-input/paper-input.html' %}">
+						<paper-input label="Gebruikersnaam" style="width: 200px;" id="id_{{ form.username.name }}" name="{{ form.username.name }}" type="text" maxlength='50' class="loginInput"></paper-input>
+
+						<paper-input label="Wachtwoord" style="width: 200px;" id="id_{{ form.password.name }}" name="{{ form.password.name }}" type="password" maxlength='50' class="loginInput"></paper-input>
+						<link rel="import" href="{% static 'custom_elements/jr-button-outline/jr-button-outline-w.html' %}">
+						<jr-button-outline-w icon="arrow-forward" onclick="submitform()"></jr-button-outline-w>
+					</div>
+				</form>
+			</div>
+		</div>
+		<link rel="import" href="{% static 'custom_elements/Home/front-page.html' %}">
+		<div class="fit" style="top: 105px;">
+			<front-page></front-page>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function submitform()
+		{
+		  document.inlogForm.submit();
+		}
+		function showLogin()
+		{
+			if(document.getElementById("loginPanel").style.display == 'block'){
+				document.getElementById("loginPanel").style.display = "none";
+			}
+			else{
+				document.getElementById("loginPanel").style.display = "block";
+			}
+
+			
+		}
+		function scrollBottom(){
+			var b = document.querySelector(".background");
+			console.log(b);
+			console.log(document.body.scrollHeight);
+			scrollTo(b, document.body.scrollHeight, 1000);
+		}
+		function scrollTo(element, to, duration) {
+		    var start = element.scrollTop,
+		        change = to - start,
+		        currentTime = 0,
+		        increment = 20;
+		        
+		    var animateScroll = function(){        
+		        currentTime += increment;
+		        var val = Math.easeInOutQuad(currentTime, start, change, duration);
+		        element.scrollTop = val;
+		        if(currentTime < duration) {
+		            setTimeout(animateScroll, increment);
+		        }
+		    };
+		    animateScroll();
+		}
+		Math.easeInOutQuad = function (t, b, c, d) {
+			t /= d/2;
+			if (t < 1) return c/2*t*t + b;
+			t--;
+			return -c/2 * (t*(t-2) - 1) + b;
+		}
+	</script>
+</body>
+</html>

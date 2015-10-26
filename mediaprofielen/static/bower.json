@@ -1,0 +1,25 @@
+{
+  "name": "mediaprofielen",
+  "version": "0.0.0",
+  "authors": [
+    "JessedeRuijter <jessederuijter@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.1.0",
+    "iron-elements": "polymerelements/iron-elements#~1.0.4",
+    "paper-elements": "polymerelements/paper-elements#~1.0.5",
+    "neon-elements": "polymerelements/neon-elements#~1.0.0"
+  }
+}

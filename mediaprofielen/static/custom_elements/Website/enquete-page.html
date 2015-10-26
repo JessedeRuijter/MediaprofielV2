@@ -1,0 +1,232 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="enquete-page">
+  <template>
+	<iron-ajax auto
+	    id="enquetes"
+		url='/api/enquetes'
+		last-response="{{enquetelist}}"
+		handleAs="json">
+	</iron-ajax>
+
+	<iron-ajax
+	    id="blocks"
+		on-response="addBlock"
+		handleAs="json"
+	    debounce-duration="300">
+	</iron-ajax>
+
+  	<link rel="stylesheet" href="../../css/enquetepage.css">
+  	<link rel="stylesheet" href="../../css/ionicons.min.css">
+  	<link rel="import" href="../../bower_components/font-roboto/roboto.html">
+  	<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+  	<link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
+	<div class="fit" style="position: absolute;">
+    	<div class="vertical layout center" >
+	    	<template is="dom-repeat" items="[[enquetelist]]">
+	    		<div class="card qSelector horizontal layout">	    			
+		    		<div class="vertical layout flex" style="padding: 15px;">
+	    				<span class="backText">{{item.name}}</span>
+	    				<span class="subText">{{item.description}}</span>
+	    			</div>
+	    			<jr-button-outline icon="arrow-forward" on-click='openEnquete'><jr-button-outline>
+	    		</div>
+    		</template>
+    	</div>
+    </div>
+    <div class="horizontal layout">
+    	<div class="flex">
+		    <div id="sidePanel" class="vertical layout center">
+		    	<div class="vertical layout">
+		    		<div class="horizontal layout center" style="margin: 30px 0px 30px 0px;" on-click="qMenu">
+		    			<span class="ion-android-arrow-back arrowIcon"></span>	
+			    		<span class="backText">terug naar mijn vragenlijsten</span>
+			    	</div>
+			    	<div class="vertical layout">
+			    		<template is="dom-repeat" items="[[blocklist]]">
+			    			<div id="blockStateList" class="horizontal layout center" style="margin-bottom: 20px;">
+			    				<span class="blockStateIcon"></span>
+			    				<span class="blockStateText">{{item.name}}</span>
+			    				<span class="ion-ios-information infoIcon"></span>
+			    			</div>
+		    			</template>
+			    	</div>
+			    </div>
+		    </div>
+		</div>
+	    <div class="vertical layout">
+		    <div id="enquete" class="vertical layout middlePanel card">
+		    	<div class="vertical layout center">
+			    	<iron-image class="clipContainer" src="../../images/Clip.png">
+		    		</iron-image>
+		    		<span class="clipText">{{selectedEnquete.name}}</span>
+		    	</div>
+		    	<div style="position: relative; top: -75px;">
+		    		<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+		    		<link rel="import" href="question-block.html">
+		    		<iron-pages id="blockSelector" selected="0">
+			    		<template is="dom-repeat" items="{{blocklist}}">
+			    			<div>
+			    				<template is="dom-repeat" items="{{item.questions}}">
+			    					<div>			    						
+			    						<question-block data="{{item}}"></question-block>
+			    					</div>
+		    					</template>
+			    			</div>
+		    			</template>
+		    		</iron-pages>
+		    		<div class="vertical layout center buttonContainer">
+			    		<div class="horizontal layout">
+			    			<link rel="import" href="../jr-button-outline/jr-button-outline.html">
+			    			<jr-button-outline icon="arrow-back" on-click="prevQ"></jr-button-outline>	
+			    			<jr-button-outline icon="arrow-forward" on-click="nextQ"></jr-button-outline>		
+		    			</div>		
+	    			</div>	
+    			</div>	    		
+	    	</div>
+	    </div>
+	    <div class="flex"></div>
+	</div>
+</template>
+
+</dom-module>
+<script>
+HTMLImports.whenReady(function() {
+  Polymer({
+    is: "enquete-page",
+
+    properties: {
+    	selectedEnquete: {
+    		type: Object,
+    		value: {}
+    	},
+    	blocklist: {
+    		type: Array,
+    		value: []
+    	},
+    	enquetelist: {
+    		type: Array,
+    		value: []
+    	},
+    	blockSelected: {
+    		type: Number,
+    		value: 0
+    	},
+    	enqueteActive: {
+    		type: Boolean,
+    		value: false
+    	}
+    },
+    qMenu: function(){    	
+    	this.enqueteActive = false;
+		var b = document.querySelector(".background");
+		b.style.overflowY = "hidden";
+    	scrollTo(b, 0, 500);
+
+		this.$.sidePanel.style.top = "1500px";
+		this.$.enquete.style.top = "1500px";
+
+		this.$.blockSelector.selected = 0;
+		this.blockSelected = 0;
+	},
+	openEnquete: function(e){
+		if (!this.enqueteActive){
+			this.enqueteActive = true;
+			var model = e.model;
+			var selectedEnqueteID = model.item.id;
+
+			for (var i = 0; i < this.enquetelist.length; i++)
+			{
+				if (this.enquetelist[i].id == selectedEnqueteID)
+					this.selectedEnquete = this.enquetelist[i];
+			}
+			this.loaded = 0;
+			this.blocklist = [];
+			for (var i = 0; i < this.selectedEnquete.blocks.length; i++)
+			{
+				this.$.blocks.url = "/api/blocks/" + this.selectedEnquete.blocks[i].toString();
+				this.$.blocks.generateRequest();
+			}
+
+			this.$.sidePanel.style.top = "0px";
+			this.$.enquete.style.top = "0px";
+
+			var b = document.querySelector(".background");
+			b.style.overflowY = "auto";
+		}
+
+	},
+	addEnquete: function(data){
+		console.log(data.detail.response);
+		this.enquetelist = [];
+		for (i = 0; i < data.detail.response.length; i++){
+			this.push('enquetelist', data.detail.response[i]);
+		}
+	},
+	addBlock: function(data){
+		this.push('blocklist', data.detail.response);
+		this.loaded++;
+		if (this.loaded == this.selectedEnquete.blocks.length){
+			var b = document.querySelectorAll('#blockStateList');
+			b[0].children[0].style.borderColor = "#242d33";
+			b[0].children[1].style.color = "#242d33";
+			b[0].children[0].style.height = "8px";
+			b[0].children[0].style.width = "8px";
+			b[0].children[0].style.margin = "0px 10px 0px 0px";
+			b[0].children[2].style.visibility = "visible";
+		}		
+	},
+	nextQ: function(){
+		this.$.blockSelector.selected++;
+		this.blockSelected++;
+		selectBlock(document.querySelectorAll('#blockStateList'), this.blockSelected - 1, this.blockSelected)
+		var b = document.querySelector(".background");
+		scrollTo(b, 0, 500);
+	},
+	prevQ: function(){
+		this.$.blockSelector.selected--;
+		this.blockSelected--;
+		selectBlock(document.querySelectorAll('#blockStateList'), this.blockSelected + 1, this.blockSelected)
+		var b = document.querySelector(".background");
+		scrollTo(b, 0, 500);
+
+	}
+});
+ });
+
+  function scrollTo(element, to, duration) {
+	    var start = element.scrollTop,
+	        change = to - start,
+	        currentTime = 0,
+	        increment = 20;
+	        
+	    var animateScroll = function(){        
+	        currentTime += increment;
+	        var val = Math.easeInOutQuad(currentTime, start, change, duration);
+	        element.scrollTop = val;
+	        if(currentTime < duration) {
+	            setTimeout(animateScroll, increment);
+	        }
+	    };
+	    animateScroll();
+	};
+
+	function selectBlock(elements, oldB, newB){
+		elements[oldB].children[1].style.color = "#a3bccc";
+		elements[newB].children[1].style.color = "#242d33";
+
+		elements[oldB].children[0].style.borderColor = "#a3bccc";
+		elements[newB].children[0].style.borderColor = "#242d33";
+
+		elements[oldB].children[2].style.visibility = "hidden";
+		elements[newB].children[2].style.visibility = "visible";			
+	};
+
+	Math.easeInOutQuad = function (t, b, c, d) {
+		t /= d/2;
+		if (t < 1) return c/2*t*t + b;
+		t--;
+		return -c/2 * (t*(t-2) - 1) + b;
+	};
+</script>

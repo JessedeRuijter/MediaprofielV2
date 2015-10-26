@@ -1,0 +1,96 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="question-block">
+  <template>   
+
+    <link rel="stylesheet" href="../../css/enquetepage.css">
+    <link rel="import" href="../../bower_components/font-roboto/roboto.html">
+    <link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+    <link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
+   
+    <div id="scope" class="vertical layout center" style="padding: 60px;">
+      <p class="questionText">{{data.questionText}}</p>
+
+      <template is="dom-if" if='{{evaluateBool(data.qType,"Y")}}'>
+        <div class="horizontal layout center">
+          <span class="questionElementText">ja</span>
+          <div id="iconContainer" class="horizontal layout" style="margin: 10px;">
+            <span id="1" class="qBigIcon" on-click='bigIconSelector'></span>
+            <div style="width:5px;"></div>
+            <span id="2" class="qBigIcon" on-click='bigIconSelector'></span>
+          </div>
+          <span class="questionElementText">nee</span>
+        </div>
+      </template>
+
+      <template is="dom-if" if='{{evaluateBool(data.qType,"M")}}'>
+        <div id="iconContainer" class="vertical layout">
+          <template is="dom-repeat" items="{{data.choices}}">
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="{{index}}" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">{{item.choiceText}}</p>
+            </div>
+          </template>
+        </div>
+      </template>
+
+      <template is="dom-if" if='{{evaluateBool(data.qType,"S")}}'>
+        <div id="iconContainer" class="horizontal layout center">
+          <template is="dom-repeat" items="{{data.choices}}">
+            <span id="{{index}}" class="qSmallIcon" on-click="smallIconSelector"></span>
+          </template>
+        </div>
+        <p class="questionElementText">{{selectedText}}</p>
+      </template>
+    </div>
+    <div class="vertical layout center">
+      <div class="seperator"></div>    
+    </div>
+
+  </template>
+
+</dom-module>
+<script>
+
+  Polymer({
+    is: "question-block",
+
+    properties: {
+      data: {
+        type: Object,
+        value: {}
+      },
+      selectedText: {
+        type: String,
+        value: "Maak een selectie"
+      }
+    },
+    evaluateBool: function(b1, b2){
+      return (b1 == b2);
+    },
+    bigIconSelector: function(sender){
+      var elementList = this.$.scope.querySelector("#iconContainer").querySelectorAll("span");
+      for (i = 0; i < elementList.length; i++){
+        if (sender.toElement.id == elementList[i].id){
+          elementList[i].className = "qSelectedBigIcon";
+        }
+        else{
+          elementList[i].className = "qBigIcon";
+        }
+      }
+    },
+    smallIconSelector: function(sender){
+      var elementList = this.$.scope.querySelector("#iconContainer").querySelectorAll("span");
+      for (i = 0; i < elementList.length; i++){
+        if (sender.toElement.id >= elementList[i].id){
+          elementList[i].className = "qSelectedSmallIcon";
+          this.selectedText = this.data.choices[i].choiceText;
+        }
+        else{
+          elementList[i].className = "qSmallIcon";
+        }
+      }
+    }
+
+  });
+</script>

@@ -1,0 +1,83 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="enquete-blocks">
+  <template>
+    <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+    <iron-ajax
+        id="blocks"
+      url='/api/blocks/{{blockID}}'
+      last-response="{{block}}"
+      handleAs="json"
+        debounce-duration="300">
+    </iron-ajax>
+
+    <link rel="stylesheet" href="../../css/enquetepage.css">
+    <link rel="import" href="../../bower_components/font-roboto/roboto.html">
+    <link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+    <link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
+
+    <div class="horizontal layout">
+      <div class="vertical layout center">
+        <div id="enquete" class="vertical layout middlePanel card center">
+          <iron-image class="clipContainer" src="../../images/Clip.png">
+          </iron-image>
+          
+          <div class="horizontal layout">
+            <link rel="import" href="../jr-button-outline/jr-button-outline.html">
+            <jr-button-outline icon="arrow-back"></jr-button-outline> 
+            <jr-button-outline icon="arrow-forward"></jr-button-outline>    
+          </div>                
+        </div>
+      </div>
+      <div class="flex"></div>
+    </div>
+  </template>
+
+</dom-module>
+<script>
+  Polymer({
+    is: "enquete-blocks",
+
+    properties:{
+      blocklist:{
+        type: Array
+      },
+      blockIDs:{
+        type: Array
+      }
+    },
+
+    qMenu: function(){
+      var b = document.querySelector(".background");
+      b.style.overflowY = "hidden";
+        scrollTo(b, 0, 500);
+
+      this.$.sidePanel.style.top = "1500px";
+      this.$.enquete.style.top = "1500px";
+    }
+  });
+
+   function scrollTo(element, to, duration) {
+      var start = element.scrollTop,
+          change = to - start,
+          currentTime = 0,
+          increment = 20;
+          
+      var animateScroll = function(){        
+          currentTime += increment;
+          var val = Math.easeInOutQuad(currentTime, start, change, duration);
+          element.scrollTop = val;
+          if(currentTime < duration) {
+              setTimeout(animateScroll, increment);
+          }
+      };
+      animateScroll();
+  };
+
+  Math.easeInOutQuad = function (t, b, c, d) {
+    t /= d/2;
+    if (t < 1) return c/2*t*t + b;
+    t--;
+    return -c/2 * (t*(t-2) - 1) + b;
+  };
+</script>

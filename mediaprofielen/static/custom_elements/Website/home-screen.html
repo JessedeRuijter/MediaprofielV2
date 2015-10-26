@@ -1,0 +1,96 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="home-screen">
+  <template>
+    <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+	<iron-ajax auto
+	    id="currentu"
+		url='/api/currentuser'
+		last-response="{{currentuser}}"
+		handleAs="json"
+	    debounce-duration="300">
+	</iron-ajax>
+
+  	<link rel="stylesheet" href="../../css/enquetepage.css">
+  	<link rel="stylesheet" href="../../css/ionicons.min.css">
+  	<link rel="import" href="../../bower_components/font-roboto/roboto.html">
+  	<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+  	<link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
+    <link rel="import" href="../../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+    <!-- <paper-drawer-panel> -->
+    	<!-- <div class="flex" drawer>
+    	</div> -->
+		<!-- <div main> -->
+    		<div class="vertical layout background fit" on-scroll="updateSidePanelPos">
+		    	<div class="horizontal layout">
+		    		<div class="organisationPanel">
+		    			<span class="organisationText">Mediaprofiel</span>
+		    		</div>
+				    <div class="flex"></div>
+				    <div class="vertical layout settingsPanel">
+				    	<div class="horizontal layout  center">
+					    	<div class="switchContainer horizontal layout center">
+					    		<div id="leftTab" class="tabActivated" on-click="switchRight">
+					    			<span>vragenlijsten</span>
+					    		</div>
+					    		<div id="rightTab" class="tab" on-click="switchLeft">
+					    			<span>profielpagina</span>
+					    		</div>
+					    	</div>
+					    	<div class="settingsContainer horizontal layout">
+						    	<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+						    	<iron-image class="settings" src="../../images/Settings.png"></iron-image>
+					    	</div>
+					    </div>
+				    </div>
+				</div>
+
+				<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+				<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
+
+				<neon-animated-pages id="pages" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+			    	<div>		    	
+					    <link rel="import" href="enquete-page.html">
+					    <enquete-page id="enquetePage"></enquete-page>
+					</div>
+
+					<div>
+						<link rel="import" href="profile-page.html">
+						<profile-page></profile-page>
+					</div>
+				</neon-animated-pages>
+			</div>
+    	<!-- </div>	     -->
+	<!-- </paper-drawer-panel> -->
+  </template>
+
+</dom-module>
+<script>
+  Polymer({
+    is: "home-screen",
+
+    switchRight: function() {
+	    this.entryAnimation = 'slide-from-left-animation';
+        this.exitAnimation = 'slide-right-animation';
+	    this.$.pages.selected = "0";
+	    this.$.leftTab.className = "tabActivated";
+	    this.$.rightTab.className = "tab";
+	},
+	switchLeft: function() {
+	    this.entryAnimation = 'slide-from-right-animation';
+        this.exitAnimation = 'slide-left-animation';
+	    this.$.pages.selected = "1";
+	    this.$.leftTab.className = "tab";
+	    this.$.rightTab.className = "tabActivated";
+	},
+
+	updateSidePanelPos: function(){
+		var sp = document.getElementById("sidePanel");
+		var en = document.getElementById("enquete");
+		var bg = document.querySelector(".background");
+
+		sp.style.top = (parseFloat(en.style.top) + parseFloat(bg.scrollTop)).toString() + "px";
+	}	
+  });
+
+</script>

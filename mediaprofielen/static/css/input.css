@@ -1,0 +1,187 @@
+
+html,body {
+  background-color: #FFFFFF;
+  font-family: 'RobotoDraft', sans-serif;
+  margin: 0px;
+  overflow-x: hidden;
+}
+
+.header{
+	background-color: rgba(76,183,255,1.0);
+	padding: 45px 145px 45px 145px;
+}
+.headerPanel{
+	background-color: rgba(76,183,255,1.0);
+	height: 500px;
+	width: 100%;
+}
+.introPanel{
+	background-color: rgba(76,183,255,0.1);
+	height: 500px;
+}
+.contentPanel{
+	padding: 0px;
+}
+.profilePanel{
+	width: 160px;
+	margin: 20px;
+}
+.footerPanel{
+	background-color: rgba(76,183,255,1.0);
+}
+#loginPanel{
+	background-color: rgba(76,183,255,1.0);
+	border-style: solid;
+	border-width: 2px;
+	border-color: white;
+	z-index: 20; 
+	margin-right: 120px;
+	display: none;
+}
+
+.logo{
+	top: -32px;
+}
+
+.buttonText{
+	margin: 0px;
+	font-weight: 600;
+	color: white;
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto";
+	cursor: pointer;
+}
+.openingsText{
+	margin: 0px;
+	line-height: 60px;
+	color: white;
+	letter-spacing: 0.018em;
+	font-size: 40px;
+	font-family: "Roboto Thin";
+	text-align: center;
+}
+.introText{
+	margin: 0px;
+	line-height: 30px;
+	color: black;
+	letter-spacing: 0.018em;
+	font-size: 20px;
+	font-family: "Roboto Light";
+	/*text-align: center;*/
+}
+.contentText{
+	margin: 60px 0px 60px 0px;
+	line-height: 30px;
+	color: black;
+	letter-spacing: 0.018em;
+	font-size: 20px;
+	font-family: "Roboto Light";
+	text-align: center;
+}
+.profileTitleText{
+	margin: 30px 0px 0px 0px;
+	line-height: 30px;
+	color: black;
+	letter-spacing: 0.018em;
+	font-size: 	15px;
+	font-family: "Roboto Light";
+	text-align: center;
+}
+.profileDescriptionText{
+	margin:0px;
+	line-height: 22.5px;
+	color: black;
+	letter-spacing: 0.018em;
+	font-size: 15px;
+	font-family: "Roboto Thin";
+	text-align: center;
+}
+.contactText{
+	margin: 0px;
+	font-weight: 600;
+	color: rgba(76,183,255,1.0);
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto";
+	cursor: pointer;
+}
+.iconText{
+	font-family: "ionicons";
+	color: rgba(76,183,255,1.0);
+	font-size: 32px;
+	margin: 6px;
+}
+.footerText{
+	color: white;
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto Light";
+}
+.iconTexture{
+	font-family: "ionicons";
+	color: rgba(255,255,255,0.15);
+	font-size: 48px;
+	margin: 0px 30px 0px 30px;
+	position: absolute;
+	top: -20px;
+	line-height: 54px;
+	cursor: default;
+}
+.logo{
+	z-index:10;
+}
+.bullet{
+	border-radius: 50%;
+	width: 10px;
+	height: 10px;
+	background-color: rgba(76,183,255,0.2);
+	margin: 5px;
+}
+.bulletActive{
+	border-radius: 50%;
+	width: 10px;
+	height: 10px;
+	background-color: rgba(76,183,255,1.0);
+	margin: 5px;
+}
+#leftOne{
+	margin-right: 60px;
+}
+#leftTwo{
+	margin-right: 60px;
+}
+#rightOne{
+	margin-left: 60px;
+}
+#rightTwo{
+	margin-left: 60px;
+}
+
+.inlogContainer{
+  padding: 20px;
+  margin-top: 100px;
+}
+
+.seperator{
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
+	border-bottom-color: rgba(76,183,255,0.1);
+	margin: 30px;
+}
+.smallSeperator{
+	width:360px;
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
+	border-bottom-color: rgba(76,183,255,0.1);
+	margin: 22px;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

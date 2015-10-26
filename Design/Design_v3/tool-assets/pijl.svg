@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="94" height="2137" viewBox="0 0 94 2137">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #cfdde6;
+        stroke-width: 4px;
+        fill: none;
+      }
+
+      .cls-2, .cls-3 {
+        font-size: 48px;
+      }
+
+      .cls-3 {
+        fill: #cfdde5;
+        font-family: "Ionicons";
+      }
+    </style>
+  </defs>
+  <g>
+    <circle cx="47" cy="47" r="45" class="cls-1"/>
+    <text x="31" y="65" class="cls-2"><tspan class="cls-3"></tspan></text>
+  </g>
+</svg>
