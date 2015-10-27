@@ -103,6 +103,7 @@ Team Mediaprofiel.nl
 
 admin.site.register(Enquete, EnqueteAdmin)
 admin.site.register(Profiel)
+admin.site.register(Invulmoment)
 admin.site.register(Account)
 admin.site.register(Answer)
 admin.site.register(Organisation, OrganisationAdmin)

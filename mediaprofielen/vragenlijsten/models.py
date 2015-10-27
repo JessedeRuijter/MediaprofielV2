@@ -37,6 +37,14 @@ class Account(models.Model):
 		("AN", "Andere"))
 	provincie = models.CharField(max_length='2', choices=provincie_choices)
 
+# De vragen in database
+class Enquete(models.Model):
+	name 			= models.CharField(max_length=200)
+	description 	= models.TextField()
+	publishedDate 	= models.DateTimeField('date published')
+	locked          = models.BooleanField(default=False)
+	def __unicode__(self):
+		return self.name
 
 class Organisation(models.Model):
 	name = models.CharField(max_length=200)
@@ -47,14 +55,10 @@ class Organisation(models.Model):
 	def __unicode__(self):
 		return str(self.name)
 
-# De vragen in database
-class Enquete(models.Model):
-	name 			= models.CharField(max_length=200)
-	description 	= models.TextField()
-	publishedDate 	= models.DateTimeField('date published')
-	locked          = models.BooleanField(default=False)
-	def __unicode__(self):
-		return self.name
+class Invulmoment(models.Model):
+	organisation = models.ForeignKey(Organisation, related_name='organisation')
+	time = models.DateField()
+	enquete = models.ForeignKey(Enquete, related_name='enquete')
 
 class QuestionBlock(models.Model):
 	enquete 	= models.ForeignKey(Enquete, related_name='blocks')
@@ -106,9 +110,8 @@ class Answer(models.Model):
 class EnqueteAnswer(models.Model):
 	"""Antwoorden op een enquete"""
 	user = models.ForeignKey(User)
-	enquete = models.ForeignKey(Enquete)
 	answers = models.CommaSeparatedIntegerField(max_length=1000)
-	time_completed = models.DateTimeField()
+	invulmoment = models.ForeignKey(Invulmoment, related_name='invulmoment', blank=True)
 
 class QuestionChoice(models.Model):
 	question 		= models.ForeignKey(Question, related_name='choices')
@@ -116,6 +119,7 @@ class QuestionChoice(models.Model):
 
 class Profiel(models.Model):
 	"""Scores bij profielen en een historie van completed blocks"""
+	time 			= models.DateField()
 	user 			= models.ForeignKey(User, related_name='profiel')
 	consument    	= models.IntegerField(default=0)
 	verzamelaar 	= models.IntegerField(default=0)
