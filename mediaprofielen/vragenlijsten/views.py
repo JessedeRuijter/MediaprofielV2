@@ -26,7 +26,12 @@ class currentUserView(APIView):
     def get(self, request):
         user=request.user
         serialized = UserSerializer(user, context={'request':request})
-        return Response(serialized.data)
+        invulmoment = user.members.all()[0].organisationInvulMoment.all().latest('time')
+        serializedIM = InvulMomentSerializer(invulmoment, context={'request':request})
+        returndata = {}
+        returndata['user'] = serialized.data
+        returndata['invulmoment'] = serializedIM.data
+        return Response(returndata)
 
 class changePasswordView(APIView):
     def post(self, request):
@@ -65,11 +70,13 @@ def sumProfiles(profiles):
 class currentOrganisationView(APIView):
     def get(self, request):
         user            = request.user
-        organisations   = user.owners.all()
-        if organisations:
+        owned_organisations   = user.owners.all()
+        member_organisations = user.members.all()
+        if owned_organisations:
             organisationDict = {}
-            for i, organisation in enumerate(organisations):
+            for i, organisation in enumerate(owned_organisations):
                 orgDict = {} #Deze dict is voor alle info over de organisatie
+                orgDict['Type'] = 'Owner'
                 orgDict['Name'] = organisation.name
                 orgDict['Id'] = organisation.id
                 profileCount = {'geen profiel':0,
@@ -87,8 +94,11 @@ class currentOrganisationView(APIView):
                 for key, value in orgDict['totalCount'].items():
                     orgDict['averageCount'][key] = float(value) / organisation.members.count()
             return Response(organisationDict.values())
+        if member_organisations:
+            serialized = OrganisationSerializer(member_organisations[0], context={'request': request})
+            return Response(serialized.data)
         else:
-            return "No Organisation"
+            return Response("No organisation owner/member.")
 
 
 def csv_view(request, index):

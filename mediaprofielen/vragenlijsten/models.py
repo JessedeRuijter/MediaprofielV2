@@ -48,6 +48,7 @@ class Enquete(models.Model):
 
 class Organisation(models.Model):
 	name = models.CharField(max_length=200)
+	color = models.CharField(max_length=100)
 	csvMembers	= models.FileField() 
 	csvOwners	= models.FileField() 
 	owners = models.ManyToManyField(User, related_name="owners", blank=True)
@@ -56,9 +57,11 @@ class Organisation(models.Model):
 		return str(self.name)
 
 class Invulmoment(models.Model):
-	organisation = models.ForeignKey(Organisation, related_name='organisation')
+	organisation = models.ForeignKey(Organisation, related_name='organisationInvulMoment')
 	time = models.DateField()
 	enquete = models.ForeignKey(Enquete, related_name='enquete')
+	def __unicode__(self):
+		return ':'.join([str(self.time), str(self.organisation.name), str(self.enquete.name)])
 
 class QuestionBlock(models.Model):
 	enquete 	= models.ForeignKey(Enquete, related_name='blocks')
@@ -137,7 +140,7 @@ class Profiel(models.Model):
 def user_save_handler(sender, **kwargs):
 	if kwargs['created']:
 		newUser = kwargs['instance']
-		newProfile = Profiel(user=newUser)
+		newProfile = Profiel(time=timezone.now(), user=newUser)
 		newProfile.save()
 	# user = kwargs['instance']
 	# password = User.objects.make_random_password()

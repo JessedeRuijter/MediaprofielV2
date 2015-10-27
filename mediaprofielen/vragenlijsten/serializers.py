@@ -17,7 +17,6 @@ class ProfileTextSerializer(serializers.HyperlinkedModelSerializer):
         model = ProfileText
         fields = ('user', 'text', 'profiel')
 
-
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     profiel = ProfielSerializer(many=True)
@@ -70,5 +69,10 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
         model = Answer
         fields = ('blockID', 'answers')
 
-
+class InvulMomentSerializer(serializers.ModelSerializer):
+    organisation = OrganisationSerializer()
+    enquete = EnqueteSerializer()
+    class Meta:
+        model = Invulmoment
+        fields = ('organisation', 'time', 'enquete')
 
