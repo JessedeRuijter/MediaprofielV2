@@ -26,11 +26,14 @@ class currentUserView(APIView):
     def get(self, request):
         user=request.user
         serialized = UserSerializer(user, context={'request':request})
-        invulmoment = user.members.all()[0].organisationInvulMoment.all().latest('time')
-        serializedIM = InvulMomentSerializer(invulmoment, context={'request':request})
         returndata = {}
         returndata['user'] = serialized.data
-        returndata['invulmoment'] = serializedIM.data
+        try:
+            invulmoment = user.members.all()[0].organisationInvulMoment.all().latest('time')
+            serializedIM = InvulMomentSerializer(invulmoment, context={'request':request})
+            returndata['invulmoment'] = serializedIM.data
+        except IndexError:
+            returndata['invulmoment'] = "None"
         return Response(returndata)
 
 class changePasswordView(APIView):
