@@ -17,11 +17,22 @@
   	<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
   	<link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
     <link rel="import" href="../../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+
+	<style is="custom-style">
+	    :root{
+	    	--paper-input-container-color: white;
+	    	--paper-input-container-focus-color: white;
+	    	--paper-input-container-input-color: white;
+
+	    }
+  	</style>
+
     <!-- <paper-drawer-panel> -->
     	<!-- <div class="flex" drawer>
     	</div> -->
 		<!-- <div main> -->
-    		<div class="vertical layout background fit" on-scroll="updateSidePanelPos">
+		<div class="vertical layout background fit" on-scroll="updateSidePanelPos">
+    		<div class="vertical layout">
 		    	<div class="horizontal layout">
 		    		<div class="organisationPanel">
 		    			<span class="organisationText">Mediaprofiel</span>
@@ -38,17 +49,41 @@
 					    		</div>
 					    	</div>
 					    	<div class="settingsContainer horizontal layout">
-						    	<link rel="import" href="../../bower_components/iron-image/iron-image.html">
-						    	<iron-image class="settings" src="../../images/Settings.png"></iron-image>
+						    	<span class="menuIcon" on-click="openOverlay"></span>
 					    	</div>
 					    </div>
 				    </div>
 				</div>
 
+				<div class="horizontal layout">
+					<div class="flex" style="height: 270px;"></div>
+					<div class="vertical layout changeMenuPanel" id="overlay" style="display: none;">
+						<p class="menuChangeTitleText">Verander wachtwoord</p>
+						<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+						<paper-input style="width:180px; margin: 0px 15px 0px 15px;" label="Nieuw wachtwoord" type="password"></paper-input>
+						<paper-input style="width:180px; margin: 0px 15px 0px 15px;" label="Bevestig wachtwoord" type="password"></paper-input>
+						<link rel="import" href="../jr-button-outline/jr-button-outline-w.html">
+						<div class="vertical layout center">
+							<div class="horizontal layout center">
+								<jr-button-outline-w icon="done" on-click=""></jr-button-outline-w>
+				    			<jr-button-outline-w icon="done" on-click=""></jr-button-outline-w>
+			    			</div>	
+
+			    			<span class="seperatorTop"></span>
+
+			    			<div class="horizontal layout center flex" style="cursor: pointer;" on-click="logout">
+			    				<p class="menuChangeButtonText">log out</p>
+			    			</div>	
+			    		</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="vertical layout fit" style="position: absolute; top:225px;">
 				<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
 				<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
 
-				<neon-animated-pages id="pages" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+				<neon-animated-pages id="pages" class="flex"  selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 			    	<div>		    	
 					    <link rel="import" href="enquete-page.html">
 					    <enquete-page id="enquetePage"></enquete-page>
@@ -60,7 +95,7 @@
 					</div>
 				</neon-animated-pages>
 			</div>
-    	<!-- </div>	     -->
+    	</div>	    
 	<!-- </paper-drawer-panel> -->
   </template>
 
@@ -87,10 +122,47 @@
 	updateSidePanelPos: function(){
 		var sp = document.getElementById("sidePanel");
 		var en = document.getElementById("enquete");
+
+		var sp2 = document.getElementById("sidePPanel");
+
 		var bg = document.querySelector(".background");
 
 		sp.style.top = (parseFloat(en.style.top) + parseFloat(bg.scrollTop)).toString() + "px";
-	}	
+		sp2.style.marginTop = parseFloat(bg.scrollTop).toString() + "px";
+	},
+
+	openOverlay: function(){
+		if(document.getElementById("overlay").style.display == 'block')
+		{
+			document.getElementById("overlay").style.display = "none";
+			document.querySelector(".menuIcon").innerHTML =  ""
+		}
+		else{
+			document.getElementById("overlay").style.display = "block";
+			document.querySelector(".menuIcon").innerHTML =  ""
+		}
+	},
+	changePassword: function(){
+        pw1 = this.$.password1.value;
+        pw2 = this.$.password2.value;
+        if (pw1 != pw2) {
+          this.passwordErrors = "Wachtwoorden komen niet overeen."
+          this.$.password1.value = "";
+          this.$.password2.value = "";
+          this.$.dec1.updateLabelVisibility();
+          this.$.dec2.updateLabelVisibility();
+        }
+        else{
+          data = JSON.stringify({"password": pw1});
+          this.$.postPassword.body = data;
+          this.$.postPassword.go();
+          
+        }
+
+      },
+      logout: function(){
+      	window.location.replace("/logout");
+      }
   });
 
 </script>

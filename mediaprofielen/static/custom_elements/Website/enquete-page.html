@@ -45,11 +45,18 @@
 			    	</div>
 			    	<div class="vertical layout">
 			    		<template is="dom-repeat" items="[[blocklist]]">
-			    			<div id="blockStateList" class="horizontal layout center" style="margin-bottom: 20px;">
-			    				<span class="blockStateIcon"></span>
-			    				<span class="blockStateText">{{item.name}}</span>
-			    				<span class="ion-ios-information infoIcon"></span>
-			    			</div>
+			    			<div>
+				    			<div id="blockStateList" class="horizontal layout center" style="margin-bottom: 0px;">
+				    				<span class="blockStateIcon"></span>
+				    				<span class="blockStateText">{{item.name}}</span>
+				    				<span class="ion-ios-information infoIcon" on-mouseover="showDescription" on-mouseout="hideDescription"></span>
+				    			</div>
+				    			<div class="infoContainer" style="position: absolute; height: 100px; display: none">
+					    			<div id="informationOverlay" style="padding: 15px; background-color: rgba(76,183,255,1.0);">
+					    				<span class="menuChangeTitleText">{{item.description}}</span>
+					    			</div>
+					    		</div>
+					    	</div>
 		    			</template>
 			    	</div>
 			    </div>
@@ -58,6 +65,10 @@
 	    <div class="vertical layout">
 		    <div id="enquete" class="vertical layout middlePanel card">
 		    	<div class="vertical layout center">
+		    		<!-- <svg width="160" height="160">
+					  <rect id="rect" x="5" y="5" rx="20" ry="20" width="150" height="150"
+					  style="fill:red;stroke:black;stroke-width:5;opacity:0.5" />
+					</svg> -->
 			    	<iron-image class="clipContainer" src="../../images/Clip.png">
 		    		</iron-image>
 		    		<span class="clipText">{{selectedEnquete.name}}</span>
@@ -116,12 +127,19 @@ HTMLImports.whenReady(function() {
     	enqueteActive: {
     		type: Boolean,
     		value: false
+    	},
+    	color: {
+    		type: String,
+    		value: "#00FF00"
     	}
     },
+    observers: [
+        'setColor(color)'
+    ],
+
     qMenu: function(){    	
     	this.enqueteActive = false;
 		var b = document.querySelector(".background");
-		b.style.overflowY = "hidden";
     	scrollTo(b, 0, 500);
 
 		this.$.sidePanel.style.top = "1500px";
@@ -153,7 +171,6 @@ HTMLImports.whenReady(function() {
 			this.$.enquete.style.top = "0px";
 
 			var b = document.querySelector(".background");
-			b.style.overflowY = "auto";
 		}
 
 	},
@@ -191,7 +208,21 @@ HTMLImports.whenReady(function() {
 		var b = document.querySelector(".background");
 		scrollTo(b, 0, 500);
 
+	},
+	setColor: function(color){
+		// console.log(this.$.rect.style.fill)
+		// this.customStyle['--main-color'] = 'green';
+  //       this.updateStyles();
+	},
+	showDescription: function(){
+		var d = document.querySelectorAll(".infoContainer")[this.blockSelected];
+		d.style.display = "block";
+	},
+	hideDescription: function(){
+		var d = document.querySelectorAll(".infoContainer")[this.blockSelected];
+		d.style.display = "none";
 	}
+
 });
  });
 

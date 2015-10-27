@@ -1,7 +1,12 @@
 
 html,body {
-  background-color: #FFFFFF;
-  padding: 0px; margin: 0px;
+	background-color: #FFFFFF;
+	padding: 0px; margin: 0px;
+	--background-opacity: 0.7;
+	--background-r: 0;
+	--background-g: 0;
+	--background-b: 255;
+	--main-color: rgba(var(--background-r),var(--background-g),var(--background-b),var(--background-opacity));
 }
 
 /*Text*/
@@ -117,11 +122,35 @@ html,body {
 	cursor: auto;
 }
 
+.menuChangeTitleText{
+	font-weight: 300;
+	color: #FFFFFF;
+	letter-spacing: 0.018em;
+	font-size: 15px;
+	font-family: "Roboto";
+	margin: 15px 15px 0px 15px;
+}
+.menuChangeButtonText{
+	color: #FFFFFF;
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto";
+	margin: 15px 0px 15px 0px;
+	cursor: pointer;
+}
+
+.seperatorTop{
+	width:210px;
+	border-top-style: solid;
+	border-top-width: 2px;
+	border-top-color: #6dc4ff;
+}
+
 /*Layout panels*/
 .background{
   	background-color: rgba(76,183,255,0.1);
   	overflow-x: hidden;
-  	overflow-y: hidden;
+  	overflow-y: auto;
 }
 .middlePanel{
 	width: 720px;		
@@ -138,12 +167,20 @@ html,body {
 	padding: 5px;
 }
 .organisationPanel{
-	height: 210px;
 	margin: 30px;
 }
 .settingsPanel{
 	margin: 30px;
 }
+
+.changeMenuPanel{
+	background-color: rgba(76,183,255,1.0);
+	margin-right: 30px;	
+	height: 270px;
+	z-index: 20;
+}
+
+
 
 #sidePanel{
 	position: relative;
@@ -196,6 +233,12 @@ html,body {
 /*Profile page*/
 
 /*Switch*/
+
+#sidePPanel{
+	-webkit-transition: margin 1s; 
+    transition: margin 1s;
+}
+
 .tabActivated{
 	display: table;
 	width:125px;
@@ -254,6 +297,15 @@ html,body {
 	color: rgba(76,183,255,1.0);
 	margin-right: 10px;
 	font-size: 12px;
+}
+
+.menuIcon{
+	font-family: "ionicons";
+	color: rgba(76,183,255,1.0);
+	background-color: rgba(76,183,255,0.0);
+	margin: 8px 8px 8px 30px;
+	font-size: 32px;
+	cursor: pointer;
 }
 
 .profileStateIcon{
