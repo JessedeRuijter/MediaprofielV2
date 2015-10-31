@@ -124,7 +124,8 @@ HTMLImports.whenReady(function() {
         	notify: true
     	},
     	invulmomentID: {
-    		type: String
+    		type: Number,
+    		value: 2
     	}
     },
     observers: [
@@ -301,6 +302,7 @@ HTMLImports.whenReady(function() {
         return b ? b.pop() : '';
     },
 	postAnswers: function(last){
+		console.log(this.invulmomentID);
 		var data = JSON.stringify({"blockID": this.blocklist[this.blockSelected].id, "answers": this.blockAnswer[this.blockSelected].toString(), "last": last, "invulmoment": this.invulmomentID });
         console.log(data);
         this.$.answerPost.headers = {
