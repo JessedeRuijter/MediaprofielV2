@@ -1,3 +1,4 @@
+<!-- from django.views.decorators.csrf import csrf_protect -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
@@ -11,6 +12,13 @@
 	    debounce-duration="300">
 	</iron-ajax>
 
+	<iron-ajax 
+	   id="answerPost"
+       method="POST"
+       handleAs="json"
+       content-type='application/json'>
+    </iron-ajax>
+
   	<link rel="stylesheet" href="../../css/enquetepage.css">
   	<link rel="stylesheet" href="../../css/ionicons.min.css">
   	<link rel="import" href="../../bower_components/font-roboto/roboto.html">
@@ -22,9 +30,9 @@
 		    	<div class="vertical layout">
 		    		<template is="dom-repeat" items="[[blocklist]]">
 		    			<div>
-			    			<div id="blockStateList" class="horizontal layout center" on-click="blockSelect" style="margin-bottom: 0px;">
+			    			<div id="blockStateList" class="horizontal layout center" style="margin-bottom: 0px;">
 			    				<span class="blockStateIcon"></span>
-			    				<span class="blockStateText">{{item.name}}</span>
+			    				<span class="blockStateText" on-click="blockSelect" id="{{index}}">{{item.name}}</span>
 			    				<span class="ion-ios-information infoIcon" on-mouseover="showDescription" on-mouseout="hideDescription"></span>
 			    			</div>
 			    			<div class="infoContainer">
@@ -109,6 +117,11 @@ HTMLImports.whenReady(function() {
     	},
     	blockAnswer: {
     		type: Array
+    	},
+    	finished: {
+    		type: String,
+    		value: "false",  		
+        	notify: true
     	}
     },
     observers: [
@@ -121,18 +134,15 @@ HTMLImports.whenReady(function() {
 		this.blocklist = [];
 		this.loaded = 0;
 		this.open = 0;
-    	if (!isEmpty(this.enquete))
-    	{
-			for (var i = 0; i < this.enquete.blocks.length; i++)
-			{
+    	if (!isEmpty(this.enquete))	{
+			for (var i = 0; i < this.enquete.blocks.length; i++) {
 				this.$.blocks.url = "/api/blocks/" + this.enquete.blocks[i].toString();
 				this.$.blocks.generateRequest();
 			}
 			this.calcProgress();
 		}
 		
-	},
- 
+	}, 
 	addBlock: function(data){
 		this.push('blocklist', data.detail.response);
 		this.loaded++;
@@ -141,6 +151,8 @@ HTMLImports.whenReady(function() {
 			b[0].children[0].style.borderColor = "#242d33";
 			b[0].children[1].style.color = "#242d33";
 			b[0].children[1].style.fontWeight = "500";
+			b[0].children[1].style.cursor = "default";
+
 			b[0].children[0].style.height = "8px";
 			b[0].children[0].style.width = "8px";
 			b[0].children[0].style.margin = "0px 10px 0px 0px";
@@ -149,47 +161,42 @@ HTMLImports.whenReady(function() {
 			this.blockAnswer = new Array(this.blocklist.length);
 			for (var i = 0; i < this.blockAnswer.length; i++){
 				this.blockAnswer[i] = new Array(this.blocklist[i].questions.length);
-				console.log(this.blocklist[i].questions.length)
 			}
-
-			console.log(this.blockAnswer)
 		}		
 	},
-	nextQ: function(){
-		//Set new block
-		this.$.blockSelector.selected++;
-		this.blockSelected++;
 
-		//Set Buttons
-		this.$.leftButton.disabled = false;
-		if(this.open <= this.blockSelected)
-		{
-			this.$.rightButton.disabled = true;
-		}
-		if(this.blockSelected == this.blocklist.length - 1)
-		{
-			this.$.rightButton.icon = "done";
-			console.log("hey!")
-		}
-
-		//Change layout progressbar, sidepanel and scroll
-		this.calcProgress();
-		selectBlock(document.querySelectorAll('#blockStateList'), this.blockSelected - 1, this.blockSelected)
+	nextQ: function(){		
+        //Scroll to top
 		var b = document.querySelector(".background");
 		scrollTo(b, 0, 500);
+		//Check if finished
+		if (this.blockSelected == this.blocklist.length - 1){
+			this.postAnswers("true");
+			this.finished = "true";
+		}
+		else
+		{
+			this.postAnswers("false");
+			//Set new block
+			this.$.blockSelector.selected++;
+			this.blockSelected++;
+
+			//Set Buttons
+			this.setButtonsNext();
+
+			//Change layout progressbar and sidepanel
+			this.calcProgress();
+			selectBlock(document.querySelectorAll('#blockStateList'), this.blockSelected - 1, this.blockSelected)
+		}		
 	},
 	prevQ: function(){
+		this.postAnswers("false");
 		//Set new block
 		this.$.blockSelector.selected--;
 		this.blockSelected--;
 
 		//Set buttons
-		this.$.rightButton.disabled = false;
-		this.$.rightButton.icon = "arrow-forward";
-		if(this.blockSelected <= 0)
-		{
-			this.$.leftButton.disabled = true;
-		}
+		this.setButtonsPrev();
 
 		//Change layout progressbar, sidepanel and scroll
 		selectBlock(document.querySelectorAll('#blockStateList'), this.blockSelected + 1, this.blockSelected);
@@ -197,6 +204,7 @@ HTMLImports.whenReady(function() {
 		scrollTo(b, 0, 500);
 
 	},
+
 	showDescription: function(){
 		var d = document.querySelectorAll(".infoContainer")[this.blockSelected];
 		d.style.display = "block";
@@ -223,7 +231,6 @@ HTMLImports.whenReady(function() {
 			//Set new answer
 			var splitted = answer.split(" ");
 			this.blockAnswer[this.blockSelected][parseInt(splitted[0])] = parseInt(splitted[1]);
-			console.log(this.blockAnswer);
 
 			//Check if block is finished and set button if finished
 			var filledIn = 0;
@@ -233,30 +240,74 @@ HTMLImports.whenReady(function() {
 				}
 			}
 			if(filledIn == this.blockAnswer[this.blockSelected].length && this.blockSelected < this.blocklist.length ){
-				
 				this.$.rightButton.disabled = false;
 				this.open++;
 				if (this.blockSelected < this.blocklist.length - 1){
 					openBlock(document.querySelectorAll('#blockStateList'), this.blockSelected, this.blockSelected + 1);
 				}
-				else
-				{
+				else {
 					openBlock(document.querySelectorAll('#blockStateList'), this.blockSelected, this.blockSelected);
 				}
-				
-				
 			}
 		}
 	},
-
 	blockSelect: function(sender){
+		var newSelected = sender.toElement.id;
+		if (newSelected <= this.open && newSelected != this.blockSelected) {
+			//Set new block			
+			this.postAnswers("false");
+			var oldSelected = this.blockSelected;
+			this.$.blockSelector.selected = newSelected;
+			this.blockSelected = parseInt(newSelected);
+			selectBlock(document.querySelectorAll('#blockStateList'), oldSelected, newSelected);
+			this.calcProgress();
 
-		console.log(sender);
-		//Set new block
-		this.$.blockSelector.selected++;
-		this.blockSelected++;
+			//Set buttons
+			if (oldSelected > newSelected){
+				this.setButtonsPrev();
+			}
+			else{
+				this.setButtonsNext();
+			}
+
+			//Change layout progressbar, sidepanel and scroll
+			selectBlock(document.querySelectorAll('#blockStateList'), oldSelected, newSelected);
+			var b = document.querySelector(".background");
+			scrollTo(b, 0, 500);
+		}
+	},
+
+	setButtonsPrev: function(){
+		this.$.rightButton.disabled = false;
+		this.$.rightButton.icon = "arrow-forward";
+		if(this.blockSelected <= 0)	{
+			this.$.leftButton.disabled = true;
+		}
+	},
+	setButtonsNext: function(){
+		this.$.leftButton.disabled = false;
+		if(this.open <= this.blockSelected)	{
+			this.$.rightButton.disabled = true;
+		}
+		if(this.blockSelected == this.blocklist.length - 1)	{
+			this.$.rightButton.icon = "done";
+		}
+	},
+	getCSRFCookie: function() {
+        b = document.cookie.match('(^|;)\\s*csrftoken\\s*=\\s*([^;]+)');
+        return b ? b.pop() : '';
+    },
+	postAnswers: function(last){
+		var data = JSON.stringify({"blockID": this.blocklist[this.blockSelected].id, "answers": this.blockAnswer[this.blockSelected].toString(), "last": last });
+        console.log(data);
+        this.$.answerPost.headers = {
+            "X-CSRFToken": this.getCSRFCookie(),
+            "X-Requested-With": "XMLHttpRequest"
+        };
+        this.$.answerPost.url = "/api/answers/"
+        this.$.answerPost.body = data;
+        this.$.answerPost.generateRequest();
 	}
-
 	});
 });
 
@@ -287,10 +338,12 @@ HTMLImports.whenReady(function() {
 	    animateScroll();
 	};
 
-	function selectBlock(elements, oldB, newB){
+	function selectBlock(elements, oldB, newB){;
 		elements[newB].children[1].style.color = "#242d33";
 		elements[oldB].children[1].style.fontWeight = "300";
-		elements[newB].children[1].style.fontWeight = "500";
+		elements[newB].children[1].style.fontWeight = "500";		
+		elements[oldB].children[1].style.cursor = "pointer";
+		elements[newB].children[1].style.cursor = "default";
 
 		elements[newB].children[0].style.borderColor = "#242d33";
 
@@ -300,6 +353,7 @@ HTMLImports.whenReady(function() {
 
 	function openBlock(elements, oldB, newB){
 		elements[newB].children[1].style.color = "#242d33";
+		elements[newB].children[1].style.cursor = "pointer";
 
 		elements[newB].children[0].style.borderColor = "#242d33";
 		elements[newB].children[0].style.height = "8px";

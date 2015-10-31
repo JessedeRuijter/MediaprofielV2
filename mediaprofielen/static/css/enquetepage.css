@@ -67,7 +67,7 @@ html,body {
 	letter-spacing: 0.018em;
 	font-size: 12.5px;
 	font-family: "Roboto";
-	cursor: pointer;
+	cursor: default;
 	margin: 10px;
 }
 
@@ -94,7 +94,7 @@ html,body {
 	font-size: 20px;
 	font-family: "Roboto";
 	text-align: left;
-	margin: 50px;
+	margin: 20px 50px 0px 50px;
 }
 
 .profileTitleText{
@@ -106,12 +106,14 @@ html,body {
 }
 
 .profileStateText{
+	z-index: 30;
 	font-weight: 300;
 	color: #000000;
 	letter-spacing: 0.018em;
 	font-size: 12.5px;
 	font-family: "Roboto";
 	cursor: pointer;
+	margin-right: 40px;
 }
 
 .profileStateSelectedText{
@@ -120,6 +122,7 @@ html,body {
 	letter-spacing: 0.018em;
 	font-size: 12.5px;
 	font-family: "Roboto";
+	margin-right: 40px;
 	cursor: auto;
 }
 
@@ -345,6 +348,15 @@ html,body {
 	cursor: pointer;
 }
 
+.passwordIcon{
+	font-family: "ionicons";
+	color: white;
+	position: relative;
+	top: 10px;
+	left: -10px;
+	font-size: 12px;
+}
+
 .profileStateIcon{
 	border-radius: 50%;
 	width: 3px;
@@ -387,7 +399,6 @@ html,body {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #a3bccc;
-	cursor: pointer;
 }
 
 .qSelectedBigIcon{
@@ -481,4 +492,23 @@ html,body {
 	visibility: hidden;
 	margin-top: 2px;
 	cursor: pointer;
+}
+
+.scoreSelectedIcon{
+	font-family: "ionicons";
+	color: black;
+	font-size: 16px;
+}
+
+.scoreIcon{
+	font-family: "ionicons";
+	color: black;
+	font-size: 8px;
+	letter-spacing: 4.5px;
+}
+
+.pieChart{
+	width: 200px;
+	height: 200px;
+	/*background-color: rgba(76,183,255,0.0);*/
 }

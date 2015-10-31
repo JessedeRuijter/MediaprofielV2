@@ -12,6 +12,13 @@
 	    debounce-duration="300">
 	</iron-ajax>
 
+	<iron-ajax 
+	   id="changePassword"
+       method="POST"
+       handleAs="json"
+       content-type='application/json'>
+    </iron-ajax>
+
   	<link rel="stylesheet" href="../../css/enquetepage.css">
   	<link rel="stylesheet" href="../../css/ionicons.min.css">
   	<link rel="import" href="../../bower_components/font-roboto/roboto.html">
@@ -61,13 +68,19 @@
 					<div class="vertical layout changeMenuPanel" id="overlay" style="display: none;">
 						<p class="menuChangeTitleText">Verander wachtwoord</p>
 						<link rel="import" href="../../bower_components/paper-input/paper-input.html">
-						<paper-input style="width:180px; margin: 0px 15px 0px 15px;" label="Nieuw wachtwoord" type="password"></paper-input>
-						<paper-input style="width:180px; margin: 0px 15px 0px 15px;" label="Bevestig wachtwoord" type="password"></paper-input>
+						<div class="horizontal layout center" style="margin: 0px 15px 0px 15px;">
+							<paper-input id="password" style="width:180px;" label="Nieuw wachtwoord" on-input="passwordChanged" type="password"></paper-input>
+							<span id="passwordIcon" class="passwordIcon"></span>
+						</div>
+						<div class="horizontal layout center" style="margin: 0px 15px 0px 15px;">
+							<paper-input id="passwordCheck" style="width:180px;" label="Bevestig wachtwoord" on-input="checkChanged" type="password"></paper-input>
+							<span id="passwordCheckIcon" class="passwordIcon"></span>
+						</div>
 						<link rel="import" href="../jr-button-outline/jr-button-outline-w.html">
 						<div class="vertical layout center">
 							<div class="horizontal layout center">
-								<jr-button-outline-w icon="clear" on-click=""></jr-button-outline-w>
-				    			<jr-button-outline-w icon="done" on-click=""></jr-button-outline-w>
+								<jr-button-outline-w icon="clear" on-click="closeOverlayLayout"></jr-button-outline-w>
+				    			<jr-button-outline-w disabled="true" icon="done" id="changePasswordButton" on-click="changePassword"></jr-button-outline-w>
 			    			</div>	
 
 			    			<span class="seperatorTop"></span>
@@ -87,7 +100,7 @@
 				<neon-animated-pages id="pages" class="flex"  selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 			    	<div>		    	
 					    <link rel="import" href="enquete-page.html">
-					    <enquete-page id="enquetePage" enquete="{{currentuser.invulmoment.enquete}}"></enquete-page>
+					    <enquete-page finished="{{finish}}" id="enquetePage" enquete="{{currentuser.invulmoment.enquete}}"></enquete-page>
 					</div>
 
 					<div>
@@ -105,8 +118,17 @@
   Polymer({
     is: "home-screen",
 
+    properties: {
+    	finish: {
+    		type: String,
+    		value: "false"
+    	}
+    },
+    observers: [
+        'finishedHasChanged(finish)'
+    ],
+
     handleResponse: function() {
-    	console.log(this.currentuser.invulmoment.organisation.name);
     	this.organisationName = this.currentuser.invulmoment.organisation.name;
     },
     switchRight: function() {
@@ -137,34 +159,66 @@
 	},
 
 	openOverlay: function(){
-		if(document.getElementById("overlay").style.display == 'block')
-		{
-			document.getElementById("overlay").style.display = "none";
-			document.querySelector(".menuIcon").innerHTML =  ""
+		if(document.getElementById("overlay").style.display == 'block') {
+			this.closeOverlayLayout();
 		}
-		else{
-			document.getElementById("overlay").style.display = "block";
-			document.querySelector(".menuIcon").innerHTML =  ""
+		else {
+			this.openOverlayLayout();
 		}
 	},
+	getCSRFCookie: function() {
+        b = document.cookie.match('(^|;)\\s*csrftoken\\s*=\\s*([^;]+)');
+        return b ? b.pop() : '';
+    },
 	changePassword: function(){
-        pw1 = this.$.password1.value;
-        pw2 = this.$.password2.value;
-        if (pw1 != pw2) {
-          this.passwordErrors = "Wachtwoorden komen niet overeen."
-          this.$.password1.value = "";
-          this.$.password2.value = "";
-          this.$.dec1.updateLabelVisibility();
-          this.$.dec2.updateLabelVisibility();
-        }
-        else{
-          data = JSON.stringify({"password": pw1});
-          this.$.postPassword.body = data;
-          this.$.postPassword.go();
-          
-        }
-
+		var data = JSON.stringify({"password": this.$.password.value});
+		this.$.changePassword.headers = {
+		"X-CSRFToken": this.getCSRFCookie(),
+		"X-Requested-With": "XMLHttpRequest"
+        };
+        this.$.changePassword.url = "/api/changepassword/";
+        this.$.changePassword.body = data;
+        this.$.changePassword.generateRequest();
+        //Change layout overlay
+        this.closeOverlayLayout();
       },
+
+      openOverlayLayout: function(){
+      	document.getElementById("overlay").style.display = "block";
+		document.querySelector(".menuIcon").innerHTML =  "";
+      },
+      closeOverlayLayout: function(){
+      	this.$.password.value = "";
+        this.$.passwordCheck.value = "";
+        document.getElementById("overlay").style.display = "none";
+		document.querySelector(".menuIcon").innerHTML =  ""
+      },
+
+      passwordChanged: function(){
+      	if(this.$.password.value.length > 5)
+      		this.$.passwordIcon.innerHTML = "";
+      	else
+      		this.$.passwordIcon.innerHTML = "";
+      	this.checkChanged();
+      },
+      checkChanged: function(){
+      	if(this.$.password.value == this.$.passwordCheck.value){
+      		this.$.passwordCheckIcon.innerHTML = "";
+      		if(this.$.password.value.length > 5)
+      			this.$.changePasswordButton.disabled = false;
+      	}
+      	else{
+      		this.$.passwordCheckIcon.innerHTML = "";
+      		this.$.changePasswordButton.disabled = true;
+      	}
+      },
+
+      finishedHasChanged: function(e){
+      	console.log(e);
+      	if (e == "true")
+      		this.switchLeft();
+      },
+
       logout: function(){
       	window.location.replace("/logout");
       }

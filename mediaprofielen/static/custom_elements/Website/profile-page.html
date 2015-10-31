@@ -9,30 +9,48 @@
   	<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
   	<link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
     <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+    <link rel="import" href="../../bower_components/google-chart/google-chart.html">
 
   	<div class="horizontal layout flex">
 	  	<div class="flex relative" style="background-color: #FFFFFF; z-index:10; margin-right: 3px;">
 	  		<div class="vertical layout center fit" style="background-color: rgba(76,183,255,0.1);">
           <div class="vertical layout" id="sidePPanel">
+            <google-chart
+              id="pieChart"
+              type='pie'
+              class="pieChart"
+              cols='[{"label":"Profile", "type":"string"}, {"label":"Score", "type":"number"}]'>
+            </google-chart>
+
             <div id="profileStateList" class="horizontal layout center" on-click="selectProfile">
-              <span class="profileStateBigIcon" id="0" style="border-color:red"></span>
+              <span class="profileStateBigIcon" id="0" style="border-color:#1cbbb4"></span>
               <p class="profileStateSelectedText">Consument</p>
+              <div class="flex"></div>
+              <span class="scoreSelectedIcon">    </span>
             </div>
             <div id="profileStateList" class="horizontal layout center" on-click="selectProfile">
-              <span class="profileStateIcon" id="1" style="border-color:purple"></span>
+              <span class="profileStateIcon" id="1" style="border-color:#acd373"></span>
               <p class="profileStateText">Verzamelaar</p>
+              <div class="flex"></div>
+              <span class="scoreIcon">    </span>
             </div>
             <div id="profileStateList" class="horizontal layout center" on-click="selectProfile">
-              <span class="profileStateIcon" id="2" style="border-color:blue"></span>
-              <p class="profileStateText">Producent</p>
-            </div>
-            <div id="profileStateList" class="horizontal layout center" on-click="selectProfile">
-              <span class="profileStateIcon" id="3" id="0" style="border-color:yellow"></span>
+              <span class="profileStateIcon" id="2" style="border-color:#fbaf5d"></span>
               <p class="profileStateText">Strateeg</p>
+              <div class="flex"></div>
+              <span class="scoreIcon">    </span>
             </div>
             <div id="profileStateList" class="horizontal layout center" on-click="selectProfile">
-              <span class="profileStateIcon" id="4" style="border-color:green"></span>
+              <span class="profileStateIcon" id="3" id="0" style="border-color:#f26d7d"></span>
               <p class="profileStateText">Netwerker</p>
+              <div class="flex"></div>
+              <span class="scoreIcon">    </span>
+            </div>
+            <div id="profileStateList" class="horizontal layout center" on-click="selectProfile">
+              <span class="profileStateIcon" id="4" style="border-color:#a864a8"></span>
+              <p class="profileStateText">Producent</p>
+              <div class="flex"></div>
+              <span class="scoreIcon">    </span>
             </div>
           </div>
         </div>
@@ -56,36 +74,41 @@
 
         <link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
         <link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
-        <neon-animated-pages id="tabPages" class="flex" style="height: 1000px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+        <neon-animated-pages id="tabPages" class="flex" style="height: 700px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 
           <div class="vertical layout">
-            <neon-animated-pages id="profilePages" style="height: 1000px;" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+            <neon-animated-pages id="profilePages" style="height: 650px; padding-bottom: 50xp;" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
               <div class="vertical layout center" style="background-color: white;">
                 <p class="profileTitleText">Consument</p>
                 <iron-image style="height: 200px;" src="../../images/Consument.png"></iron-image>
                 <p class="profileText">Een consument is een passieve gebruiker van de media. Consumenten verwerken media in de ruime zin van het woord, door het lezen van berichten en het bekijken van video’s en websites. Ze communiceren online vooral via e-mail of via instant messaging (bv. WhatsApp), maar ze maken het liefst contact met mensen door persoonlijke gesprekken. 
                 Een consument is soms lid van informele social media platforms, waar hij berichten leest en een enkele keer post. Hij gebruikt de sociale media voornamelijk voor privézaken, bijvoorbeeld om contacten te onderhouden met bekenden. Voor het lezen en verwerken van  informatie heeft de consument een duidelijke voorkeur voor de papieren versie. </p>
+                <p class="profileText"><b>Mediagebruik:</b> surfen, informatie zoeken, berichten lezen, mailen, video’s en foto’s bekijken, profielen bekijken en reviews lezen.</p>
               </div>
               <div class="vertical layout center" style="background-color: white;">
                 <p class="profileTitleText">Verzamelaar</p>
                 <iron-image style="height: 200px;" src="../../images/Verzamelaar.png"></iron-image>
                 <p class="profileText">Een verzamelaar is een actieve gebruiker van de media. 
                 Verzamelaars hebben zich aangemeld bij verschillende sociale netwerken en monitoren veel documenten, afbeeldingen, websites, filmpjes en muziek. Ze lezen en beoordelen of zij het zelf kunnen gebruiken. Ze delen hun bevindingen via hun website of sociale media. Hun zoekgedrag wordt gekenmerkt door goede zoekwoorden en ze gebruiken sociale bookmarking om websites terug te vinden. Sommigen gaan een stap verder en bekijken hoe anderen het kunnen gebruiken. Ze vormen de schakel tussen diegene die veel content creëert en degene die vooral content consumeert. </p>
-              </div>
-              <div class="vertical layout center" style="background-color: white;">
-                <p class="profileTitleText">Producent</p>
-                <iron-image  style="height: 200px;" src="../../images/Producent.png"></iron-image>
-                <p class="profileText">Een producent gebruikt de media om persoonlijke en professionele informatie te maken en te delen. Producenten gebruiken diverse toepassingen om unieke eigen content te creëren en delen belangwekkende informatie op diverse platforms. Ze zijn gericht op co-creatie en dragen soms bij aan forums en kennisbanken (zoals Wikipedia). Een producent kan een eigen website inrichten en onderhouden, hij creëert en deelt hoogwaardig audiovisueel materiaal, kiest een geschikt medium bij het verzenden van mediaboodschappen en giet deze in een optimale vorm.</p>
+                <p class="profileText"><b>Mediagebruik:</b> informatie zoeken en delen, profiel op social media, bronnen vergelijken, uploaden, informatie organiseren, blog lezen, ervaringen delen op platforms en social bookmarking.</p>
               </div>
               <div class="vertical layout center" style="background-color: white;">
                 <p class="profileTitleText">Strateeg</p>
                 <iron-image style="height: 200px;" src="../../images/Strateeg.png"></iron-image>
                 <p class="profileText">Een strateeg ontwikkelt een doelgerichte strategie om in alle levenssferen optimaal gebruik te maken van de mogelijkheden die traditionele, nieuwe en sociale media bieden. Hij heeft  een persoonlijk (informeel) digitaal netwerk gevormd en weet de media op het juiste moment in én uit te schakelen. Hij kijkt met kritische blik naar nieuwe toepassingen en schrijft hier reviews over. Hij weet wanneer welke toepassingen meerwaarde hebben bij het realiseren van professionele en sociale doelstellingen en kan deze effectief inzetten. Strategen delen hun expertise met anderen om ook hun mediastrategie te optimaliseren. Zij hebben niet alleen eigen doelen voor ogen, maar helpen ook die van anderen te realiseren.</p>
+                <p class="profileText"><b>Mediagebruik:</b> reflecteren, informeel leren in netwerken, doceren over social media, blogs schrijven, reviewen, mediastrategie uitzetten, co-creatie</p>
               </div>
               <div class="vertical layout center" style="background-color: white;">
                 <p class="profileTitleText">Netwerker</p>
                 <iron-image style="height: 200px;" src="../../images/Netwerker.png"></iron-image>
                 <p class="profileText">Een netwerker is een interactieve gebruiker van diverse nieuwe media. Netwerkers communiceren via diverse applicaties met vrienden en collega’s. Ze zijn actief binnen diverse sociale netwerken en hebben een bewust vormgegeven profiel op meerdere sociale netwerksites. Netwerkers reageren alert en constructief op berichten van anderen. Ze gaan online relaties aan en koesteren bestaande relaties. Ze stimuleren de interactie tussen anderen en inspireren anderen optimaal gebruik te maken van sociale netwerken. Een netwerker is behalve op zichzelf ook gericht op het gemeenschappelijke doel van de community als geheel. Hij waakt over de netetiquette binnen sociale netwerken en gaat uitsluiting en destructief gedrag van anderen tegen.</p>
+                <p class="profileText"><b>Mediagebruik:</b> informatie zoeken en delen, meerdere profielen op social media, faciliteren online community, interactie stimuleren, deelnemers uitnodigen, presenteren, netetiquette bewaken.</p>
+              </div>
+              <div class="vertical layout center" style="background-color: white;">
+                <p class="profileTitleText">Producent</p>
+                <iron-image  style="height: 200px;" src="../../images/Producent.png"></iron-image>
+                <p class="profileText">Een producent gebruikt de media om persoonlijke en professionele informatie te maken en te delen. Producenten gebruiken diverse toepassingen om unieke eigen content te creëren en delen belangwekkende informatie op diverse platforms. Ze zijn gericht op co-creatie en dragen soms bij aan forums en kennisbanken (zoals Wikipedia). Een producent kan een eigen website inrichten en onderhouden, hij creëert en deelt hoogwaardig audiovisueel materiaal, kiest een geschikt medium bij het verzenden van mediaboodschappen en giet deze in een optimale vorm.</p>
+                <p class="profileText"><b>Mediagebruik:</b> Creëren, editen, delen, videobloggen, visualiseren, 3D ontwerpen, animaties maken, co-creatie.</p>
               </div>
             </neon-animated-pages>
           </div>
@@ -117,6 +140,25 @@
     	exitAnimation:{
     		type: String
     	}
+    },
+
+    ready: function(){
+      this.$.pieChart.options = {
+        legend: 'none',
+        pieHole: 0.5,
+        backgroundColor: { fill:'transparent' },
+        chartArea: { left:20, top:10 },
+        height: 300,
+        width: 300,
+        slices: {
+          0: { color: '#1cbbb4' },
+          1: { color: '#acd373' },
+          2: { color: '#fbaf5d' },
+          3: { color: '#f26d7d' },
+          4: { color: '#a864a8' }
+        }
+      };
+      this.$.pieChart.rows = [["Consument", 5],["Verzamelaar", 30],["Strateeg", 50],["Netwerker", 30],["Producent",20]];
     },
     selectProfile: function(ding){
       if(ding.toElement.id != "profileStateList"){
