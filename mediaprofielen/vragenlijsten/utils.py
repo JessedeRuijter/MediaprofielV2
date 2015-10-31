@@ -52,10 +52,11 @@ def getMaxPoints():
 		  	result["Producent"] += choices
 	return result
 
-def addScore(user, id_of_last_block):
+def addScore(user, id_of_last_block, id_invulmoment):
 	print user, id_of_last_block
 	enquete = Enquete.objects.filter(blocks__id=id_of_last_block)
 	enquete_blocks = QuestionBlock.objects.filter(enquete=enquete)
+	invulmoment = Invulmoment.objects.get(id=id_invulmoment)
 	# profielObject = userObject.profiel.all()
 	# If there is no profile, create one. Store the result in profielObject
 	# if len(profielObject) == 0:
@@ -63,6 +64,7 @@ def addScore(user, id_of_last_block):
 	# else:
 	# 	profielObject = profielObject[0]
 	# profielObject = userObject.profiel.all()[0]
+	profielObjects = profielObject.create(user=user, invulmoment=id_invulmoment)
 	for block in enquete_blocks:
 		answers = Answer.objects.filter(user=user, blockID=block)
 		print answers
@@ -72,13 +74,6 @@ def addScore(user, id_of_last_block):
 		if len(answers_split) != len(questions):
 			print "Something went terribly wrong"
 			break
-		profielObject = user.profiel.all()
-		# If there is no profile, create one. Store the result in profielObject
-		if len(profielObject) == 0:
-			profielObjects = profielObject.create(user=user)
-		else:
-			profielObject = profielObject[0]
-		profielObject = user.profiel.all()[0]
 		for i in range(len(answers_split)):
 			currentq = questions[i]
 			currenta = answers_split[i]
@@ -103,14 +98,7 @@ def addScore(user, id_of_last_block):
 			  	profielObject.netwerker = profielObject.netwerker + int(currenta)
 			elif currentq.profiel == "On":
 			  	profielObject.producent = profielObject.producent + int(currenta)
-		completedenquetes = profielObject.completedEnquetes.encode('utf-8', 'None')
-		if completedenquetes:
-			completedenquetes = completedenquetes + "," + str(enquete[0].id)
-		else:
-			completedenquetes = str(enquete[0].id)
-		profielObject.completedEnquetes = completedenquetes
-		print "hai"
-		profielObject.save()
+	profielObject.save()
 	
 
 	# print getMaxPoints()

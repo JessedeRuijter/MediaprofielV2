@@ -16,6 +16,7 @@ router.register(r'blocks', BlockViewSet)
 router.register(r'answers', AnswerViewSet)
 router.register(r'organisations', OrganisationViewSet)
 router.register(r'accounts', AccountViewSet)
+router.register(r'invulmoment', InvulmomentViewSet)
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^changepassword/$', changePasswordView.as_view(), name='currentuser'),

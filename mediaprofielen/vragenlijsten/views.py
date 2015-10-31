@@ -187,10 +187,14 @@ class AnswerViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
         if 'last' in self.request.data:
             print "hai!"
-            if self.request.data['last']:
-                addScore(self.request.user, serializer.data['blockID'])
+            if self.request.data['last'] and self.request.data['invulmoment']:
+                addScore(self.request.user, serializer.data['blockID'], self.request.data['invulmoment'])
 
 class OrganisationViewSet(viewsets.ModelViewSet):
     queryset = Organisation.objects.all()
     serializer_class = OrganisationSerializer
     filter_fields = ('owners','members')
+
+class InvulmomentViewSet(viewsets.ModelViewSet):
+    queryset = Invulmoment.objects.all()
+    serializer_class = InvulMomentSerializer
