@@ -5,7 +5,7 @@ from models import *
 class ProfielSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profiel
-        fields = ('consument','verzamelaar','strateeg', 'netwerker', 'producent', 'completedEnquetes')
+        fields = ('invulmoment', 'user', 'consument','verzamelaar','strateeg', 'netwerker', 'producent')
             
 class AccountSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -74,5 +74,5 @@ class InvulMomentSerializer(serializers.ModelSerializer):
     enquete = EnqueteSerializer()
     class Meta:
         model = Invulmoment
-        fields = ('organisation', 'time', 'enquete')
+        fields = ('id','organisation', 'time', 'enquete')
 

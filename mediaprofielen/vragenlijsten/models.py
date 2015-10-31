@@ -122,14 +122,13 @@ class QuestionChoice(models.Model):
 
 class Profiel(models.Model):
 	"""Scores bij profielen en een historie van completed blocks"""
-	time 			= models.DateField()
+	invulmoment		= models.ForeignKey(Invulmoment, related_name='invulmomentprofiel')
 	user 			= models.ForeignKey(User, related_name='profiel')
 	consument    	= models.IntegerField(default=0)
 	verzamelaar 	= models.IntegerField(default=0)
 	strateeg    	= models.IntegerField(default=0)
 	netwerker   	= models.IntegerField(default=0)
 	producent   	= models.IntegerField(default=0)
-	completedEnquetes = models.CommaSeparatedIntegerField(max_length=1000, default="")
 	def __unicode__(self):
 		return str(self.consument)+ " " + str(self.verzamelaar)+ " " + str(self.strateeg)+ " " + str(self.netwerker)+ " " + str(self.producent)
 
