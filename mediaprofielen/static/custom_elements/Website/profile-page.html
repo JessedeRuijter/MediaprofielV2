@@ -16,10 +16,10 @@
 	  		<div class="vertical layout center fit" style="background-color: rgba(76,183,255,0.1);">
           <div class="vertical layout" id="sidePPanel">
             <google-chart
+              id="pieChart"
               type='pie'
-              options='{"title": "Distribution of days in 2001Q1"}'
-              cols='[{"label":"Month", "type":"string"}, {"label":"Days", "type":"number"}]'
-              rows='[["Jan", 31],["Feb", 28],["Mar", 31]]'>
+              class="pieChart"
+              cols='[{"label":"Profile", "type":"string"}, {"label":"Score", "type":"number"}]'>
             </google-chart>
 
             <div id="profileStateList" class="horizontal layout center" on-click="selectProfile">
@@ -140,6 +140,25 @@
     	exitAnimation:{
     		type: String
     	}
+    },
+
+    ready: function(){
+      this.$.pieChart.options = {
+        legend: 'none',
+        pieHole: 0.5,
+        backgroundColor: { fill:'transparent' },
+        chartArea: { left:20, top:10 },
+        height: 300,
+        width: 300,
+        slices: {
+          0: { color: '#1cbbb4' },
+          1: { color: '#acd373' },
+          2: { color: '#fbaf5d' },
+          3: { color: '#f26d7d' },
+          4: { color: '#a864a8' }
+        }
+      };
+      this.$.pieChart.rows = [["Consument", 5],["Verzamelaar", 30],["Strateeg", 50],["Netwerker", 30],["Producent",20]];
     },
     selectProfile: function(ding){
       if(ding.toElement.id != "profileStateList"){

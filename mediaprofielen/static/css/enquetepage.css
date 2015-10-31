@@ -106,6 +106,7 @@ html,body {
 }
 
 .profileStateText{
+	z-index: 30;
 	font-weight: 300;
 	color: #000000;
 	letter-spacing: 0.018em;
@@ -506,3 +507,8 @@ html,body {
 	letter-spacing: 4.5px;
 }
 
+.pieChart{
+	width: 200px;
+	height: 200px;
+	/*background-color: rgba(76,183,255,0.0);*/
+}
