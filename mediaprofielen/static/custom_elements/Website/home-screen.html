@@ -7,6 +7,7 @@
 	    id="currentu"
 		url='/api/currentuser'
 		last-response="{{currentuser}}"
+		on-response="handleResponse"
 		handleAs="json"
 	    debounce-duration="300">
 	</iron-ajax>
@@ -35,7 +36,7 @@
     		<div class="vertical layout">
 		    	<div class="horizontal layout">
 		    		<div class="organisationPanel">
-		    			<span class="organisationText">Mediaprofiel</span>
+		    			<span class="organisationText">{{currentuser.invulmoment.organisation.name}}</span>
 		    		</div>
 				    <div class="flex"></div>
 				    <div class="vertical layout settingsPanel">
@@ -65,7 +66,7 @@
 						<link rel="import" href="../jr-button-outline/jr-button-outline-w.html">
 						<div class="vertical layout center">
 							<div class="horizontal layout center">
-								<jr-button-outline-w icon="done" on-click=""></jr-button-outline-w>
+								<jr-button-outline-w icon="clear" on-click=""></jr-button-outline-w>
 				    			<jr-button-outline-w icon="done" on-click=""></jr-button-outline-w>
 			    			</div>	
 
@@ -86,7 +87,7 @@
 				<neon-animated-pages id="pages" class="flex"  selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 			    	<div>		    	
 					    <link rel="import" href="enquete-page.html">
-					    <enquete-page id="enquetePage"></enquete-page>
+					    <enquete-page id="enquetePage" enquete="{{currentuser.invulmoment.enquete}}"></enquete-page>
 					</div>
 
 					<div>
@@ -104,6 +105,10 @@
   Polymer({
     is: "home-screen",
 
+    handleResponse: function() {
+    	console.log(this.currentuser.invulmoment.organisation.name);
+    	this.organisationName = this.currentuser.invulmoment.organisation.name;
+    },
     switchRight: function() {
 	    this.entryAnimation = 'slide-from-left-animation';
         this.exitAnimation = 'slide-right-animation';
@@ -127,7 +132,7 @@
 
 		var bg = document.querySelector(".background");
 
-		sp.style.top = (parseFloat(en.style.top) + parseFloat(bg.scrollTop)).toString() + "px";
+		sp.style.top = (parseFloat(bg.scrollTop)).toString() + "px";
 		sp2.style.marginTop = parseFloat(bg.scrollTop).toString() + "px";
 	},
 

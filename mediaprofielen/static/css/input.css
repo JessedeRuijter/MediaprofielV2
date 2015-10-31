@@ -12,12 +12,10 @@ html,body {
 }
 .headerPanel{
 	background-color: rgba(76,183,255,1.0);
-	height: 500px;
 	width: 100%;
 }
 .introPanel{
 	background-color: rgba(76,183,255,0.1);
-	height: 500px;
 }
 .contentPanel{
 	padding: 0px;

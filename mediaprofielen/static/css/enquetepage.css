@@ -68,6 +68,7 @@ html,body {
 	font-size: 12.5px;
 	font-family: "Roboto";
 	cursor: pointer;
+	margin: 10px;
 }
 
 .questionElementText{
@@ -139,6 +140,27 @@ html,body {
 	cursor: pointer;
 }
 
+.blockTitleText{
+	margin: 100px 0px 30px 0px;
+	color: #a3bccc;
+	letter-spacing: 0.018em;
+	font-size: 12.5px;
+	font-family: "Roboto";
+	text-align: center;
+}
+
+.progressText{
+	color: #a3bccc;
+	font-weight: 300;
+	letter-spacing: 0.018em;
+	font-size: 15px;
+	font-family: "Roboto";
+
+	margin: 2px;
+	position: relative;
+	left: 15px;
+}
+
 .seperatorTop{
 	width:210px;
 	border-top-style: solid;
@@ -184,17 +206,9 @@ html,body {
 
 #sidePanel{
 	position: relative;
-	top: 1500px;
 	-webkit-transition: top 1s; 
     transition: top 1s;
 }
-#enquete{
-	position: relative;
-	top: 1500px;
-	-webkit-transition: top 1s; 
-    transition: top 1s;
-}
-
 
 .settings{
 	margin-left:25px;
@@ -203,19 +217,42 @@ html,body {
 /*Questionary*/
 .clipContainer{
 	position: relative;
-	top: -45px;
+	top: -32px;
 }
+
+.infoContainer{
+	position: absolute; 
+	display: none;
+}
+
 .qPicker{
 	position: absolute;
 	top: 0px;
 }
-.buttonContainer{
-	padding-top: 60px;
-	padding-bottom: 5px;
+
+.progressBar{
+	position: absolute;
+	top: 0px;
+
+	width: 11%;
 
 	border-top-style: solid;
-	border-top-width: 2px;
-	border-top-color: #f1edf1;
+	border-top-width: 3px;
+	border-top-color: rgba(76,183,255,1.0);
+
+	-webkit-transition: width 2s; 
+    transition: width 2s;
+}
+.buttonContainer{
+	position: relative;
+
+	padding-top: 60px;
+	padding-bottom: 5px;
+	background-color: white;
+
+	border-top-style: solid;
+	border-top-width: 3px;
+	border-top-color: rgba(76,183,255,0.1);
 
 }
 .seperator{
@@ -223,11 +260,11 @@ html,body {
 	height:0px;
 
 	position: relative;
-	top:2px;
+	top:3px;
 
 	border-bottom-style: solid;
-	border-bottom-width: 2px;
-	border-bottom-color: #f1edf1;
+	border-bottom-width: 3px;
+	border-bottom-color: rgba(76,183,255,0.1);
 }
 
 /*Profile page*/
@@ -337,6 +374,12 @@ html,body {
 	border-radius: 50%;
 	width: 3px;
 	height: 3px;
+
+	color: white;
+	font-family: "ionicons";
+	font-size: 7px;
+	text-align: center;
+	padding-top: 1px;
 
 	margin: 2.5px;
 	margin-right: 12.5px;

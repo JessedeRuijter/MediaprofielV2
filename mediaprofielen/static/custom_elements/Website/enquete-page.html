@@ -3,12 +3,6 @@
 
 <dom-module id="enquete-page">
   <template>
-	<iron-ajax auto
-	    id="enquetes"
-		url='/api/enquetes'
-		last-response="{{enquetelist}}"
-		handleAs="json">
-	</iron-ajax>
 
 	<iron-ajax
 	    id="blocks"
@@ -22,43 +16,24 @@
   	<link rel="import" href="../../bower_components/font-roboto/roboto.html">
   	<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
   	<link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
-	<div class="fit" style="position: absolute;">
-    	<div class="vertical layout center" >
-	    	<template is="dom-repeat" items="[[enquetelist]]">
-	    		<div class="card qSelector horizontal layout">	    			
-		    		<div class="vertical layout flex" style="padding: 15px;">
-	    				<span class="backText">{{item.name}}</span>
-	    				<span class="subText">{{item.description}}</span>
-	    			</div>
-	    			<jr-button-outline icon="arrow-forward" on-click='openEnquete'><jr-button-outline>
-	    		</div>
-    		</template>
-    	</div>
-    </div>
     <div class="horizontal layout">
     	<div class="flex">
 		    <div id="sidePanel" class="vertical layout center">
 		    	<div class="vertical layout">
-		    		<div class="horizontal layout center" style="margin: 30px 0px 30px 0px;" on-click="qMenu">
-		    			<span class="ion-android-arrow-back arrowIcon"></span>	
-			    		<span class="backText">terug naar mijn vragenlijsten</span>
-			    	</div>
-			    	<div class="vertical layout">
-			    		<template is="dom-repeat" items="[[blocklist]]">
-			    			<div>
-				    			<div id="blockStateList" class="horizontal layout center" style="margin-bottom: 0px;">
-				    				<span class="blockStateIcon"></span>
-				    				<span class="blockStateText">{{item.name}}</span>
-				    				<span class="ion-ios-information infoIcon" on-mouseover="showDescription" on-mouseout="hideDescription"></span>
+		    		<template is="dom-repeat" items="[[blocklist]]">
+		    			<div>
+			    			<div id="blockStateList" class="horizontal layout center" on-click="blockSelect" style="margin-bottom: 0px;">
+			    				<span class="blockStateIcon"></span>
+			    				<span class="blockStateText">{{item.name}}</span>
+			    				<span class="ion-ios-information infoIcon" on-mouseover="showDescription" on-mouseout="hideDescription"></span>
+			    			</div>
+			    			<div class="infoContainer">
+				    			<div id="informationOverlay" style="padding: 15px; background-color: rgba(76,183,255,1.0);">
+				    				<span class="menuChangeTitleText">{{item.description}}</span>
 				    			</div>
-				    			<div class="infoContainer" style="position: absolute; height: 100px; display: none">
-					    			<div id="informationOverlay" style="padding: 15px; background-color: rgba(76,183,255,1.0);">
-					    				<span class="menuChangeTitleText">{{item.description}}</span>
-					    			</div>
-					    		</div>
-					    	</div>
-		    			</template>
-			    	</div>
+				    		</div>
+				    	</div>
+	    			</template>
 			    </div>
 		    </div>
 		</div>
@@ -69,9 +44,8 @@
 					  <rect id="rect" x="5" y="5" rx="20" ry="20" width="150" height="150"
 					  style="fill:red;stroke:black;stroke-width:5;opacity:0.5" />
 					</svg> -->
-			    	<iron-image class="clipContainer" src="../../images/Clip.png">
+			    	<iron-image class="clipContainer" width="180" height="74" src="../../images/LogoBlauwSmall.png">
 		    		</iron-image>
-		    		<span class="clipText">{{selectedEnquete.name}}</span>
 		    	</div>
 		    	<div style="position: relative; top: -75px;">
 		    		<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
@@ -79,20 +53,29 @@
 		    		<iron-pages id="blockSelector" selected="0">
 			    		<template is="dom-repeat" items="{{blocklist}}">
 			    			<div>
+			    				<p class="blockTitleText">{{item.name}}</p>
 			    				<template is="dom-repeat" items="{{item.questions}}">
 			    					<div>			    						
-			    						<question-block data="{{item}}"></question-block>
+			    						<question-block answer="{{answerChanged}}" question="{{index}}" data="{{item}}"></question-block>
 			    					</div>
 		    					</template>
 			    			</div>
 		    			</template>
 		    		</iron-pages>
-		    		<div class="vertical layout center buttonContainer">
-			    		<div class="horizontal layout">
-			    			<link rel="import" href="../jr-button-outline/jr-button-outline.html">
-			    			<jr-button-outline icon="arrow-back" on-click="prevQ"></jr-button-outline>	
-			    			<jr-button-outline icon="arrow-forward" on-click="nextQ"></jr-button-outline>		
-		    			</div>		
+		    		<div class="vertical layout" style="position: relative;	top: -3px;">
+		    			<div class="vertical layout center buttonContainer">
+				    		<div class="horizontal layout">
+				    			<link rel="import" href="../jr-button-outline/jr-button-outline.html">
+				    			<jr-button-outline id="leftButton" disabled="true" icon="arrow-back" on-click="prevQ"></jr-button-outline>	
+				    			<jr-button-outline id="rightButton" disabled="true" icon="arrow-forward" on-click="nextQ"></jr-button-outline>		
+			    			</div>	
+		    			</div>			    			
+		    			<div class="horizontal layout progressBar">
+		    				<div class="flex"></div>
+		    				<div>
+		    					<p class="progressText">{{progress}}</p>
+		    				</div>
+		    			</div>
 	    			</div>	
     			</div>	    		
 	    	</div>
@@ -108,15 +91,7 @@ HTMLImports.whenReady(function() {
     is: "enquete-page",
 
     properties: {
-    	selectedEnquete: {
-    		type: Object,
-    		value: {}
-    	},
     	blocklist: {
-    		type: Array,
-    		value: []
-    	},
-    	enquetelist: {
     		type: Array,
     		value: []
     	},
@@ -124,95 +99,103 @@ HTMLImports.whenReady(function() {
     		type: Number,
     		value: 0
     	},
-    	enqueteActive: {
-    		type: Boolean,
-    		value: false
+    	enquete: {
+    		type: Object,
+    		value: {}
     	},
-    	color: {
+    	answerChanged: {
     		type: String,
-    		value: "#00FF00"
+    		value: ""
+    	},
+    	blockAnswer: {
+    		type: Array
     	}
     },
     observers: [
-        'setColor(color)'
+        'setEnquete(enquete)',
+        'answerHasChanged(answerChanged)'
     ],
 
-    qMenu: function(){    	
-    	this.enqueteActive = false;
-		var b = document.querySelector(".background");
-    	scrollTo(b, 0, 500);
-
-		this.$.sidePanel.style.top = "1500px";
-		this.$.enquete.style.top = "1500px";
-
-		this.$.blockSelector.selected = 0;
-		this.blockSelected = 0;
-	},
-	openEnquete: function(e){
-		if (!this.enqueteActive){
-			this.enqueteActive = true;
-			var model = e.model;
-			var selectedEnqueteID = model.item.id;
-
-			for (var i = 0; i < this.enquetelist.length; i++)
+	setEnquete: function(newEnquete) {
+		this.progress = 0;
+		this.blocklist = [];
+		this.loaded = 0;
+		this.open = 0;
+    	if (!isEmpty(this.enquete))
+    	{
+			for (var i = 0; i < this.enquete.blocks.length; i++)
 			{
-				if (this.enquetelist[i].id == selectedEnqueteID)
-					this.selectedEnquete = this.enquetelist[i];
-			}
-			this.loaded = 0;
-			this.blocklist = [];
-			for (var i = 0; i < this.selectedEnquete.blocks.length; i++)
-			{
-				this.$.blocks.url = "/api/blocks/" + this.selectedEnquete.blocks[i].toString();
+				this.$.blocks.url = "/api/blocks/" + this.enquete.blocks[i].toString();
 				this.$.blocks.generateRequest();
 			}
-
-			this.$.sidePanel.style.top = "0px";
-			this.$.enquete.style.top = "0px";
-
-			var b = document.querySelector(".background");
+			this.calcProgress();
 		}
-
+		
 	},
-	addEnquete: function(data){
-		console.log(data.detail.response);
-		this.enquetelist = [];
-		for (i = 0; i < data.detail.response.length; i++){
-			this.push('enquetelist', data.detail.response[i]);
-		}
-	},
+ 
 	addBlock: function(data){
 		this.push('blocklist', data.detail.response);
 		this.loaded++;
-		if (this.loaded == this.selectedEnquete.blocks.length){
+		if (this.loaded == this.enquete.blocks.length){
 			var b = document.querySelectorAll('#blockStateList');
 			b[0].children[0].style.borderColor = "#242d33";
 			b[0].children[1].style.color = "#242d33";
+			b[0].children[1].style.fontWeight = "500";
 			b[0].children[0].style.height = "8px";
 			b[0].children[0].style.width = "8px";
 			b[0].children[0].style.margin = "0px 10px 0px 0px";
 			b[0].children[2].style.visibility = "visible";
+
+			this.blockAnswer = new Array(this.blocklist.length);
+			for (var i = 0; i < this.blockAnswer.length; i++){
+				this.blockAnswer[i] = new Array(this.blocklist[i].questions.length);
+				console.log(this.blocklist[i].questions.length)
+			}
+
+			console.log(this.blockAnswer)
 		}		
 	},
 	nextQ: function(){
+		//Set new block
 		this.$.blockSelector.selected++;
 		this.blockSelected++;
+
+		//Set Buttons
+		this.$.leftButton.disabled = false;
+		if(this.open <= this.blockSelected)
+		{
+			this.$.rightButton.disabled = true;
+		}
+		if(this.blockSelected == this.blocklist.length - 1)
+		{
+			this.$.rightButton.icon = "done";
+			console.log("hey!")
+		}
+
+		//Change layout progressbar, sidepanel and scroll
+		this.calcProgress();
 		selectBlock(document.querySelectorAll('#blockStateList'), this.blockSelected - 1, this.blockSelected)
 		var b = document.querySelector(".background");
 		scrollTo(b, 0, 500);
 	},
 	prevQ: function(){
+		//Set new block
 		this.$.blockSelector.selected--;
 		this.blockSelected--;
-		selectBlock(document.querySelectorAll('#blockStateList'), this.blockSelected + 1, this.blockSelected)
+
+		//Set buttons
+		this.$.rightButton.disabled = false;
+		this.$.rightButton.icon = "arrow-forward";
+		if(this.blockSelected <= 0)
+		{
+			this.$.leftButton.disabled = true;
+		}
+
+		//Change layout progressbar, sidepanel and scroll
+		selectBlock(document.querySelectorAll('#blockStateList'), this.blockSelected + 1, this.blockSelected);
 		var b = document.querySelector(".background");
 		scrollTo(b, 0, 500);
 
-	},
-	setColor: function(color){
-		// console.log(this.$.rect.style.fill)
-		// this.customStyle['--main-color'] = 'green';
-  //       this.updateStyles();
 	},
 	showDescription: function(){
 		var d = document.querySelectorAll(".infoContainer")[this.blockSelected];
@@ -221,12 +204,73 @@ HTMLImports.whenReady(function() {
 	hideDescription: function(){
 		var d = document.querySelectorAll(".infoContainer")[this.blockSelected];
 		d.style.display = "none";
+	},
+
+	calcProgress: function(){
+		var interval = 100 / this.enquete.blocks.length;
+		var progress = parseInt(Math.round(interval + this.blockSelected * interval));
+		if (progress > this.progress)
+		{
+			this.progress = progress;
+			document.querySelector(".progressBar").style.width = this.progress + "%";
+			document.querySelector(".progressText").innerHTML = this.progress + "%";
+		}
+	},
+
+	answerHasChanged: function(answer){
+		//Check if answer was not initialized
+		if (answer != ""){
+			//Set new answer
+			var splitted = answer.split(" ");
+			this.blockAnswer[this.blockSelected][parseInt(splitted[0])] = parseInt(splitted[1]);
+			console.log(this.blockAnswer);
+
+			//Check if block is finished and set button if finished
+			var filledIn = 0;
+			for (var i=0; i<this.blockAnswer[this.blockSelected].length; i++){
+				if(this.blockAnswer[this.blockSelected][i] >= 0){
+					filledIn++;
+				}
+			}
+			if(filledIn == this.blockAnswer[this.blockSelected].length && this.blockSelected < this.blocklist.length ){
+				
+				this.$.rightButton.disabled = false;
+				this.open++;
+				if (this.blockSelected < this.blocklist.length - 1){
+					openBlock(document.querySelectorAll('#blockStateList'), this.blockSelected, this.blockSelected + 1);
+				}
+				else
+				{
+					openBlock(document.querySelectorAll('#blockStateList'), this.blockSelected, this.blockSelected);
+				}
+				
+				
+			}
+		}
+	},
+
+	blockSelect: function(sender){
+
+		console.log(sender);
+		//Set new block
+		this.$.blockSelector.selected++;
+		this.blockSelected++;
 	}
 
+	});
 });
- });
 
-  function scrollTo(element, to, duration) {
+	//Helper functions
+	function isEmpty(obj) {
+	    for(var prop in obj) {
+	        if(obj.hasOwnProperty(prop))
+	            return false;
+	    }
+
+	    return true;
+	};
+
+  	function scrollTo(element, to, duration) {
 	    var start = element.scrollTop,
 	        change = to - start,
 	        currentTime = 0,
@@ -244,14 +288,25 @@ HTMLImports.whenReady(function() {
 	};
 
 	function selectBlock(elements, oldB, newB){
-		elements[oldB].children[1].style.color = "#a3bccc";
 		elements[newB].children[1].style.color = "#242d33";
+		elements[oldB].children[1].style.fontWeight = "300";
+		elements[newB].children[1].style.fontWeight = "500";
 
-		elements[oldB].children[0].style.borderColor = "#a3bccc";
 		elements[newB].children[0].style.borderColor = "#242d33";
 
 		elements[oldB].children[2].style.visibility = "hidden";
 		elements[newB].children[2].style.visibility = "visible";			
+	};
+
+	function openBlock(elements, oldB, newB){
+		elements[newB].children[1].style.color = "#242d33";
+
+		elements[newB].children[0].style.borderColor = "#242d33";
+		elements[newB].children[0].style.height = "8px";
+		elements[newB].children[0].style.width = "8px";
+		elements[newB].children[0].style.margin = "0px 10px 0px 0px";
+		elements[oldB].children[0].innerHTML = "";
+		elements[oldB].children[0].style.backgroundColor = "#242d33";
 	};
 
 	Math.easeInOutQuad = function (t, b, c, d) {

@@ -14,10 +14,12 @@
       <template is="dom-if" if='{{evaluateBool(data.qType,"Y")}}'>
         <div class="horizontal layout center">
           <span class="questionElementText">ja</span>
-          <div id="iconContainer" class="horizontal layout" style="margin: 10px;">
-            <span id="1" class="qBigIcon" on-click='bigIconSelector'></span>
-            <div style="width:5px;"></div>
-            <span id="2" class="qBigIcon" on-click='bigIconSelector'></span>
+          <div>
+            <div id="iconContainer" class="horizontal layout" style="margin: 10px;">
+              <span id="1" class="qBigIcon" on-click='bigIconSelector'></span>
+              <div style="width:5px;"></div>
+              <span id="2" class="qBigIcon" on-click='bigIconSelector'></span>
+            </div>
           </div>
           <span class="questionElementText">nee</span>
         </div>
@@ -63,16 +65,29 @@
       selectedText: {
         type: String,
         value: "Maak een selectie"
+      },
+      question: {
+        type: Number,
+        notify: true
+      },
+      answer: {
+        type: String,
+        notify: true
       }
     },
+    answerChanged: function(){
+      console.log(this.answer);
+    },
+
     evaluateBool: function(b1, b2){
       return (b1 == b2);
     },
     bigIconSelector: function(sender){
-      var elementList = this.$.scope.querySelector("#iconContainer").querySelectorAll("span");
+      var elementList = sender.toElement.parentNode.parentNode.querySelectorAll("span");
       for (i = 0; i < elementList.length; i++){
         if (sender.toElement.id == elementList[i].id){
           elementList[i].className = "qSelectedBigIcon";
+          this.answer = this.question + " " + i;
         }
         else{
           elementList[i].className = "qBigIcon";
@@ -80,11 +95,15 @@
       }
     },
     smallIconSelector: function(sender){
-      var elementList = this.$.scope.querySelector("#iconContainer").querySelectorAll("span");
+      var elementList = sender.toElement.parentNode.querySelectorAll("span");
       for (i = 0; i < elementList.length; i++){
         if (sender.toElement.id >= elementList[i].id){
           elementList[i].className = "qSelectedSmallIcon";
-          this.selectedText = this.data.choices[i].choiceText;
+          
+          if(sender.toElement.id == elementList[i].id){
+            this.selectedText = this.data.choices[i].choiceText;
+            this.answer = this.question + " " + i;
+          }
         }
         else{
           elementList[i].className = "qSmallIcon";
