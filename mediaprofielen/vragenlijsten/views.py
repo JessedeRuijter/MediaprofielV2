@@ -187,7 +187,10 @@ class AnswerViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
         if 'last' in self.request.data:
             print "hai!"
-            if self.request.data['last'] and self.request.data['invulmoment']:
+            if self.request.data['last'] == "true":
+                if 'invulmoment' in self.request.data:
+                    print "invulmomentid gekregen:"
+                    print self.request.data['invulmoment']
                 addScore(self.request.user, serializer.data['blockID'], self.request.data['invulmoment'])
 
 class OrganisationViewSet(viewsets.ModelViewSet):

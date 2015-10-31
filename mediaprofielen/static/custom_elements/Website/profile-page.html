@@ -151,14 +151,15 @@
         height: 300,
         width: 300,
         slices: {
-          0: { color: '#1cbbb4' },
-          1: { color: '#acd373' },
-          2: { color: '#fbaf5d' },
-          3: { color: '#f26d7d' },
-          4: { color: '#a864a8' }
-        }
+          0: { color: '#cbeef3', textStyle: {color: "#1cbbb4"} },
+          1: { color: '#e3f2e8', textStyle: {color: "#acd373"}  },
+          2: { color: '#efece5', textStyle: {color: "#fbaf5d"}  },
+          3: { color: '#eee2ea', textStyle: {color: "#f26d7d"}  },
+          4: { color: '#e2e0f1', textStyle: {color: "#a864a8"}  }
+        },
+        pieSliceBorderColor: "transparent"
       };
-      this.$.pieChart.rows = [["Consument", 5],["Verzamelaar", 30],["Strateeg", 50],["Netwerker", 30],["Producent",20]];
+      this.$.pieChart.rows = [["Consument", 5],["Verzamelaar", 30],["Strateeg", 50],["Netwerker", 30],["Producent", 20]];
     },
     selectProfile: function(ding){
       if(ding.toElement.id != "profileStateList"){

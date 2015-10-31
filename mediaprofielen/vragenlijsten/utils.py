@@ -4,7 +4,7 @@
 Deze module bevat alle helper functies die in views gebruikt worden
 """
 from django.contrib.auth.models import User
-from models import QuestionBlock, Enquete, Question, QuestionChoice, Answer, ProfileText, Profiel
+from models import QuestionBlock, Enquete, Question, QuestionChoice, Answer, ProfileText, Invulmoment, Profiel
 
 def getMaxPointsEnquete(enquete):
 	# enquetes = Enquete.objects.all()
@@ -64,7 +64,7 @@ def addScore(user, id_of_last_block, id_invulmoment):
 	# else:
 	# 	profielObject = profielObject[0]
 	# profielObject = userObject.profiel.all()[0]
-	profielObject = Profiel.create(user=user, invulmoment=id_invulmoment)
+	profielObject = Profiel(user=user, invulmoment=invulmoment)
 	for block in enquete_blocks:
 		answers = Answer.objects.filter(user=user, blockID=block)
 		print answers
