@@ -47,7 +47,7 @@
 		    		</div>
 				    <div class="flex"></div>
 				    <div class="vertical layout settingsPanel">
-				    	<div class="horizontal layout  center">
+				    	<div class="horizontal layout center noselect">
 					    	<div class="switchContainer horizontal layout center">
 					    		<div id="leftTab" class="tabActivated" on-click="switchRight">
 					    			<span>vragenlijsten</span>
@@ -144,6 +144,7 @@
 	    this.$.pages.selected = "1";
 	    this.$.leftTab.className = "tab";
 	    this.$.rightTab.className = "tabActivated";
+
 	},
 
 	updateSidePanelPos: function(){
@@ -214,7 +215,6 @@
       },
 
       finishedHasChanged: function(e){
-      	console.log(e);
       	if (e == "true")
       		this.switchLeft();
       },

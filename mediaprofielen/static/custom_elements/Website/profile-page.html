@@ -11,6 +11,15 @@
     <link rel="import" href="../../bower_components/iron-image/iron-image.html">
     <link rel="import" href="../../bower_components/google-chart/google-chart.html">
 
+    <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+    <iron-ajax auto
+      id="currentu"
+      url='/api/currentuser'
+      last-response="{{currentuser}}"
+      on-response="handleResponse"
+      handleAs="json">
+    </iron-ajax>
+
   	<div class="horizontal layout flex">
 	  	<div class="flex relative" style="background-color: #FFFFFF; z-index:10; margin-right: 3px;">
 	  		<div class="vertical layout center fit" style="background-color: rgba(76,183,255,0.1);">
@@ -74,10 +83,10 @@
 
         <link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
         <link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
-        <neon-animated-pages id="tabPages" class="flex" style="height: 700px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+        <neon-animated-pages id="tabPages" class="flex" style="height: 750px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 
           <div class="vertical layout">
-            <neon-animated-pages id="profilePages" style="height: 650px; padding-bottom: 50xp;" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+            <neon-animated-pages id="profilePages" style="height: 700px; padding-bottom: 50xp;" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
               <div class="vertical layout center" style="background-color: white;">
                 <p class="profileTitleText">Consument</p>
                 <iron-image style="height: 200px;" src="../../images/Consument.png"></iron-image>
@@ -147,9 +156,10 @@
         legend: 'none',
         pieHole: 0.5,
         backgroundColor: { fill:'transparent' },
-        chartArea: { left:20, top:10 },
-        height: 300,
-        width: 300,
+        chartArea: { left:10, top:10 },
+        height: 400,
+        width: 400,
+        tooltip: { trigger: 'none' },
         slices: {
           0: { color: '#cbeef3', textStyle: {color: "#1cbbb4"} },
           1: { color: '#e3f2e8', textStyle: {color: "#acd373"}  },
@@ -159,9 +169,28 @@
         },
         pieSliceBorderColor: "transparent"
       };
-      this.$.pieChart.rows = [["Consument", 5],["Verzamelaar", 30],["Strateeg", 50],["Netwerker", 30],["Producent", 20]];
     },
+    handleResponse: function(){
+      var profiles = this.currentuser.user.profiel;
+      this.rows = new Array(5);
+      var profileNames = ["consument", "verzamelaar", "strateeg", "netwerker", "producent"];
+
+      for (var i = 0; i < profiles.length; i++){
+        if (profiles[i].invulmoment == this.currentuser.invulmoment.id) {
+          for (var j = 0; j < 5; j++) {
+            this.rows[j] = [profileNames[j], profiles[i][profileNames[j]]];
+          }
+        }
+      }
+      this.$.pieChart.rows = this.rows;
+    },
+    pageHasChanged: function(){
+      this.$.pieChart.rows = [];
+      this.$.pieChart.rows = this.rows;
+    },
+
     selectProfile: function(ding){
+      this.pageHasChanged();
       if(ding.toElement.id != "profileStateList"){
         var next = ding.toElement.parentNode.children[0].id;
         if(parseInt(next) != this.$.profilePages.selected){
@@ -180,6 +209,7 @@
       }
     },
     selectTab: function(ding){
+      this.pageHasChanged();
       var next = ding.toElement.id;
       if(parseInt(next) != this.$.tabPages.selected){
         if(parseInt(next) > this.$.tabPages.selected){
