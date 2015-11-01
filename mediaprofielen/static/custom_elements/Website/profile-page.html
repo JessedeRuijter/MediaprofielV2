@@ -185,12 +185,10 @@
       this.$.pieChart.rows = this.rows;
     },
     pageHasChanged: function(){
-      this.$.pieChart.rows = [];
       this.$.pieChart.rows = this.rows;
     },
 
     selectProfile: function(ding){
-      this.pageHasChanged();
       if(ding.toElement.id != "profileStateList"){
         var next = ding.toElement.parentNode.children[0].id;
         if(parseInt(next) != this.$.profilePages.selected){
@@ -209,7 +207,6 @@
       }
     },
     selectTab: function(ding){
-      this.pageHasChanged();
       var next = ding.toElement.id;
       if(parseInt(next) != this.$.tabPages.selected){
         if(parseInt(next) > this.$.tabPages.selected){
