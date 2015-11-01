@@ -76,7 +76,7 @@
               <p id="1" on-click="selectTab" class="tabText">voortgang</p>
             </div>
             <div id="tabList">
-              <p id="2" on-click="selectTab" class="tabText">tips voor jou</p>
+              <p id="2" on-click="selectTab" class="tabText">tips</p>
             </div>
           </div>
         </div>
@@ -87,33 +87,33 @@
 
           <div class="vertical layout">
             <neon-animated-pages id="profilePages" style="height: 700px; padding-bottom: 50xp;" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
-              <div class="vertical layout center" style="background-color: white;">
+              <div class="vertical layout center">
                 <p class="profileTitleText">Consument</p>
                 <iron-image style="height: 200px;" src="../../images/Consument.png"></iron-image>
                 <p class="profileText">Een consument is een passieve gebruiker van de media. Consumenten verwerken media in de ruime zin van het woord, door het lezen van berichten en het bekijken van video’s en websites. Ze communiceren online vooral via e-mail of via instant messaging (bv. WhatsApp), maar ze maken het liefst contact met mensen door persoonlijke gesprekken. 
                 Een consument is soms lid van informele social media platforms, waar hij berichten leest en een enkele keer post. Hij gebruikt de sociale media voornamelijk voor privézaken, bijvoorbeeld om contacten te onderhouden met bekenden. Voor het lezen en verwerken van  informatie heeft de consument een duidelijke voorkeur voor de papieren versie. </p>
                 <p class="profileText"><b>Mediagebruik:</b> surfen, informatie zoeken, berichten lezen, mailen, video’s en foto’s bekijken, profielen bekijken en reviews lezen.</p>
               </div>
-              <div class="vertical layout center" style="background-color: white;">
+              <div class="vertical layout center">
                 <p class="profileTitleText">Verzamelaar</p>
                 <iron-image style="height: 200px;" src="../../images/Verzamelaar.png"></iron-image>
                 <p class="profileText">Een verzamelaar is een actieve gebruiker van de media. 
                 Verzamelaars hebben zich aangemeld bij verschillende sociale netwerken en monitoren veel documenten, afbeeldingen, websites, filmpjes en muziek. Ze lezen en beoordelen of zij het zelf kunnen gebruiken. Ze delen hun bevindingen via hun website of sociale media. Hun zoekgedrag wordt gekenmerkt door goede zoekwoorden en ze gebruiken sociale bookmarking om websites terug te vinden. Sommigen gaan een stap verder en bekijken hoe anderen het kunnen gebruiken. Ze vormen de schakel tussen diegene die veel content creëert en degene die vooral content consumeert. </p>
                 <p class="profileText"><b>Mediagebruik:</b> informatie zoeken en delen, profiel op social media, bronnen vergelijken, uploaden, informatie organiseren, blog lezen, ervaringen delen op platforms en social bookmarking.</p>
               </div>
-              <div class="vertical layout center" style="background-color: white;">
+              <div class="vertical layout center">
                 <p class="profileTitleText">Strateeg</p>
                 <iron-image style="height: 200px;" src="../../images/Strateeg.png"></iron-image>
                 <p class="profileText">Een strateeg ontwikkelt een doelgerichte strategie om in alle levenssferen optimaal gebruik te maken van de mogelijkheden die traditionele, nieuwe en sociale media bieden. Hij heeft  een persoonlijk (informeel) digitaal netwerk gevormd en weet de media op het juiste moment in én uit te schakelen. Hij kijkt met kritische blik naar nieuwe toepassingen en schrijft hier reviews over. Hij weet wanneer welke toepassingen meerwaarde hebben bij het realiseren van professionele en sociale doelstellingen en kan deze effectief inzetten. Strategen delen hun expertise met anderen om ook hun mediastrategie te optimaliseren. Zij hebben niet alleen eigen doelen voor ogen, maar helpen ook die van anderen te realiseren.</p>
                 <p class="profileText"><b>Mediagebruik:</b> reflecteren, informeel leren in netwerken, doceren over social media, blogs schrijven, reviewen, mediastrategie uitzetten, co-creatie</p>
               </div>
-              <div class="vertical layout center" style="background-color: white;">
+              <div class="vertical layout center">
                 <p class="profileTitleText">Netwerker</p>
                 <iron-image style="height: 200px;" src="../../images/Netwerker.png"></iron-image>
                 <p class="profileText">Een netwerker is een interactieve gebruiker van diverse nieuwe media. Netwerkers communiceren via diverse applicaties met vrienden en collega’s. Ze zijn actief binnen diverse sociale netwerken en hebben een bewust vormgegeven profiel op meerdere sociale netwerksites. Netwerkers reageren alert en constructief op berichten van anderen. Ze gaan online relaties aan en koesteren bestaande relaties. Ze stimuleren de interactie tussen anderen en inspireren anderen optimaal gebruik te maken van sociale netwerken. Een netwerker is behalve op zichzelf ook gericht op het gemeenschappelijke doel van de community als geheel. Hij waakt over de netetiquette binnen sociale netwerken en gaat uitsluiting en destructief gedrag van anderen tegen.</p>
                 <p class="profileText"><b>Mediagebruik:</b> informatie zoeken en delen, meerdere profielen op social media, faciliteren online community, interactie stimuleren, deelnemers uitnodigen, presenteren, netetiquette bewaken.</p>
               </div>
-              <div class="vertical layout center" style="background-color: white;">
+              <div class="vertical layout center">
                 <p class="profileTitleText">Producent</p>
                 <iron-image  style="height: 200px;" src="../../images/Producent.png"></iron-image>
                 <p class="profileText">Een producent gebruikt de media om persoonlijke en professionele informatie te maken en te delen. Producenten gebruiken diverse toepassingen om unieke eigen content te creëren en delen belangwekkende informatie op diverse platforms. Ze zijn gericht op co-creatie en dragen soms bij aan forums en kennisbanken (zoals Wikipedia). Een producent kan een eigen website inrichten en onderhouden, hij creëert en deelt hoogwaardig audiovisueel materiaal, kiest een geschikt medium bij het verzenden van mediaboodschappen en giet deze in een optimale vorm.</p>
@@ -123,9 +123,16 @@
           </div>
 
           <div>
+            <google-chart
+              id="lineChart"
+              type='line'
+              class="lineChart">
+            </google-chart>
           </div>
 
           <div>
+            <link rel="import" href="profile-tips.html">
+            <profile-tips selectedprofile="{{selected}}"></profile-tips>
           </div>
 
         </neon-animated-pages>
@@ -169,6 +176,38 @@
         },
         pieSliceBorderColor: "transparent"
       };
+      this.$.lineChart.data = [
+        ["Invulmoment", "Consument", "Verzamelaar", "Strateeg", "Netwerker", "Producent"],
+        ["15 juni", 1,2,3,4,1],        
+        ["2 juli", 6,1,1,2,5],
+        ["18 augustus",5,2,3,2,1]
+      ];
+
+      this.$.lineChart.options = {
+        chart: {
+          title: 'Box Office Earnings in First Two Weeks of Opening',
+          subtitle: 'in millions of dollars (USD)'
+        },
+        legend: 'none',
+        width: 900,
+        height: 600,
+        backgroundColor: { fill:'transparent' },
+        chartArea: { left:90, top:50 },
+        pointSize: 10,
+        series: {
+          0: { color: "#1cbbb4" },
+          1: { color: "#acd373" },
+          2: { color: "#fbaf5d" },
+          3: { color: "#f26d7d" },
+          4: { color: "#a864a8" }
+        },
+        axes: {
+          x: {
+            0: {side: 'top'}
+          }
+        }
+      };
+
     },
     handleResponse: function(){
       var profiles = this.currentuser.user.profiel;
@@ -203,6 +242,7 @@
 
           selectProfile(document.querySelectorAll('#profileStateList'), parseInt(this.$.profilePages.selected), parseInt(next));
           this.$.profilePages.selected = next;
+          this.selected = parseInt(next);
         }
       }
     },
@@ -224,6 +264,7 @@
 
         //selectProfile(document.querySelectorAll('#profileStateList'), parseInt(this.$.tabPages.selected), parseInt(next));
         this.$.tabPages.selected = next;
+        this.selected = parseInt(next);
       }
     }
   });

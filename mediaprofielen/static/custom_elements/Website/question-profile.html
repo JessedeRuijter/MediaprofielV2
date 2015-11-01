@@ -1,0 +1,260 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="question-profile">
+  <template>   
+
+    <link rel="stylesheet" href="../../css/enquetepage.css">
+    <link rel="import" href="../../bower_components/font-roboto/roboto.html">
+    <link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+    <link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
+   
+    
+    <div class="vertical layout middlePanel card" style="position:relative; top:180px;">
+      <div class="vertical layout center">
+        <iron-image class="clipContainer" width="180" height="74" src="../../images/LogoBlauwSmall.png">
+        </iron-image>
+      </div>
+      <div class="vertical layout center" style="position: relative; top: -75px;">
+        <p class="blockTitleText" style="margin-bottom: 0px;">Hier volgen een aantal vragen om je profielgegevens aan te vullen.</p>
+
+        <div class="vertical layout center" style="padding:60px;">
+          <p class="questionText">Wie ben jij?</p>
+          <div class="horizontal layout center">
+            <paper-input label="Voornaam"></paper-input>
+            <div style="width:30px;"></div>
+            <paper-input label="Achternaam"></paper-input>
+          </div>
+        </div>
+
+        <div class="vertical layout center">
+          <div class="seperator"></div>    
+        </div>
+
+        <div class="vertical layout center" style="padding:60px;">
+          <p class="questionText">Je bent</p>
+          <div class="horizontal layout center">
+            <span class="questionElementText">een man</span>
+            <div>
+              <div id="iconContainer" class="horizontal layout" style="margin: 10px;">
+                <span id="1" class="qBigIcon" on-click='bigIconSelector'></span>
+                <div style="width:5px;"></div>
+                <span id="2" class="qBigIcon" on-click='bigIconSelector'></span>
+              </div>
+            </div>
+            <span class="questionElementText">een vrouw</span>
+          </div>
+        </div>
+
+        <div class="vertical layout center">
+          <div class="seperator"></div>    
+        </div>
+
+        <div class="vertical layout center" style="padding:60px;">
+          <p class="questionText">Je leeftijd is</p>
+           <div id="iconContainer" class="vertical layout">
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="0" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">tussen 16 en 20 jaar</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="1" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">tussen 21 en 30 jaar</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="2" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">tussen 31 en 40 jaar</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="3" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">tussen 41 en 50 jaar </p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="4" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">tussen 51 en 60 jaar</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="5" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">tussen 61 en 70 jaar</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="6" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">ouder dan 71 jaar</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="vertical layout center">
+          <div class="seperator"></div>    
+        </div>
+
+        <div class="vertical layout center" style="padding:60px;">
+          <p class="questionText">Je hoogst genoten opleiding (afgerond)</p>
+           <div id="iconContainer" class="vertical layout">
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="0" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">HAVO</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="1" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">VWO</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="2" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">MBO</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="3" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">HBO</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="4" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">WO</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="vertical layout center">
+          <div class="seperator"></div>    
+        </div>
+
+        <div class="vertical layout center" style="padding:60px;">
+          <p class="questionText">Je bent opgegroeid in</p>
+           <div id="iconContainer" class="vertical layout">
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="0" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Groningen</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="1" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Friesland</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="2" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Drenthe</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="3" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Overijssel</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="4" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Flevoland</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="5" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Limburg</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="6" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Noord-Brabant</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="7" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Noord-Holland</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="8" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Zuid-Holland</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="9" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Zeeland</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="10" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Utrecht</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="11" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">België</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="12" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Duitsland</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="13" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Frankrijk</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="14" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Verenigd-Koninkrijk</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="15" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">Luxemburg</p>
+            </div>
+            <div class="horizontal layout center" style="margin: 10px;">
+              <span id="16" class="qBigIcon" on-click="bigIconSelector"></span>
+              <p class="questionElementText" style="margin-left: 10px;">andere</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="vertical layout center buttonContainer">
+        <div class="horizontal layout center">
+          <link rel="import" href="../jr-button-outline/jr-button-outline.html">
+          <jr-button-outline id="rightButton" icon="done" on-click="done"></jr-button-outline>    
+        </div> 
+        <div style="height:30px;"></div> 
+      </div>
+    </div>
+  </template>
+
+</dom-module>
+<script>
+
+  Polymer({
+    is: "question-profile",
+
+    properties: {
+      data: {
+        type: Object,
+        value: {}
+      },
+      selectedText: {
+        type: String,
+        value: "Maak een selectie"
+      },
+      question: {
+        type: Number
+      },
+      answer: {
+        type: String,
+        notify: true
+      }
+    },
+    done: function(){
+      document.getElementById("profileOverlay").style.display = "none";
+    },
+    bigIconSelector: function(sender){
+      var elementList = sender.toElement.parentNode.parentNode.querySelectorAll("span");
+      for (i = 0; i < elementList.length; i++){
+        if (sender.toElement.id == elementList[i].id){
+          elementList[i].className = "qSelectedBigIcon";
+          this.answer = this.question + " " + i;
+        }
+        else{
+          elementList[i].className = "qBigIcon";
+        }
+      }
+    },
+    smallIconSelector: function(sender){
+      var elementList = sender.toElement.parentNode.querySelectorAll("span");
+      for (i = 0; i < elementList.length; i++){
+        if (sender.toElement.id >= elementList[i].id){
+          elementList[i].className = "qSelectedSmallIcon";
+          
+          if(sender.toElement.id == elementList[i].id){
+            this.selectedText = this.data.choices[i].choiceText;
+            this.answer = this.question + " " + i;
+          }
+        }
+        else{
+          elementList[i].className = "qSmallIcon";
+        }
+      }
+    }
+
+  });
+</script>

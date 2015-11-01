@@ -1,0 +1,140 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="profile-tips">
+  <template>   
+
+    <link rel="stylesheet" href="../../css/enquetepage.css">
+    <link rel="import" href="../../bower_components/font-roboto/roboto.html">
+    <link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+    <link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
+   
+    
+    <div class="vertical layout center fit">
+      <div class="horizontal layout center" style="margin-top: 20px;">
+        <p class="profileTitleText" style="margin: 0px 5px 0px 30px;">Je mediaprofiel ontwikkelt zich in de richting die jij kiest</p>
+        <span class="infoIcon" style="visibility: visible; font-size:20px;" on-mouseover="showInformation" on-mouseout="hideInformation"></span>
+      </div>
+
+      <div class="informationContainer">
+        <div style="margin: 10px 30px 0px 30px; padding: 15px; background-color: rgba(76,183,255,1.0);">
+          <span class="menuChangeTitleText">Een mediabewuste professional werkt met het DNA van de vijf profielen. Elk profiel wordt gekenmerkt door vaardigheden die de basis vormen voor het verder ontwikkelen van mediavaardigheden. Afhankelijk van persoonlijke en professionele wensen kun je starten met het versterken van vaardigheden die bij jouw profiel passen. </span>
+        </div>
+      </div>
+
+      <!-- <p class="profileText" style="margin: 0px 50px 0px 50px;">Een mediabewuste professional werkt met het DNA van de vijf profielen. Elk profiel wordt gekenmerkt door vaardigheden die de basis vormen voor het verder ontwikkelen van mediavaardigheden. Afhankelijk van persoonlijke en professionele wensen kun je starten met het versterken van vaardigheden die bij jouw profiel passen. </p> -->
+      
+      <p class="profileText" style="text-align: center; margin: 10px 50px 20px 50px;"><i>Zoek je meer uitdaging? Kijk bij de andere profielen voor ontwikkelideeën.</i></p>
+
+      <span class="seperator" style="margin: 20px 0px 40px 0px"></span>
+
+      <iron-image style="height: 150px; width:150px" sizing="contain" src="../../images/Consument.png"></iron-image>
+      <p class="profileText" style="margin: 10px;">van Consument naar <i>(selecteer profiel)</i></p>
+
+      <div class="vertical layout">
+        <div class="horizontal layout center" id="imageElements">
+          <div class="imageSelector" style="border-color:rgba(28,187,180,0.3); border-bottom-color: white; border-style: solid;" on-click="setProfile">
+            <iron-image id="0" style="height: 100px; width: 100px;" sizing="contain" src="../../images/Consument.png"></iron-image>
+          </div>
+          <div style="width:10px;"></div>
+          <div class="imageSelector" on-click="setProfile">
+            <iron-image id="1" style="height: 100px; width: 100px;" sizing="contain" src="../../images/Verzamelaar.png"></iron-image>
+          </div>
+          <div style="width:10px;"></div>
+          <div class="imageSelector" on-click="setProfile">
+            <iron-image id="2" style="height: 100px; width: 100px;" sizing="contain" src="../../images/Strateeg.png"></iron-image>
+          </div>
+          <div style="width:10px;"></div>
+          <div class="imageSelector" on-click="setProfile">
+            <iron-image id="3" style="height: 100px; width: 100px;" sizing="contain" src="../../images/Netwerker.png"></iron-image>
+          </div>
+          <div style="width:10px;"></div>
+          <div class="imageSelector" on-click="setProfile">
+            <iron-image id="4" style="height: 100px; width: 100px;" sizing="contain" src="../../images/Producent.png"></iron-image>
+          </div>
+        </div>
+        <div id="imageSelected">
+          <link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+          <link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
+          <neon-animated-pages id="profilePages" class="flex" style="height: 50px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+            <div><p class="profileText">Verder in consument</p></div>
+            <div><p class="profileText">Naar Verzamelaar</p></div>
+            <div><p class="profileText">Naar Strateeg</p></div>
+            <div><p class="profileText">Naar Netwerker</p></div>
+            <div><p class="profileText">Naar Producent</p></div>
+          </neon-animated-pages>
+        </div>
+      </div>
+    </div>
+
+  </template>
+
+</dom-module>
+<script>
+
+  Polymer({
+    is: "profile-tips",
+
+    properties: {
+      selectedprofile: {
+        type: Number,
+        value: 0
+      },
+      colors: {
+        type: Array,
+        value: ['rgba(28,187,180,0.3)','rgba(172,211,115,0.3)','rgba(251,175,93,0.3)','rgba(242,109,125,0.3)','rgba(168,100,168,0.3)']
+      },
+      entryAnimation:{
+        type: String
+      },
+      exitAnimation:{
+        type: String
+      },
+      selectedPage: {
+        type: Number,
+        value: 0
+      }
+    },
+
+    showInformation: function(){
+      var d = document.querySelector(".informationContainer");
+      console.log(d)
+      d.style.display = "block";
+    },
+    hideInformation: function(){
+      console.log(d)
+      var d = document.querySelector(".informationContainer");
+      d.style.display = "none";
+    },
+    
+    setProfile: function(sender){
+
+      if(sender.toElement.nodeName == "IRON-IMAGE"){
+        var newSelected = sender.toElement.id;
+        var children = this.$.imageElements.children;
+        for (var i = 0; i < 5; i++){
+
+          if (i == newSelected){
+            children[2 * i].style.borderColor = this.colors[i];
+            children[2 * i].style.borderBottomColor = "white";
+            children[2 * i].style.borderStyle = "solid";
+            this.$.imageSelected.style.borderTopColor = this.colors[i];
+          }
+          else{
+            children[2 * i].style.borderStyle = "none";
+          }
+        }
+        if (newSelected > this.selectedPage) {          
+          this.entryAnimation = 'slide-from-right-animation';
+          this.exitAnimation = 'slide-left-animation';
+        }
+        else{
+          this.entryAnimation = 'slide-from-left-animation';
+          this.exitAnimation = 'slide-right-animation'; 
+        }
+        this.$.profilePages.selected = newSelected;
+        this.selectedPage = newSelected;
+
+      }
+    }
+  });
+</script>

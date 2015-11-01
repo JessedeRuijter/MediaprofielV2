@@ -26,15 +26,13 @@
   	<link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
     <link rel="import" href="../../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 
-	<style is="custom-style">
-	    :root{
-	    	--paper-input-container-color: white;
-	    	--paper-input-container-focus-color: white;
-	    	--paper-input-container-input-color: white;
-
-	    }
-  	</style>
-
+    <style is="custom-style">
+	    .whiteInput{
+			--paper-input-container-color: white;
+			--paper-input-container-focus-color: white;
+			--paper-input-container-input-color: white;
+		}
+    </style>
     <!-- <paper-drawer-panel> -->
     	<!-- <div class="flex" drawer>
     	</div> -->
@@ -69,11 +67,11 @@
 						<p class="menuChangeTitleText">Verander wachtwoord</p>
 						<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 						<div class="horizontal layout center" style="margin: 0px 15px 0px 15px;">
-							<paper-input id="password" style="width:180px;" label="Nieuw wachtwoord" on-input="passwordChanged" type="password"></paper-input>
+							<paper-input id="password" class="whiteInput" style="width:180px;" label="Nieuw wachtwoord" on-input="passwordChanged" type="password"></paper-input>
 							<span id="passwordIcon" class="passwordIcon"></span>
 						</div>
 						<div class="horizontal layout center" style="margin: 0px 15px 0px 15px;">
-							<paper-input id="passwordCheck" style="width:180px;" label="Bevestig wachtwoord" on-input="checkChanged" type="password"></paper-input>
+							<paper-input id="passwordCheck" class="whiteInput" style="width:180px;" label="Bevestig wachtwoord" on-input="checkChanged" type="password"></paper-input>
 							<span id="passwordCheckIcon" class="passwordIcon"></span>
 						</div>
 						<link rel="import" href="../jr-button-outline/jr-button-outline-w.html">
@@ -109,7 +107,11 @@
 					</div>
 				</neon-animated-pages>
 			</div>
-    	</div>	    
+    	</div>	
+    	<!-- <link rel="import" href="question-profile.html">
+    	<div id="profileOverlay" class="vertical layout center fit" style="background-color:rgba(0,0,0,0.3); overflow-y:auto;">
+			<question-profile></question-profile>	
+    	</div>    --> 
 	<!-- </paper-drawer-panel> -->
   </template>
 

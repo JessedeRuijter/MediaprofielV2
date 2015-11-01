@@ -61,29 +61,32 @@ html,body {
 }
 .introText{
 	margin: 0px;
+	font-weight: 300;
 	line-height: 30px;
 	color: black;
 	letter-spacing: 0.018em;
 	font-size: 20px;
-	font-family: "Roboto Light";
+	font-family: "Roboto";
 	/*text-align: center;*/
 }
 .contentText{
-	margin: 60px 0px 60px 0px;
+	margin: 60px 0px 60px 0px;	
+	font-weight: 300;
 	line-height: 30px;
 	color: black;
 	letter-spacing: 0.018em;
 	font-size: 20px;
-	font-family: "Roboto Light";
+	font-family: "Roboto";
 	text-align: center;
 }
-.profileTitleText{
+.profileTitleText{	
+	font-weight: 300;
 	margin: 30px 0px 0px 0px;
 	line-height: 30px;
 	color: black;
 	letter-spacing: 0.018em;
 	font-size: 	15px;
-	font-family: "Roboto Light";
+	font-family: "Roboto";
 	text-align: center;
 }
 .profileDescriptionText{
@@ -91,7 +94,7 @@ html,body {
 	line-height: 22.5px;
 	color: black;
 	letter-spacing: 0.018em;
-	font-size: 15px;
+	font-size:  0.9375em;
 	font-family: "Roboto Thin";
 	text-align: center;
 }
@@ -111,10 +114,11 @@ html,body {
 	margin: 6px;
 }
 .footerText{
+	font-weight: 300;
 	color: white;
 	letter-spacing: 0.018em;
 	font-size: 12.5px;
-	font-family: "Roboto Light";
+	font-family: "Roboto";
 }
 .iconTexture{
 	font-family: "ionicons";

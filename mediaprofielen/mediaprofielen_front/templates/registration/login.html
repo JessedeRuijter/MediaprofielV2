@@ -49,7 +49,7 @@
 					<link rel="import" href="{% static 'bower_components/paper-material/paper-material.html' %}">
 					<div class="vertical layout center" style="margin:20px;">
 						{% if form.errors %}
-							<p style="max-width: 200px; color: red;">Uw gebruikersnaam of wachtwoord zijn niet gevonden. Probeer het opnieuw!</p>
+							<p style="max-width: 200px; color: white;">Uw gebruikersnaam of wachtwoord zijn niet gevonden. Probeer het opnieuw!</p>
 						{% endif %}
 						<link rel="import" href="{% static 'bower_components/paper-input/paper-input.html' %}">
 						<paper-input label="Gebruikersnaam" style="width: 200px;" id="id_{{ form.username.name }}" name="{{ form.username.name }}" type="text" maxlength='50' class="loginInput"></paper-input>

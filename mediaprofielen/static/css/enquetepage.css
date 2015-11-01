@@ -228,6 +228,12 @@ html,body {
 	display: none;
 }
 
+.informationContainer{
+	position: absolute; 
+	display: none;
+	z-index: 30;
+}
+
 .qPicker{
 	position: absolute;
 	top: 0px;
@@ -486,11 +492,12 @@ html,body {
 	cursor: pointer;
 }
 
-.infoIcon{
+.infoIcon{	
+	font-family: "ionicons";	
+	font-size: 16px;
 	color: rgba(76,183,255,1.0);
 	margin-left: 5px;
 	visibility: hidden;
-	margin-top: 2px;
 	cursor: pointer;
 }
 
@@ -515,6 +522,12 @@ html,body {
 	/*background-color: rgba(76,183,255,0.0);*/
 }
 
+.lineChart{
+	position:relative;
+	width: 700px;
+	height: 700px;
+}
+
 .noselect {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -523,3 +536,25 @@ html,body {
     -ms-user-select: none;
     user-select: none;
 }
+
+.imageSelector{
+	border-style: none;
+	border-color: white;
+	border-width: 3px;
+	padding: 10px;
+	z-index: 30;
+
+}
+
+#imageSelected{
+	border-top-style: solid;
+	border-width: 3px;
+	border-color: rgba(28,187,180,0.3);
+
+	padding: 30px;
+	position: relative;
+	top: -3px;
+
+	background-color: white;
+}
+
