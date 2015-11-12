@@ -17,20 +17,12 @@ def getMaxPointsEnquete(enquete):
 			print question
 	print result
 
-# def getMaxPoints():
-# 	result = {}
-# 	for profiel in Question.profiel_choices:
-# 		result[profiel[0]] = 0
-# 	questions = Question.objects.all()
-# 	for question in questions:
-# 		choices = QuestionChoice.objects.filter(question=question)
-# 		print question.profiel
-# 		result[question.profiel] += len(choices) -1
-# 	return result
 
-
-def getMaxPoints():
-	questions = Question.objects.all()
+def getMaxPoints(enquete):
+	questions = []
+	print QuestionBlock.objects.filter(enquete=enquete)
+	for block in enquete.blocks.all():
+		questions += block.questions.all()
 	result = {
 	"Consument":0,
 	"Verzamelaar":0,

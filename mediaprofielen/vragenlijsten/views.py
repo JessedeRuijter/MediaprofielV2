@@ -10,6 +10,7 @@ from models import *
 from utils import addScore, getMaxPoints
 import csv, unicodedata
 from django.contrib.auth import logout
+from django.shortcuts import get_object_or_404
 
 @login_required
 def index(req):
@@ -150,8 +151,9 @@ def get_blocks_score(user):
 
 
 class maxPointsView(APIView):
-    def get(self, request):
-        x = getMaxPoints()
+    def get(self, request, enquete_id):
+        enquete = get_object_or_404(Enquete, id=enquete_id)
+        x = getMaxPoints(enquete) 
         return Response(x)
 
 

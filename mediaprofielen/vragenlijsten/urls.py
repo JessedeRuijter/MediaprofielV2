@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^changepassword/$', changePasswordView.as_view(), name='currentuser'),
 	url(r'^currentuser/$', currentUserView.as_view(), name='currentuser'),
 	url(r'^currentorganisation/$', currentOrganisationView.as_view(), name='currentorganisation'),
-	url(r'^maxpoints/$', maxPointsView.as_view(), name='maxpoints'),
+	url(r'^maxpoints/(\d*)$', maxPointsView.as_view(), name='maxpoints'),
 	url(r'^csv/([0-9]+)$', csv_view, name='csv')
 ]
