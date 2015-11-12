@@ -1,0 +1,172 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="tips-netwerker">
+  <template>   
+
+    <link rel="stylesheet" href="../../../css/enquetepage.css">
+    <link rel="import" href="../../../bower_components/font-roboto/roboto.html">
+    <link rel="import" href="../../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+    <link rel="import" href="../../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
+   
+    <div class="vertical layout center">
+      <iron-image style="height: 150px; width:150px" sizing="contain" src="../../../images/Netwerker.png"></iron-image>
+      <p class="profileText noselect" style="margin: 10px;" id="transitonText">Ontwikkel verder als Consument.</p>
+
+      <div class="vertical layout noselect">
+        <div class="horizontal layout center" id="imageElements">
+          <div class="imageSelector" style="border-color:rgba(28,187,180,0.3); border-bottom-color: white; border-style: solid;" on-click="setProfile">
+            <iron-image id="0" style="height: 100px; width: 100px;" sizing="contain" src="../../../images/Consument.png"></iron-image>
+          </div>
+          <div style="width:10px;"></div>
+          <div class="imageSelector" on-click="setProfile">
+            <iron-image id="1" style="height: 100px; width: 100px;" sizing="contain" src="../../../images/Verzamelaar.png"></iron-image>
+          </div>
+          <div style="width:10px;"></div>
+          <div class="imageSelector" on-click="setProfile">
+            <iron-image id="2" style="height: 100px; width: 100px;" sizing="contain" src="../../../images/Strateeg.png"></iron-image>
+          </div>
+          <div style="width:10px;"></div>
+          <div class="imageSelector" on-click="setProfile">
+            <iron-image id="3" style="height: 100px; width: 100px;" sizing="contain" src="../../../images/Netwerker.png"></iron-image>
+          </div>
+          <div style="width:10px;"></div>
+          <div class="imageSelector" on-click="setProfile">
+            <iron-image id="4" style="height: 100px; width: 100px;" sizing="contain" src="../../../images/Producent.png"></iron-image>
+          </div>
+        </div>
+        <div id="imageSelected">
+          
+          <neon-animated-pages id="profilePages" class="flex noselect" style="height: 50px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+
+            <div>
+              <p class="profileText" style="margin: 0px;">1. Gebruik verschillende zoekmachines en bronnen bij zoekopdrachten. </p>
+              <ul class="profileText" style="margin: 0px;">
+                <li>Google Scholar voor wetenschappelijke artikelen.</li>
+                <li>Vinden.nl: een metazoekmachine.</li>
+                <li>www.vandale.nl (woordenboek).</li>
+              </ul>
+              <p class="profileText" style="margin: 0px;">
+                2. Beter zoeken: maak eerst een mindmap over het onderwerp en bepaal dan de zoekwoorden. 
+                <br><br><b>Resultaat: efficiënt en effectief informatie vinden.</b></p>
+            </div>
+
+            <div>
+              <p class="profileText" style="margin: 0px;">1. Gebruik sociale bookmarking om de informatie te ordenen.</p>
+              <ul class="profileText" style="margin: 0px;">
+                <li>www.diigo.com.</li>
+              </ul>
+              <p class="profileText" style="margin: 0px;">2. Gebruik social media om afbeeldingen, websites en video’s handig te organiseren en te delen.</p>
+              <ul class="profileText" style="margin: 0px;">
+                <li>www.pinterest.com.</li>
+                <li>YouTube: videokanaal.</li>
+                <li>www.flickr.com.</li>
+              </ul>
+              <p class="profileText" style="margin: 0px;"><br><b>Resultaat: beter terugvinden en delen van informatie.</b></p>
+            </div>
+
+            <div>
+              <p class="profileText" style="margin: 0px;">1. Maak een profiel aan op een professionele sociale media (bv Linkedin) en wordt lid van 2 groepen.<br>
+                2. Discussieer met een media-expert in de organisatie over het gebruik van sociale media.</p>
+              <p class="profileText" style="margin: 0px;"><br><b>Resultaat:</b></p>
+              <ul class="profileText" style="margin: 0px;">
+                <li>Uitbreiding van je sociale netwerk.</li>
+                <li>Visievorming over gebruik sociale media.</li>
+              </ul>
+            </div>
+
+            <div>
+              <p class="profileText" style="margin: 0px;">1. Maak, upload en bewerk een foto.</p>
+              <ul class="profileText" style="margin: 0px;">
+                <li>Bv. https://pixlr.com/.</li>
+                <li>Kijk op YouTube voor instructievideo’s.</li>
+              </ul>
+              <p class="profileText" style="margin: 0px;">2. Maak een presentatie met een andere tool.</p>
+              <ul class="profileText" style="margin: 0px;">
+                <li>Bv. prezi.com  (kijk op YouTube voor instructievideo’s).</li>
+              </ul>
+              <p class="profileText" style="margin: 0px;"><br><b>Resultaat:</b></p>
+              <ul class="profileText" style="margin: 0px;">
+                <li>Leren aanpassen van foto’s voor presentaties en en profielen.</li>
+                <li>Een presentatie beter leren afstemmen op je publiek.</li>
+              </ul>
+            </div>
+
+            <div>
+              <p class="profileText" style="margin: 0px;">1. Zoek en vergelijk twee bloggen over een bepaald onderwerp.<br>
+                2. Stel een vraag op sociale media, bv. #DTV op Twitter.</p>
+              <p class="profileText" style="margin: 0px;"><br><b>Resultaat:</b></p>
+              <ul class="profileText" style="margin: 0px;">
+                <li>Een gefundeerde mening geven over een bepaald onderwerp.</li>
+                <li>Verwondering en nieuwe manier om antwoord te vinden op vragen.</li>
+              </ul>
+            </div>
+
+          </neon-animated-pages>
+        </div>
+      </div>
+    
+    </div>
+
+  </template>
+
+</dom-module>
+<script>
+
+  Polymer({
+    is: "tips-netwerker",
+
+    properties: {
+      selectedprofile: {
+        type: Number,
+        value: 0
+      },
+      colors: {
+        type: Array,
+        value: ['rgba(28,187,180,0.3)','rgba(172,211,115,0.3)','rgba(251,175,93,0.3)','rgba(242,109,125,0.3)','rgba(168,100,168,0.3)']
+      },
+      entryAnimation:{
+        type: String
+      },
+      exitAnimation:{
+        type: String
+      },
+      selectedPage: {
+        type: Number,
+        value: 0
+      }
+    },
+    
+    setProfile: function(sender){
+
+      if(sender.toElement.nodeName == "IRON-IMAGE"){
+        var transitonTexts = ["Ontwikkel verder als Consument.",  "Van Consument naar Verzamelaar.", "Van Consument naar Strateeg.",  "Van Consument naar Netwerker.", "Van Consument naar Producent."];
+        var newSelected = sender.toElement.id;
+        var children = this.$.imageElements.children;
+        for (var i = 0; i < 5; i++){
+
+          if (i == newSelected){
+            children[2 * i].style.borderColor = this.colors[i];
+            children[2 * i].style.borderBottomColor = "white";
+            children[2 * i].style.borderStyle = "solid";
+            this.$.imageSelected.style.borderTopColor = this.colors[i];
+          }
+          else{
+            children[2 * i].style.borderStyle = "none";
+          }
+        }
+        if (newSelected > this.selectedPage) {          
+          this.entryAnimation = 'slide-from-right-animation';
+          this.exitAnimation = 'slide-left-animation';
+        }
+        else{
+          this.entryAnimation = 'slide-from-left-animation';
+          this.exitAnimation = 'slide-right-animation'; 
+        }
+        this.$.profilePages.selected = newSelected;
+        this.selectedPage = newSelected;
+        this.$.transitonText.innerHTML = transitonTexts[newSelected];
+
+      }
+    }
+  });
+</script>
