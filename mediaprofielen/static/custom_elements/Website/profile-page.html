@@ -12,11 +12,18 @@
     <link rel="import" href="../../bower_components/google-chart/google-chart.html">
 
     <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-    <iron-ajax auto
-      id="currentu"
+    <iron-ajax
+      id="getCurrentUser"
       url='/api/currentuser'
       last-response="{{currentuser}}"
-      on-response="handleResponse"
+      on-response="handleResponseUser"
+      handleAs="json">
+    </iron-ajax>
+
+    <iron-ajax
+      id="getMaxPoints"
+      last-response="{{maxpoints}}"
+      on-response="handleResponsePoints"
       handleAs="json">
     </iron-ajax>
 
@@ -29,7 +36,7 @@
               type='pie'
               class="pieChart"
               cols='[{"label":"Profile", "type":"string"}, {"label":"Score", "type":"number"}]'>
-            </google-chart>
+            </google-chart>  
 
             <div id="profileStateList" class="horizontal layout center" on-click="selectProfile">
               <span class="profileStateBigIcon" id="0" style="border-color:#1cbbb4"></span>
@@ -83,10 +90,10 @@
 
         <link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
         <link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
-        <neon-animated-pages id="tabPages" class="flex" style="height: 750px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+        <neon-animated-pages id="tabPages" class="flex" style="height: 850px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 
-          <div class="vertical layout">
-            <neon-animated-pages id="profilePages" style="height: 700px; padding-bottom: 50xp;" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+          <div class="vertical layout noselect">
+            <neon-animated-pages id="profilePages" style="height: 800px; padding-bottom: 50xp;" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
               <div class="vertical layout center">
                 <p class="profileTitleText">Consument</p>
                 <iron-image style="height: 200px;" src="../../images/Consument.png"></iron-image>
@@ -151,14 +158,28 @@
 
     properties:{
     	entryAnimation:{
-    		type: String
+    		type: String,
+        value: 'slide-from-right-animation'
     	},
     	exitAnimation:{
-    		type: String
-    	}
+    		type: String,
+        value: 'slide-left-animation'
+    	},
+      isactive:{
+        type: Boolean,
+        value: false
+      },
+      maxpoints:{
+        type: Object,
+        value: {}
+      }
     },
 
-    ready: function(){
+    observers:[
+      'pageHasChanged(isactive)'
+    ],
+
+    ready: function(){      
       this.$.pieChart.options = {
         legend: 'none',
         pieHole: 0.5,
@@ -176,12 +197,6 @@
         },
         pieSliceBorderColor: "transparent"
       };
-      this.$.lineChart.data = [
-        ["Invulmoment", "Consument", "Verzamelaar", "Strateeg", "Netwerker", "Producent"],
-        ["15 juni", 1,2,3,4,1],        
-        ["2 juli", 6,1,1,2,5],
-        ["18 augustus",5,2,3,2,1]
-      ];
 
       this.$.lineChart.options = {
         chart: {
@@ -208,63 +223,99 @@
         }
       };
 
-    },
-    handleResponse: function(){
-      var profiles = this.currentuser.user.profiel;
-      this.rows = new Array(5);
-      var profileNames = ["consument", "verzamelaar", "strateeg", "netwerker", "producent"];
-
-      for (var i = 0; i < profiles.length; i++){
-        if (profiles[i].invulmoment == this.currentuser.invulmoment.id) {
-          for (var j = 0; j < 5; j++) {
-            this.rows[j] = [profileNames[j], profiles[i][profileNames[j]]];
-          }
+      var chart = document.querySelector('#pieChart');
+      document.addEventListener('google-chart-select', function(e) {
+        var next = chart.selection[0] ? chart.selection[0].row : "Done";
+        var pp = document.getElementById("profilePages");
+        if (next != pp.selected){
+          selectProfile(document.querySelectorAll('#profileStateList'), parseInt(pp.selected), parseInt(next));
+          pp.selected = next;
         }
-      }
-      this.$.pieChart.rows = this.rows;
+      });
+  
     },
+    handleResponseUser: function(){
+      if(this.currentuser.user.profiel.length > 0){
+        var profiles = this.currentuser.user.profiel;
+        this.rows = new Array(5);
+        var profileNames = ["consument", "verzamelaar", "strateeg", "netwerker", "producent"];
+
+        for (var i = 0; i < profiles.length; i++)
+          if (profiles[i].invulmoment.id == this.currentuser.invulmoment.id)
+            for (var j = 0; j < 5; j++)
+              this.rows[j] = [profileNames[j], profiles[i][profileNames[j]]];
+
+        this.$.pieChart.rows = this.rows;
+
+        var data = new Array(profiles.length);
+        for (var i = 0; i < profiles.length; i++) {
+          data[i] = [profiles[i].invulmoment.time, profiles[i].consument, profiles[i].verzamelaar, profiles[i].strateeg, profiles[i].netwerker, profiles[i].producent];
+        }
+
+        //console.log(sortData([], [["1990-20-11",1],["1950-20-11",1],["1960-15-12",1],["1960-15-11",1]]))
+        var dataTemp = sortData([], data);
+        dataTemp.unshift(["Invulmoment", "Consument", "Verzamelaar", "Strateeg", "Netwerker", "Producent"]);
+        console.log(dataTemp);
+
+        this.$.lineChart.data = dataTemp;
+
+        this.$.getMaxPoints.url = '/api/maxpoints'; //+ this.currentuser.invulmoment.enquete.id;
+        this.$.getMaxPoints.generateRequest();
+      }
+
+    },
+
+    handleResponsePoints: function(){
+      if(this.currentuser.user.profiel.length > 0){
+        var profileStates = document.querySelectorAll("#profileStateList");
+        profileStates[0].children[3].innerHTML = getStars(5*this.rows[0][1]/this.maxpoints.Consument)
+        profileStates[1].children[3].innerHTML = getStars(5*this.rows[1][1]/this.maxpoints.Verzamelaar)
+        profileStates[2].children[3].innerHTML = getStars(5*this.rows[2][1]/this.maxpoints.Strateeg)
+        profileStates[3].children[3].innerHTML = getStars(5*this.rows[3][1]/this.maxpoints.Netwerker)
+        profileStates[4].children[3].innerHTML = getStars(5*this.rows[3][1]/this.maxpoints.Producent)
+
+      }
+
+    },
+
     pageHasChanged: function(){
-      this.$.pieChart.rows = this.rows;
+      if(this.isactive)
+      {
+        this.$.getCurrentUser.generateRequest();
+      }
     },
 
     selectProfile: function(ding){
       if(ding.toElement.id != "profileStateList"){
         var next = ding.toElement.parentNode.children[0].id;
         if(parseInt(next) != this.$.profilePages.selected){
-          if(parseInt(next) > this.$.profilePages.selected){
-            this.entryAnimation = 'slide-from-right-animation';
-            this.exitAnimation = 'slide-left-animation';
-          }
-          else{
-            this.entryAnimation = 'slide-from-left-animation';
-            this.exitAnimation = 'slide-right-animation'; 
-          }
-
+          this.setAnimations(next);
           selectProfile(document.querySelectorAll('#profileStateList'), parseInt(this.$.profilePages.selected), parseInt(next));
           this.$.profilePages.selected = next;
-          this.selected = parseInt(next);
         }
       }
     },
     selectTab: function(ding){
       var next = ding.toElement.id;
       if(parseInt(next) != this.$.tabPages.selected){
-        if(parseInt(next) > this.$.tabPages.selected){
-          this.entryAnimation = 'slide-from-right-animation';
-          this.exitAnimation = 'slide-left-animation';
-        }
-        else{
-          this.entryAnimation = 'slide-from-left-animation';
-          this.exitAnimation = 'slide-right-animation'; 
-        }
-
+        
+        this.setAnimations(next);
         var e = document.querySelectorAll('#tabList');
         e[parseInt(next)].children[0].className = "tabSelectedText";
         e[parseInt(this.$.tabPages.selected)].children[0].className = "tabText";
 
-        //selectProfile(document.querySelectorAll('#profileStateList'), parseInt(this.$.tabPages.selected), parseInt(next));
         this.$.tabPages.selected = next;
-        this.selected = parseInt(next);
+      }
+    },
+
+    setAnimations: function(next){
+      if(parseInt(next) > this.$.tabPages.selected){
+        this.entryAnimation = 'slide-from-right-animation';
+        this.exitAnimation = 'slide-left-animation';
+      }
+      else{
+        this.entryAnimation = 'slide-from-left-animation';
+        this.exitAnimation = 'slide-right-animation'; 
       }
     }
   });
@@ -275,9 +326,76 @@ function selectProfile(elements, oldB, newB){
 
     elements[oldB].children[0].className = "profileStateIcon";
     elements[newB].children[0].className = "profileStateBigIcon";
+
+    elements[oldB].children[3].className = "scoreIcon";
+    elements[newB].children[3].className = "scoreSelectedIcon";
      
   };
 
+function getStars(score){
+  var resultString = "";
+  var floor = Math.floor(score);
+  var ceil = 5 - Math.floor(score);
+  if(score % 1 >= 0.75)
+    floor++;
+  if(score % 1 >= 0.25)
+    ceil--;
 
+  for (var i = 0; i < floor; i++)
+    resultString += " ";
+
+  if (score % 1 >= 0.25 && score % 1 < 0.75)
+    resultString += " ";
+
+  for (var i = 0; i < ceil; i++)
+    resultString += " ";
+
+
+  return resultString;
+};
+
+function sortData(result, data){
+  if(data.length > 1){
+    var lowest = "9999-99-99";
+    var lowestIndex = 0;
+    for (var i = 0; i < data.length; i++)
+      if (compareTime(data[i][0], lowest)){
+        lowest = data[i][0];
+        lowestIndex = i;
+      }
+
+    result.push(data.splice(lowestIndex, 1)[0]);
+    console.log(result)
+    result = sortData(result, data);
+    return result;
+  }
+  else{
+    result.push(data[0]);
+    return result;
+  }
+}
+
+function compareTime(time1, time2){
+  var t1 = time1.split('-');
+  var t2 = time2.split('-');
+  if (t1[0] < t2[0])
+    return true;
+  else if (t1[0] > t2[0])
+    return false;
+  else{
+    if (t1[1] < t2[1])
+      return true;
+    else if (t1[1] > t2[1])
+      return false;
+    else{
+      if (t1[1] < t2[1])
+        return true;
+      else if (t1[1] > t2[1])
+        return false;
+      else
+        return true;
+    }
+  }
+};
 
 </script>

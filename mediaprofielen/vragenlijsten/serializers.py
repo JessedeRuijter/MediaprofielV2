@@ -2,7 +2,14 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from models import *
 
+
+class InvulmomentMinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Invulmoment
+        fields = ('id', 'time')
+
 class ProfielSerializer(serializers.ModelSerializer):
+    invulmoment = InvulmomentMinSerializer()
     class Meta:
         model = Profiel
         fields = ('invulmoment', 'user', 'consument','verzamelaar','strateeg', 'netwerker', 'producent')
@@ -69,10 +76,14 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
         model = Answer
         fields = ('blockID', 'answers')
 
+class OrganisationNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organisation
+        fields = ('id','name')
+
 class InvulMomentSerializer(serializers.ModelSerializer):
-    organisation = OrganisationSerializer()
+    organisation = OrganisationNameSerializer()
     enquete = EnqueteSerializer()
     class Meta:
         model = Invulmoment
         fields = ('id','organisation', 'time', 'enquete')
-

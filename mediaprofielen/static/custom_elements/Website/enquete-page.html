@@ -118,14 +118,8 @@ HTMLImports.whenReady(function() {
     	blockAnswer: {
     		type: Array
     	},
-    	finished: {
-    		type: String,
-    		value: "false",  		
-        	notify: true
-    	},
-    	invulmomentID: {
-    		type: Number,
-    		value: 2
+    	invulmoment: {
+    		type: Number
     	}
     },
     observers: [
@@ -302,8 +296,7 @@ HTMLImports.whenReady(function() {
         return b ? b.pop() : '';
     },
 	postAnswers: function(last){
-		console.log(this.invulmomentID);
-		var data = JSON.stringify({"blockID": this.blocklist[this.blockSelected].id, "answers": this.blockAnswer[this.blockSelected].toString(), "last": last, "invulmoment": this.invulmomentID });
+		var data = JSON.stringify({"blockID": this.blocklist[this.blockSelected].id, "answers": this.blockAnswer[this.blockSelected].toString(), "last": last, "invulmoment": this.invulmoment });
         console.log(data);
         this.$.answerPost.headers = {
             "X-CSRFToken": this.getCSRFCookie(),

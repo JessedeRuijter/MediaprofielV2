@@ -33,10 +33,6 @@
 			--paper-input-container-input-color: white;
 		}
     </style>
-    <!-- <paper-drawer-panel> -->
-    	<!-- <div class="flex" drawer>
-    	</div> -->
-		<!-- <div main> -->
 		<div class="vertical layout background fit" on-scroll="updateSidePanelPos">
     		<div class="vertical layout">
 		    	<div class="horizontal layout">
@@ -98,37 +94,22 @@
 				<neon-animated-pages id="pages" class="flex"  selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 			    	<div>		    	
 					    <link rel="import" href="enquete-page.html">
-					    <enquete-page finished="{{finish}}" id="enquetePage" invulmomentID="{{currentuser.invulmoment.id}}" enquete="{{currentuser.invulmoment.enquete}}"></enquete-page>
+					    <enquete-page id="enquetePage" invulmoment="{{currentuser.invulmoment.id}}" enquete="{{currentuser.invulmoment.enquete}}"></enquete-page>
 					</div>
 
 					<div>
 						<link rel="import" href="profile-page.html">
-						<profile-page></profile-page>
+						<profile-page id="profilePage"></profile-page>
 					</div>
 				</neon-animated-pages>
 			</div>
     	</div>	
-    	<!-- <link rel="import" href="question-profile.html">
-    	<div id="profileOverlay" class="vertical layout center fit" style="background-color:rgba(0,0,0,0.3); overflow-y:auto;">
-			<question-profile></question-profile>	
-    	</div>    --> 
-	<!-- </paper-drawer-panel> -->
   </template>
 
 </dom-module>
 <script>
   Polymer({
     is: "home-screen",
-
-    properties: {
-    	finish: {
-    		type: String,
-    		value: "false"
-    	}
-    },
-    observers: [
-        'finishedHasChanged(finish)'
-    ],
 
     handleResponse: function() {
     	this.organisationName = this.currentuser.invulmoment.organisation.name;
@@ -139,6 +120,7 @@
 	    this.$.pages.selected = "0";
 	    this.$.leftTab.className = "tabActivated";
 	    this.$.rightTab.className = "tab";
+	    this.$.profilePage.isactive = false;
 	},
 	switchLeft: function() {
 	    this.entryAnimation = 'slide-from-right-animation';
@@ -146,7 +128,7 @@
 	    this.$.pages.selected = "1";
 	    this.$.leftTab.className = "tab";
 	    this.$.rightTab.className = "tabActivated";
-
+	    this.$.profilePage.isactive = true;
 	},
 
 	updateSidePanelPos: function(){
@@ -214,11 +196,6 @@
       		this.$.passwordCheckIcon.innerHTML = "";
       		this.$.changePasswordButton.disabled = true;
       	}
-      },
-
-      finishedHasChanged: function(e){
-      	if (e == "true")
-      		this.switchLeft();
       },
 
       logout: function(){
