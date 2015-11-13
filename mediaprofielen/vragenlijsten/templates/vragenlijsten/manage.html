@@ -1,0 +1,17 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Mediaprofielen Manager</title>
+</head>
+<body>
+	<h4>Welkom, selecteer een lijst en voer een naam in om een organisatie te maken.</h4>
+	<p>{{message}}</p>
+	{% if form %}
+	<form action="/manage/" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+    {% endif %}
+</form>
+</body>
+</html>

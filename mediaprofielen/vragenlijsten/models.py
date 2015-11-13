@@ -49,8 +49,6 @@ class Enquete(models.Model):
 class Organisation(models.Model):
 	name = models.CharField(max_length=200)
 	color = models.CharField(max_length=100)
-	csvMembers	= models.FileField() 
-	csvOwners	= models.FileField() 
 	owners = models.ManyToManyField(User, related_name="owners", blank=True)
 	members = models.ManyToManyField(User, related_name="members", blank=True)
 	def __unicode__(self):
@@ -135,12 +133,12 @@ class Profiel(models.Model):
 
 # Signals:
 
-@receiver(post_save, sender=User)
-def user_save_handler(sender, **kwargs):
-	if kwargs['created']:
-		newUser = kwargs['instance']
-		newProfile = Profiel(time=timezone.now(), user=newUser)
-		newProfile.save()
+# @receiver(post_save, sender=User)
+# def user_save_handler(sender, **kwargs):
+# 	if kwargs['created']:
+# 		newUser = kwargs['instance']
+# 		newProfile = Profiel(user=newUser)
+# 		newProfile.save()
 	# user = kwargs['instance']
 	# password = User.objects.make_random_password()
 	# message = "Welkom bij Mediaprofielen {0}, je wachtwoord is {1} ".format(user.username, password)
@@ -149,42 +147,42 @@ def user_save_handler(sender, **kwargs):
  # #    ['to@example.com'], fail_silently=False)
 	# user.set_password(password)
 
-@receiver(post_save, sender=Organisation)
-def organisation_save_handler(sender, **kwargs):
-	organisation = kwargs['instance']
-	organisation.csvMembers.open(mode='rb')
-	organisation.csvOwners.open(mode='rb')
-	for line in organisation.csvMembers.read().splitlines(): 
-		if validate_email(line):
-			print "Valid:"
-			print line
-			password = User.objects.make_random_password()
-			if User.objects.filter(username=line):
-				newUser = User.objects.filter(username=line)[0]
-			else:
-				newUser = User(username=line.lower(), email=line)
-				newUser.set_password(password)
-				# message = "Welkom bij Mediaprofielen {0}, je wachtwoord is {1} ".format(newUser.username, password)
-				# send_mail('Welkom bij Mediaprofielen', message, 'mediaprofielen', [line], fail_silently=False)
-				newUser.save()
-			organisation.members.add(newUser)
-		else:
-			print "Non valid email:"
-			print line
-	for line in organisation.csvOwners.readlines():
-		if validate_email(line):
-			print "Valid:"
-			print line
-			password = User.objects.make_random_password()
-			if User.objects.filter(username=line):
-				newUser = User.objects.filter(username=line)[0]
-			else:
-				newUser = User(username=line.lower(), email=line)
-				newUser.set_password(password)
-				# message = "Welkom bij Mediaprofielen {0}, je wachtwoord is {1} ".format(newUser.username, password)
-				# send_mail('Welkom bij Mediaprofielen', message, 'mediaprofielen', [line], fail_silently=False)
-				newUser.save()
-			organisation.owners.add(newUser)
-		else:
-			print "Non valid email:"
-			print line
+# @receiver(post_save, sender=Organisation)
+# def organisation_save_handler(sender, **kwargs):
+# 	organisation = kwargs['instance']
+# 	organisation.csvMembers.open(mode='rb')
+# 	organisation.csvOwners.open(mode='rb')
+# 	for line in organisation.csvMembers.read().splitlines(): 
+# 		if validate_email(line):
+# 			print "Valid:"
+# 			print line
+# 			password = User.objects.make_random_password()
+# 			if User.objects.filter(username=line):
+# 				newUser = User.objects.filter(username=line)[0]
+# 			else:
+# 				newUser = User(username=line.lower(), email=line)
+# 				newUser.set_password(password)
+# 				# message = "Welkom bij Mediaprofielen {0}, je wachtwoord is {1} ".format(newUser.username, password)
+# 				# send_mail('Welkom bij Mediaprofielen', message, 'mediaprofielen', [line], fail_silently=False)
+# 				newUser.save()
+# 			organisation.members.add(newUser)
+# 		else:
+# 			print "Non valid email:"
+# 			print line
+# 	for line in organisation.csvOwners.readlines():
+# 		if validate_email(line):
+# 			print "Valid:"
+# 			print line
+# 			password = User.objects.make_random_password()
+# 			if User.objects.filter(username=line):
+# 				newUser = User.objects.filter(username=line)[0]
+# 			else:
+# 				newUser = User(username=line.lower(), email=line)
+# 				newUser.set_password(password)
+# 				# message = "Welkom bij Mediaprofielen {0}, je wachtwoord is {1} ".format(newUser.username, password)
+# 				# send_mail('Welkom bij Mediaprofielen', message, 'mediaprofielen', [line], fail_silently=False)
+# 				newUser.save()
+# 			organisation.owners.add(newUser)
+# 		else:
+# 			print "Non valid email:"
+# 			print line

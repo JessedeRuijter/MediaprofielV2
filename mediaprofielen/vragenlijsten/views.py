@@ -7,10 +7,41 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from models import *
-from utils import addScore, getMaxPoints
+from utils import addScore, getMaxPoints, getEnquetes
 import csv, unicodedata
 from django.contrib.auth import logout
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
+from django import forms
+from mailchimp_utils import getLists, makeOrganisation
+import random
+
+
+class ManageForm(forms.Form):
+    organisatie_naam = forms.CharField(max_length = 100, required = False)
+    mailchimp_lijst = forms.ChoiceField(choices = getLists())
+    enquete_id = forms.ChoiceField(choices = getEnquetes())
+
+
+def manageView(request):
+    if request.method == "POST":
+        form = ManageForm(request.POST)
+        if form.is_valid():
+            formdata = form.cleaned_data
+            r = lambda: random.randint(0,255)
+            color = '#%02X%02X%02X' % (r(),r(),r())
+            org_check = Organisation.objects.filter(name=formdata['organisatie_naam'])
+            if org_check.count() == 0:
+                result = makeOrganisation(formdata['organisatie_naam'], formdata['mailchimp_lijst'], formdata['enquete_id'], color)
+                if result != True:
+                    return render(request, 'vragenlijsten/manage.html', {'message':result})
+                else:
+                    return render(request, 'vragenlijsten/manage.html', {'message':"Organisatie toegevoegd!"})
+            else:
+                return render(request, 'vragenlijsten/manage.html', {'message':"Er bestaat al een organisatie met deze naam(niet toegevoegd)!"})
+        else:
+            return render(request, 'vragenlijsten/manage.html', {'message':"Verkeerde input!"})
+    form = ManageForm() 
+    return render(request, 'vragenlijsten/manage.html', {'form':form})
 
 @login_required
 def index(req):

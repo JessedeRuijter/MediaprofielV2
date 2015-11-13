@@ -6,6 +6,9 @@ Deze module bevat alle helper functies die in views gebruikt worden
 from django.contrib.auth.models import User
 from models import QuestionBlock, Enquete, Question, QuestionChoice, Answer, ProfileText, Invulmoment, Profiel
 
+def getEnquetes():
+	return map(lambda enq : (enq.id, enq.name), Enquete.objects.all())
+
 def getMaxPointsEnquete(enquete):
 	# enquetes = Enquete.objects.all()
 	result = {}
