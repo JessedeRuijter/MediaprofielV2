@@ -1,0 +1,131 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="home-screen-organisation">
+  <template>
+    <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+  	<link rel="stylesheet" href="../../css/enquetepage.css">
+  	<link rel="stylesheet" href="../../css/ionicons.min.css">
+  	<link rel="import" href="../../bower_components/font-roboto/roboto.html">
+  	<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+  	<link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
+
+  	<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+	<iron-ajax auto
+	    id="currento"
+		url='/api/currentorganisation'
+		last-response="{{currentorganisation}}"
+		handleAs="json"
+	    debounce-duration="300">
+	</iron-ajax>
+
+	<iron-ajax auto
+	    id="currentu"
+		url='/api/currentuser'
+		last-response="{{currentuser}}"
+		handleAs="json"
+	    debounce-duration="300">
+	</iron-ajax>
+
+  	<div class="background vertical layout fit">
+    	<div class="horizontal layout">
+    		<div class="organisationPanel">
+    			<span class="organisationText">{{currentuser.user.username}}</span>
+    		</div>
+		    <div class="flex"></div>
+		    <div style="margin: 30px;">
+		    	<span class="menuIcon" on-click="openOverlay"></span>
+		    </div>
+		</div>
+		<div style="height: 100px;"></div>
+		<div class="horizontal layout flex">
+			<div class="flex horizontal layout">
+				<div class="flex"></div>
+				<div class="vertical layout">
+					<template is="dom-repeat" items="{{currentorganisation}}">
+						<div>
+							<p>{{item.Name}}</p>
+						</div>
+					</template>
+				</div>
+				<div class="flex"></div>
+			</div>
+			<div class="middlePanel card" style="background-color: white;">
+				<div class="horizontal layout center">
+					<div class="flex"></div>
+					<p class="organisationTabSelectedText">Overzicht</p>
+					<p class="organisationTabText">Grafieken</p>
+					<p class="organisationTabText">Ledenlijst</p>
+				</div>
+
+				<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+				<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
+
+				<neon-animated-pages id="pages" class="flex"  selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+				    <div class="vertical layout" style="padding: 20px 120px 50px 120px;">
+				    	<p class="overviewTitleText">Broeitest</p>
+
+				    	<div class="vertical layout center">
+				          <div class="seperator" style="margin: 20px;"></div>    
+				        </div>
+ 						
+
+				    	<p class="overviewSubTitleText">Algemene Informatie</p>
+
+ 						<div class="horizontal layout">
+				    		<div class="vertical layout flex" >
+					    		<p class="overviewText">Organisatie:</p>
+					    		<p class="overviewText">Eigenaren:</p>
+				    			<p class="overviewText">Leden aantal:</p>
+				    		</div>
+				    		<div class="flex"></div>
+				    		<div class="vertical layout flex">
+					    		<p class="overviewText">Organisatie:</p>
+					    		<p class="overviewText">Eigenaren:</p>
+				    			<p class="overviewText">Leden aantal:</p>
+				    		</div>
+				    	</div>
+
+			    		<div class="vertical layout center">
+				          <div class="seperator" style="margin: 20px;"></div>    
+				        </div>
+
+				    	<p class="overviewSubTitleText">Invulmomenten</p>
+
+				        <div class="horizontal layout">
+				    		<div class="vertical layout flex">
+				    			<p class="overviewText">Aantal invulmomenten:</p>
+				    			<!-- <template is="dom-repeat" items="{{invulmomenten}}">
+				    			</template> -->
+				    		</div>
+				    		<div class="flex"></div>
+				    		<div class="vertical layout flex">
+				    			<p class="overviewText">Aantal invulmomenten:</p>
+				    		</div>
+				    	</div>
+					</div>
+
+					<div>
+					</div>
+
+					<div>
+					</div>
+				</neon-animated-pages>
+
+			</div>
+			<div class="flex"></div>
+		</div>
+
+  	</div>
+  </template>
+
+</dom-module>
+<script>
+  Polymer({
+    is: "home-screen-organisation",
+
+    properties:{
+    }
+  });
+
+</script>

@@ -90,6 +90,8 @@
 	    </div>
 	    <div class="flex"></div>
 	</div>
+	<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+	<paper-toast id="confirmPost" style="font-family: Roboto;" duration="2000" text="Antwoorden zijn ingeleverd. Bekijk de profielpagina voor je resultaten."></paper-toast>
 </template>
 
 </dom-module>
@@ -296,6 +298,9 @@ HTMLImports.whenReady(function() {
         return b ? b.pop() : '';
     },
 	postAnswers: function(last){
+		if(last == "true"){
+			this.$.confirmPost.show();
+		}
 		var data = JSON.stringify({"blockID": this.blocklist[this.blockSelected].id, "answers": this.blockAnswer[this.blockSelected].toString(), "last": last, "invulmoment": this.invulmoment });
         console.log(data);
         this.$.answerPost.headers = {
