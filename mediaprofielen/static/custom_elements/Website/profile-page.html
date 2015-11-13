@@ -32,6 +32,7 @@
 	  		<div class="vertical layout center fit" style="background-color: rgba(76,183,255,0.1);">
           <div class="vertical layout" id="sidePPanel">
             <google-chart
+              on-google-chart-select="chartSelect"
               id="pieChart"
               type='pie'
               class="pieChart"
@@ -90,10 +91,10 @@
 
         <link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
         <link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
-        <neon-animated-pages id="tabPages" class="flex" style="height: 850px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+        <neon-animated-pages id="tabPages" class="flex" style="height: 800px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 
           <div class="vertical layout noselect">
-            <neon-animated-pages id="profilePages" style="height: 800px; padding-bottom: 50xp;" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+            <neon-animated-pages id="profilePages" style="height: 750px; padding-bottom: 50xp;" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
               <div class="vertical layout center">
                 <p class="profileTitleText">Consument</p>
                 <iron-image style="height: 200px;" src="../../images/Consument.png"></iron-image>
@@ -130,6 +131,9 @@
           </div>
 
           <div>
+            <div class="vertical layout center">
+              <p class="profileTitleText" id="overviewGraphText">Consument</p>
+            </div>
             <google-chart
               id="lineChart"
               type='line'
@@ -139,7 +143,7 @@
 
           <div>
             <link rel="import" href="profile-tips.html">
-            <profile-tips selectedprofile="{{selected}}"></profile-tips>
+            <profile-tips entryanimation="{{entrya}}" exitanimation="{{exita}}" selectedprofile="{{selected}}"></profile-tips>
           </div>
 
         </neon-animated-pages>
@@ -179,17 +183,24 @@
       'pageHasChanged(isactive)'
     ],
 
-    ready: function(){      
+    ready: function(){   
+      this.profileNames = ["consument", "verzamelaar", "strateeg", "netwerker", "producent"];   
+      this.colorLight = ['#cbeef3', '#e3f2e8', '#efece5', '#eee2ea', '#e2e0f1'];
+      this.colorIntense = ["#1cbbb4","#acd373","#fbaf5d","#f26d7d","#a864a8"];
+      this.setChartOptions();
+    },
+
+    setChartOptions: function(){
       this.$.pieChart.options = {
         legend: 'none',
         pieHole: 0.5,
         backgroundColor: { fill:'transparent' },
         chartArea: { left:10, top:10 },
+        tooltip: { trigger: 'none' },
         height: 400,
         width: 400,
-        tooltip: { trigger: 'none' },
         slices: {
-          0: { color: '#cbeef3', textStyle: {color: "#1cbbb4"} },
+          0: { color: '#1cbbb4', textStyle: {color: "#FFFFFF"} },
           1: { color: '#e3f2e8', textStyle: {color: "#acd373"}  },
           2: { color: '#efece5', textStyle: {color: "#fbaf5d"}  },
           3: { color: '#eee2ea', textStyle: {color: "#f26d7d"}  },
@@ -211,10 +222,10 @@
         pointSize: 10,
         series: {
           0: { color: "#1cbbb4" },
-          1: { color: "#acd373" },
-          2: { color: "#fbaf5d" },
-          3: { color: "#f26d7d" },
-          4: { color: "#a864a8" }
+          1: { color: '#e3f2e8' },
+          2: { color: '#efece5' },
+          3: { color: '#eee2ea' },
+          4: { color: '#e2e0f1' }
         },
         axes: {
           x: {
@@ -222,76 +233,85 @@
           }
         }
       };
-
-      var chart = document.querySelector('#pieChart');
-      document.addEventListener('google-chart-select', function(e) {
-        var next = chart.selection[0] ? chart.selection[0].row : "Done";
-        var pp = document.getElementById("profilePages");
-        if (next != pp.selected){
-          selectProfile(document.querySelectorAll('#profileStateList'), parseInt(pp.selected), parseInt(next));
-          pp.selected = next;
-        }
-      });
-  
     },
+
+    chartSelect: function(){
+      var check = false;
+      var next;
+      if(this.$.pieChart.selection.length > 0){
+        check = true;
+        next = this.$.pieChart.selection[0].row;
+      }
+      if (check && next != this.$.profilePages.selected)
+        this.setProfileGraph(next);
+    },
+
+    setProfileGraph: function(next){
+      this.setAnimations(next, this.$.profilePages.selected);
+      this.setProfile(document.querySelectorAll('#profileStateList'), parseInt(this.$.profilePages.selected), parseInt(next));
+
+      this.$.profilePages.selected = next;
+      this.exita = this.exitAnimation;
+      this.entrya = this.entryAnimation;
+      this.selected = parseInt(next);
+
+    },
+
     handleResponseUser: function(){
       if(this.currentuser.user.profiel.length > 0){
-        var profiles = this.currentuser.user.profiel;
-        this.rows = new Array(5);
-        var profileNames = ["consument", "verzamelaar", "strateeg", "netwerker", "producent"];
-
-        for (var i = 0; i < profiles.length; i++)
-          if (profiles[i].invulmoment.id == this.currentuser.invulmoment.id)
-            for (var j = 0; j < 5; j++)
-              this.rows[j] = [profileNames[j], profiles[i][profileNames[j]]];
-
-        this.$.pieChart.rows = this.rows;
-
-        var data = new Array(profiles.length);
-        for (var i = 0; i < profiles.length; i++) {
-          data[i] = [profiles[i].invulmoment.time, profiles[i].consument, profiles[i].verzamelaar, profiles[i].strateeg, profiles[i].netwerker, profiles[i].producent];
-        }
-
-        //console.log(sortData([], [["1990-20-11",1],["1950-20-11",1],["1960-15-12",1],["1960-15-11",1]]))
-        var dataTemp = sortData([], data);
-        dataTemp.unshift(["Invulmoment", "Consument", "Verzamelaar", "Strateeg", "Netwerker", "Producent"]);
-        console.log(dataTemp);
-
-        this.$.lineChart.data = dataTemp;
-
-        this.$.getMaxPoints.url = '/api/maxpoints'; //+ this.currentuser.invulmoment.enquete.id;
+        
+        this.$.getMaxPoints.url = '/api/maxpoints/' + this.currentuser.invulmoment.enquete.id;
         this.$.getMaxPoints.generateRequest();
       }
 
     },
 
     handleResponsePoints: function(){
-      if(this.currentuser.user.profiel.length > 0){
-        var profileStates = document.querySelectorAll("#profileStateList");
-        profileStates[0].children[3].innerHTML = getStars(5*this.rows[0][1]/this.maxpoints.Consument)
-        profileStates[1].children[3].innerHTML = getStars(5*this.rows[1][1]/this.maxpoints.Verzamelaar)
-        profileStates[2].children[3].innerHTML = getStars(5*this.rows[2][1]/this.maxpoints.Strateeg)
-        profileStates[3].children[3].innerHTML = getStars(5*this.rows[3][1]/this.maxpoints.Netwerker)
-        profileStates[4].children[3].innerHTML = getStars(5*this.rows[3][1]/this.maxpoints.Producent)
+      var profiles = this.currentuser.user.profiel;
+      this.rows = new Array(5);
 
+      for (var i = 0; i < profiles.length; i++)
+        if (profiles[i].invulmoment.id == this.currentuser.invulmoment.id)
+          for (var j = 0; j < 5; j++)
+            this.rows[j] = [this.profileNames[j], profiles[i][this.profileNames[j]]/this.maxpoints[capitalizeFirstLetter(this.profileNames[j])]];
+
+      this.$.pieChart.rows = this.rows;
+
+      var data = new Array(profiles.length);
+      for (var i = 0; i < profiles.length; i++) {
+        data[i] = [
+          profiles[i].invulmoment.time, 
+          profiles[i].consument/this.maxpoints.Consument * 100, 
+          profiles[i].verzamelaar/this.maxpoints.Verzamelaar * 100, 
+          profiles[i].strateeg/this.maxpoints.Strateeg * 100, 
+          profiles[i].netwerker/this.maxpoints.Netwerker * 100, 
+          profiles[i].producent/this.maxpoints.Producent * 100];
       }
 
+      //console.log(sortData([], [["1990-20-11",1],["1950-20-11",1],["1960-15-12",1],["1960-15-11",1]]))
+      var dataTemp = sortData([], data);
+      dataTemp.unshift(["Invulmoment", "Consument", "Verzamelaar", "Strateeg", "Netwerker", "Producent"]);
+
+      this.$.lineChart.data = dataTemp;
+
+      var profileStates = document.querySelectorAll("#profileStateList");
+      profileStates[0].children[3].innerHTML = getStars(5*this.rows[0][1])
+      profileStates[1].children[3].innerHTML = getStars(5*this.rows[1][1])
+      profileStates[2].children[3].innerHTML = getStars(5*this.rows[2][1])
+      profileStates[3].children[3].innerHTML = getStars(5*this.rows[3][1])
+      profileStates[4].children[3].innerHTML = getStars(5*this.rows[4][1])
     },
 
     pageHasChanged: function(){
       if(this.isactive)
-      {
         this.$.getCurrentUser.generateRequest();
-      }
     },
 
     selectProfile: function(ding){
       if(ding.toElement.id != "profileStateList"){
         var next = ding.toElement.parentNode.children[0].id;
         if(parseInt(next) != this.$.profilePages.selected){
-          this.setAnimations(next);
-          selectProfile(document.querySelectorAll('#profileStateList'), parseInt(this.$.profilePages.selected), parseInt(next));
-          this.$.profilePages.selected = next;
+          this.setProfileGraph(next);
         }
       }
     },
@@ -299,7 +319,7 @@
       var next = ding.toElement.id;
       if(parseInt(next) != this.$.tabPages.selected){
         
-        this.setAnimations(next);
+        this.setAnimations(next, this.$.tabPages.selected);
         var e = document.querySelectorAll('#tabList');
         e[parseInt(next)].children[0].className = "tabSelectedText";
         e[parseInt(this.$.tabPages.selected)].children[0].className = "tabText";
@@ -308,8 +328,8 @@
       }
     },
 
-    setAnimations: function(next){
-      if(parseInt(next) > this.$.tabPages.selected){
+    setAnimations: function(next, prev){
+      if(parseInt(next) > prev){
         this.entryAnimation = 'slide-from-right-animation';
         this.exitAnimation = 'slide-left-animation';
       }
@@ -317,20 +337,31 @@
         this.entryAnimation = 'slide-from-left-animation';
         this.exitAnimation = 'slide-right-animation'; 
       }
+    },
+
+    setProfile: function(elements, oldB, newB){
+      elements[oldB].children[1].className = "profileStateText";
+      elements[newB].children[1].className = "profileStateSelectedText";
+
+      elements[oldB].children[0].className = "profileStateIcon";
+      elements[newB].children[0].className = "profileStateBigIcon";
+
+      elements[oldB].children[3].className = "scoreIcon";
+      elements[newB].children[3].className = "scoreSelectedIcon";
+
+      this.$.pieChart.options.slices[oldB].color = this.colorLight[oldB];
+      this.$.pieChart.options.slices[oldB].textStyle.color = this.colorIntense[oldB];
+      this.$.pieChart.options.slices[newB].color = this.colorIntense[newB];
+      this.$.pieChart.options.slices[newB].textStyle.color = "#FFFFFF";
+      this.$.pieChart.drawChart();
+
+      this.$.lineChart.options.series[oldB].color = this.colorLight[oldB];
+      this.$.lineChart.options.series[newB].color = this.colorIntense[newB];
+      this.$.lineChart.drawChart();
+
+      this.$.overviewGraphText.innerHTML = capitalizeFirstLetter(this.profileNames[newB]);
     }
   });
-
-function selectProfile(elements, oldB, newB){
-    elements[oldB].children[1].className = "profileStateText";
-    elements[newB].children[1].className = "profileStateSelectedText";
-
-    elements[oldB].children[0].className = "profileStateIcon";
-    elements[newB].children[0].className = "profileStateBigIcon";
-
-    elements[oldB].children[3].className = "scoreIcon";
-    elements[newB].children[3].className = "scoreSelectedIcon";
-     
-  };
 
 function getStars(score){
   var resultString = "";
@@ -353,7 +384,9 @@ function getStars(score){
 
   return resultString;
 };
-
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
 function sortData(result, data){
   if(data.length > 1){
     var lowest = "9999-99-99";
@@ -364,33 +397,38 @@ function sortData(result, data){
         lowestIndex = i;
       }
 
-    result.push(data.splice(lowestIndex, 1)[0]);
-    console.log(result)
+    result.push(formatDate(data.splice(lowestIndex, 1)[0]));
     result = sortData(result, data);
     return result;
   }
   else{
-    result.push(data[0]);
+    result.push(formatDate(data[0]));
     return result;
   }
+}
+
+function formatDate(data){
+  var splitted = data[0].split("-");
+  data[0] = splitted[2] + "-" + splitted[1] + "-" + splitted[0];
+  return data;
 }
 
 function compareTime(time1, time2){
   var t1 = time1.split('-');
   var t2 = time2.split('-');
-  if (t1[0] < t2[0])
+  if (t1[0] > t2[0])
     return true;
-  else if (t1[0] > t2[0])
+  else if (t1[0] < t2[0])
     return false;
   else{
-    if (t1[1] < t2[1])
+    if (t1[1] > t2[1])
       return true;
-    else if (t1[1] > t2[1])
+    else if (t1[1] < t2[1])
       return false;
     else{
-      if (t1[1] < t2[1])
+      if (t1[1] > t2[1])
         return true;
-      else if (t1[1] > t2[1])
+      else if (t1[1] < t2[1])
         return false;
       else
         return true;

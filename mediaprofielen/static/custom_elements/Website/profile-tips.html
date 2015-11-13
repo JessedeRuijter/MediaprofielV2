@@ -28,11 +28,15 @@
         <link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
         <link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
         <link rel="import" href="tips/tips-consument.html">
-        <neon-animated-pages id="profileTipPages" style="height: 500px; padding-bottom: 50xp;" class="flex" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+        <link rel="import" href="tips/tips-verzamelaar.html">
+        <link rel="import" href="tips/tips-strateeg.html">
+        <link rel="import" href="tips/tips-netwerker.html">
+        <link rel="import" href="tips/tips-producent.html">
+        <neon-animated-pages id="profileTipPages" style="height: 500px; padding-bottom: 50xp;" class="flex" selected="{{selectedprofile}}" entry-animation="[[entryanimation]]" exit-animation="[[exitanimation]]">
           <div>
             <tips-consument></tips-consument>
           </div>
-          <!-- <div>
+          <div>
             <tips-verzamelaar></tips-verzamelaar>
           </div>
           <div>
@@ -43,7 +47,7 @@
           </div>
           <div>
             <tips-producent></tips-producent>
-          </div> -->
+          </div>
         </neon-animated-pages>
       </div>
     </div>
@@ -61,19 +65,13 @@
         type: Number,
         value: 0
       },
-      colors: {
-        type: Array,
-        value: ['rgba(28,187,180,0.3)','rgba(172,211,115,0.3)','rgba(251,175,93,0.3)','rgba(242,109,125,0.3)','rgba(168,100,168,0.3)']
+      entryanimation:{
+        type: String,
+        value: 'slide-from-right-animation'
       },
-      entryAnimation:{
-        type: String
-      },
-      exitAnimation:{
-        type: String
-      },
-      selectedPage: {
-        type: Number,
-        value: 0
+      exitanimation:{
+        type: String,
+        value: 'slide-left-animation'
       }
     },
 
@@ -84,39 +82,6 @@
     hideInformation: function(){
       var d = document.querySelector(".informationContainer");
       d.style.display = "none";
-    },
-    
-    setProfile: function(sender){
-
-      if(sender.toElement.nodeName == "IRON-IMAGE"){
-        var transitonTexts = ["Ontwikkel verder als Consument.",  "Van Consument naar Verzamelaar.", "Van Consument naar Strateeg.",  "Van Consument naar Netwerker.", "Van Consument naar Producent."];
-        var newSelected = sender.toElement.id;
-        var children = this.$.imageElements.children;
-        for (var i = 0; i < 5; i++){
-
-          if (i == newSelected){
-            children[2 * i].style.borderColor = this.colors[i];
-            children[2 * i].style.borderBottomColor = "white";
-            children[2 * i].style.borderStyle = "solid";
-            this.$.imageSelected.style.borderTopColor = this.colors[i];
-          }
-          else{
-            children[2 * i].style.borderStyle = "none";
-          }
-        }
-        if (newSelected > this.selectedPage) {          
-          this.entryAnimation = 'slide-from-right-animation';
-          this.exitAnimation = 'slide-left-animation';
-        }
-        else{
-          this.entryAnimation = 'slide-from-left-animation';
-          this.exitAnimation = 'slide-right-animation'; 
-        }
-        this.$.profilePages.selected = newSelected;
-        this.selectedPage = newSelected;
-        this.$.transitonText.innerHTML = transitonTexts[newSelected];
-
-      }
     }
   });
 </script>
