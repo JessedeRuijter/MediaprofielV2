@@ -64,8 +64,12 @@ class currentUserView(APIView):
             invulmoment = user.members.all()[0].organisationInvulMoment.all().latest('time')
             serializedIM = InvulMomentSerializer(invulmoment, context={'request':request})
             returndata['invulmoment'] = serializedIM.data
+            if user.profiel.filter(invulmoment=invulmoment).count() > 0:
+                returndata['invulmoment_ingevuld'] = True
+            else:    
+                returndata['invulmoment_ingevuld'] = False
         except IndexError:
-            returndata['invulmoment'] = "None"
+            returndata['invulmoment'] = {}
         return Response(returndata)
 
 class changePasswordView(APIView):

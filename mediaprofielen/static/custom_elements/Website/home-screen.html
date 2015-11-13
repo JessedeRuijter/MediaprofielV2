@@ -121,6 +121,7 @@
 
     handleResponse: function() {
     	this.organisationName = this.currentuser.invulmoment.organisation.name;
+    	console.log(this.currentuser.invulmoment);
     	if(this.currentuser.user.account != null){
     		this.$.profileOverlay.style.display = "none";
     	}
