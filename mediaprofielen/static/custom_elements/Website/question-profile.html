@@ -7,7 +7,14 @@
     <link rel="import" href="../../bower_components/font-roboto/roboto.html">
     <link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
     <link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
-   
+    
+    <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+    <iron-ajax 
+     id="accountPost"
+       method="POST"
+       handleAs="json"
+       content-type='application/json'>
+    </iron-ajax>
     
     <div class="vertical layout middlePanel card" style="position:relative; top:180px;">
       <div class="vertical layout center">
@@ -20,9 +27,9 @@
         <div class="vertical layout center" style="padding:60px;">
           <p class="questionText">Wie ben jij?</p>
           <div class="horizontal layout center">
-            <paper-input label="Voornaam"></paper-input>
+            <paper-input id="name" label="Voornaam" on-change="checkButtonState"></paper-input>
             <div style="width:30px;"></div>
-            <paper-input label="Achternaam"></paper-input>
+            <paper-input id="surname" label="Achternaam" on-change="checkButtonState"></paper-input>
           </div>
         </div>
 
@@ -32,7 +39,7 @@
 
         <div class="vertical layout center" style="padding:60px;">
           <p class="questionText">Je bent</p>
-          <div class="horizontal layout center">
+          <div id="geslacht" class="horizontal layout center">
             <span class="questionElementText">een man</span>
             <div>
               <div id="iconContainer" class="horizontal layout" style="margin: 10px;">
@@ -49,7 +56,7 @@
           <div class="seperator"></div>    
         </div>
 
-        <div class="vertical layout center" style="padding:60px;">
+        <div id="leeftijd" class="vertical layout center" style="padding:60px;">
           <p class="questionText">Je leeftijd is</p>
            <div id="iconContainer" class="vertical layout">
             <div class="horizontal layout center" style="margin: 10px;">
@@ -87,7 +94,7 @@
           <div class="seperator"></div>    
         </div>
 
-        <div class="vertical layout center" style="padding:60px;">
+        <div id="opleiding" class="vertical layout center" style="padding:60px;">
           <p class="questionText">Je hoogst genoten opleiding (afgerond)</p>
            <div id="iconContainer" class="vertical layout">
             <div class="horizontal layout center" style="margin: 10px;">
@@ -117,7 +124,7 @@
           <div class="seperator"></div>    
         </div>
 
-        <div class="vertical layout center" style="padding:60px;">
+        <div id="plaats" class="vertical layout center" style="padding:60px;">
           <p class="questionText">Je bent opgegroeid in</p>
            <div id="iconContainer" class="vertical layout">
             <div class="horizontal layout center" style="margin: 10px;">
@@ -194,7 +201,7 @@
       <div class="vertical layout center buttonContainer">
         <div class="horizontal layout center">
           <link rel="import" href="../jr-button-outline/jr-button-outline.html">
-          <jr-button-outline id="rightButton" icon="done" on-click="done"></jr-button-outline>    
+          <jr-button-outline id="finishButton" disabled="true" icon="done" on-click="done"></jr-button-outline>    
         </div> 
         <div style="height:30px;"></div> 
       </div>
@@ -208,51 +215,66 @@
     is: "question-profile",
 
     properties: {
-      data: {
-        type: Object,
-        value: {}
-      },
-      selectedText: {
-        type: String,
-        value: "Maak een selectie"
-      },
-      question: {
-        type: Number
-      },
-      answer: {
-        type: String,
-        notify: true
+      user: {
+        type: String
       }
     },
+    created: function(){
+      this.geslachten = ["M","V"];
+      this.leeftijden = ["16", "21", "31", "41", "51", "61", "71"];
+      this.opleidingen = ["HA", "VW", "MB", "HB","WO"];
+      this.plaatsen = ["GR", "FR", "DR","OV","FL","LI","NO","NO","ZU","ZE","UT","BE","DU","FA","VE","LU","AN"];
+      this.counter = [false, false, false, false];
+    },
+
     done: function(){
+      var data = JSON.stringify({"user": this.user ,"first_name": this.$.name.value, "last_name": this.$.surname.value, "provincie": this.plaats, "geslacht": this.geslacht, "opleiding":this.opleiding, "leeftijd":this.leeftijd});
+      console.log(data);
+      this.$.accountPost.headers = {
+            "X-CSRFToken": this.getCSRFCookie(),
+            "X-Requested-With": "XMLHttpRequest"
+        };
+      this.$.accountPost.url = "/api/accounts/"
+      this.$.accountPost.body = data;
+      this.$.accountPost.generateRequest();
       document.getElementById("profileOverlay").style.display = "none";
+    },
+    getCSRFCookie: function() {
+        b = document.cookie.match('(^|;)\\s*csrftoken\\s*=\\s*([^;]+)');
+        return b ? b.pop() : '';
     },
     bigIconSelector: function(sender){
       var elementList = sender.toElement.parentNode.parentNode.querySelectorAll("span");
       for (i = 0; i < elementList.length; i++){
         if (sender.toElement.id == elementList[i].id){
           elementList[i].className = "qSelectedBigIcon";
-          this.answer = this.question + " " + i;
+          var question = sender.toElement.parentNode.parentNode.parentNode.id;
+          if(question == "geslacht"){
+            this.counter[0] = true;
+            this.geslacht = this.geslachten[i];
+          }
+          else if(question == "leeftijd"){
+            this.leeftijd = this.leeftijden[i];
+            this.counter[1] = true;
+          }
+          else if(question == "opleiding"){
+            this.opleiding = this.opleidingen[i];
+            this.counter[2] = true;
+          }
+          else if(question == "plaats"){
+            this.plaats = this.plaatsen[i];
+            this.counter[3] = true;
+          }
+          this.checkButtonState();
         }
         else{
           elementList[i].className = "qBigIcon";
         }
       }
     },
-    smallIconSelector: function(sender){
-      var elementList = sender.toElement.parentNode.querySelectorAll("span");
-      for (i = 0; i < elementList.length; i++){
-        if (sender.toElement.id >= elementList[i].id){
-          elementList[i].className = "qSelectedSmallIcon";
-          
-          if(sender.toElement.id == elementList[i].id){
-            this.selectedText = this.data.choices[i].choiceText;
-            this.answer = this.question + " " + i;
-          }
-        }
-        else{
-          elementList[i].className = "qSmallIcon";
-        }
+    checkButtonState: function(){
+      if (this.counter[0] && this.counter[1] && this.counter[2] && this.counter[3] && this.$.name.value != "" && this.$.surname.value != ""){
+        this.$.finishButton.disabled = false;
       }
     }
 

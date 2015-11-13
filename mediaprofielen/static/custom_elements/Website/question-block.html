@@ -9,10 +9,9 @@
     <link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
    
     <div id="scope" class="vertical layout center" style="padding: 60px;">
-      <p class="questionText">{{data.questionText}}</p>
+      <p class="questionText">{{dataLoaded.questionText}}</p>
 
-      <template is="dom-if" if='{{evaluateBool(data.qType,"Y")}}'>
-        <div class="horizontal layout center">
+        <div id="Y" class="horizontal layout center">
           <span class="questionElementText">ja</span>
           <div>
             <div id="iconContainer" class="horizontal layout" style="margin: 10px;">
@@ -23,27 +22,27 @@
           </div>
           <span class="questionElementText">nee</span>
         </div>
-      </template>
 
-      <template is="dom-if" if='{{evaluateBool(data.qType,"M")}}'>
-        <div id="iconContainer" class="vertical layout">
-          <template is="dom-repeat" items="{{data.choices}}">
-            <div class="horizontal layout center" style="margin: 10px;">
-              <span id="{{index}}" class="qBigIcon" on-click="bigIconSelector"></span>
-              <p class="questionElementText" style="margin-left: 10px;">{{item.choiceText}}</p>
-            </div>
-          </template>
+        <div id="M">
+          <div id="iconContainer" class="vertical layout">
+            <template is="dom-repeat" items="{{dataLoaded.choices}}">
+              <div class="horizontal layout center" style="margin: 10px;">
+                <span id="{{index}}" class="qBigIcon" on-click="bigIconSelector"></span>
+                <p class="questionElementText" style="margin-left: 10px;">{{item.choiceText}}</p>
+              </div>
+            </template>
+          </div>
         </div>
-      </template>
 
-      <template is="dom-if" if='{{evaluateBool(data.qType,"S")}}'>
-        <div id="iconContainer" class="horizontal layout center">
-          <template is="dom-repeat" items="{{data.choices}}">
-            <span id="{{index}}" class="qSmallIcon" on-click="smallIconSelector"></span>
-          </template>
+        <div id="S" class="vertical layout center">
+          <div id="iconContainer" class="horizontal layout center">
+            <template is="dom-repeat" items="{{dataLoaded.choices}}">
+              <span id="{{index}}" class="qSmallIcon" on-click="smallIconSelector"></span>
+            </template>
+          </div>
+          <p class="questionElementText">{{selectedText}}</p>
         </div>
-        <p class="questionElementText">{{selectedText}}</p>
-      </template>
+
     </div>
     <div class="vertical layout center">
       <div class="seperator"></div>    
@@ -58,9 +57,11 @@
     is: "question-block",
 
     properties: {
+      dataLoaded: {
+        type: Object
+      },
       data: {
-        type: Object,
-        value: {}
+        type: Object
       },
       selectedText: {
         type: String,
@@ -74,10 +75,25 @@
         notify: true
       }
     },
-
-    evaluateBool: function(b1, b2){
-      return (b1 == b2);
+    ready: function(){
+      this.dataLoaded = {};
+      this.set("dataLoaded", this.data);
+      if(this.data.qType == "S") {
+        this.$.Y.style.display ="none";
+        this.$.M.style.display ="none";
+      }
+      else if(this.data.qType == "M")
+      {
+        this.$.Y.style.display ="none";
+        this.$.S.style.display ="none";
+      }
+      else if(this.data.qType == "Y")
+      {
+        this.$.M.style.display ="none";
+        this.$.S.style.display ="none";
+      }
     },
+
     bigIconSelector: function(sender){
       var elementList = sender.toElement.parentNode.parentNode.querySelectorAll("span");
       for (i = 0; i < elementList.length; i++){

@@ -103,7 +103,16 @@
 					</div>
 				</neon-animated-pages>
 			</div>
-    	</div>	
+    	</div>
+
+    	<div id="profileOverlay" class="vertical layout fit center" style="overflow-y: auto; background-color: rgba(0,0,0,0.1);">
+    		<link rel="import" href="question-profile.html">
+    		<question-profile user="{{currentuser.user.url}}"></question-profile>
+    	</div>
+
+    	<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+		<paper-toast id="confirmChange" style="font-family: Roboto;" duration="2000" text="Het wachtwoord is veranderd!"></paper-toast>
+
   </template>
 
 </dom-module>
@@ -113,6 +122,9 @@
 
     handleResponse: function() {
     	this.organisationName = this.currentuser.invulmoment.organisation.name;
+    	if(this.currentuser.user.account != null){
+    		this.$.profileOverlay.style.display = "none";
+    	}
     },
     switchRight: function() {
 	    this.entryAnimation = 'slide-from-left-animation';
@@ -156,6 +168,7 @@
         return b ? b.pop() : '';
     },
 	changePassword: function(){
+		this.$.confirmChange.show();
 		var data = JSON.stringify({"password": this.$.password.value});
 		this.$.changePassword.headers = {
 		"X-CSRFToken": this.getCSRFCookie(),
