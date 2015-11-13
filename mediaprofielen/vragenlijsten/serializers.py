@@ -74,7 +74,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 class AnswerCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ('blockID', 'answers')
+        fields = ('invulmoment', 'blockID', 'answers')
 
 class OrganisationNameSerializer(serializers.ModelSerializer):
     class Meta:

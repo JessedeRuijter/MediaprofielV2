@@ -216,7 +216,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
         return AnswerSerializer
 
     def perform_create(self, serializer):
-        Answer.objects.filter(user=self.request.user, blockID=serializer.data['blockID']).delete()
+        Answer.objects.filter(user=self.request.user, blockID=serializer.data['blockID'], invulmoment=serializer.data['invulmoment']).delete()
         serializer.save(user=self.request.user)
         if 'last' in self.request.data:
             if self.request.data['last'] == "true":
