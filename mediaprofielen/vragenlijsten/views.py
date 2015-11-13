@@ -219,7 +219,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
         Answer.objects.filter(user=self.request.user, blockID=serializer.data['blockID']).delete()
         serializer.save(user=self.request.user)
         if 'last' in self.request.data:
-            print "hai!"
             if self.request.data['last'] == "true":
                 if 'invulmoment' in self.request.data:
                     print "invulmomentid gekregen:"

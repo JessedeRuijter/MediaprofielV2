@@ -100,7 +100,8 @@ class ProfileText(models.Model):
 
 # De antwoorden per user per enquete
 class Answer(models.Model):
-	"""Antwoorden op questionblocks"""
+	"""Antwoorden op questionblocks bij een specifiek invulmoment"""
+	invulmoment = models.ForeignKey(Invulmoment)
 	user = models.ForeignKey(User)
 	blockID = models.ForeignKey(QuestionBlock)
 	answers = models.CharField(max_length=1000)

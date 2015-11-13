@@ -69,7 +69,7 @@ class EnqueteSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ('id','user','blockID', 'answers')
+        fields = ('id','invulmoment','user','blockID', 'answers')
 
 class AnswerCreateSerializer(serializers.ModelSerializer):
     class Meta:

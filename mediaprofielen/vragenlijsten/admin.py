@@ -1,16 +1,7 @@
 from django.contrib import admin
 from vragenlijsten.models import *
 from nested_inline.admin import NestedStackedInline, NestedModelAdmin, NestedTabularInline
-from post_office import mail
-from post_office.admin import EmailAdmin
 from django.core.management import call_command
-
-def send_mails(self, request, queryset):
-        call_command("send_queued_mail")
-        self.message_user(request, "Emails verstuurd!")
-send_mails.short_description = "Verstuur ALLE wachtende emails"
-
-EmailAdmin.actions.append(send_mails)
 
 class ChoiceInline(NestedTabularInline):
     model = QuestionChoice

@@ -40,8 +40,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'vragenlijsten',
     'csvimport.app.CSVImportConf', 
-    'mediaprofielen_front',
-    'post_office'
+    'mediaprofielen_front'
 )
 
 LOGIN_REDIRECT_URL ="/"
