@@ -24,72 +24,98 @@
   	<link rel="import" href="../../bower_components/font-roboto/roboto.html">
   	<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
   	<link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
-    <div class="horizontal layout">
-    	<div class="flex">
-		    <div id="sidePanel" class="vertical layout center">
-		    	<div class="vertical layout">
-		    		<template is="dom-repeat" items="[[blocklist]]">
-		    			<div>
-			    			<div id="blockStateList" class="horizontal layout center" style="margin-bottom: 0px;">
-			    				<span class="blockStateIcon"></span>
-			    				<span class="blockStateText" on-click="blockSelect" id="{{index}}">{{item.name}}</span>
-			    				<span class="infoIcon" on-mouseover="showDescription" on-mouseout="hideDescription"></span>
-			    			</div>
-			    			<div class="infoContainer">
-				    			<div id="informationOverlay" style="padding: 15px; background-color: rgba(76,183,255,1.0);">
-				    				<span class="menuChangeTitleText">{{item.description}}</span>
-				    			</div>
-				    		</div>
-				    	</div>
-	    			</template>
-			    </div>
-		    </div>
-		</div>
-	    <div class="vertical layout">
-		    <div id="enquete" class="vertical layout middlePanel card">
-		    	<div class="vertical layout center">
-		    		<!-- <svg width="160" height="160">
-					  <rect id="rect" x="5" y="5" rx="20" ry="20" width="150" height="150"
-					  style="fill:red;stroke:black;stroke-width:5;opacity:0.5" />
-					</svg> -->
-			    	<iron-image class="clipContainer" width="180" height="74" src="../../images/LogoBlauwSmall.png">
-		    		</iron-image>
-		    	</div>
-		    	<div style="position: relative; top: -75px;">
-		    		<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
-		    		<link rel="import" href="question-block.html">
-		    		<iron-pages id="blockSelector" selected="0">
-			    		<template is="dom-repeat" items="{{blocklist}}">
+	<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+
+  	<iron-pages id="finishedSelector" selected="0">
+	    <div class="horizontal layout">
+	    	<div class="flex">
+			    <div id="sidePanel" class="vertical layout center">
+			    	<div class="vertical layout">
+			    		<template is="dom-repeat" items="[[blocklist]]">
 			    			<div>
-			    				<p class="blockTitleText">{{item.name}}</p>
-			    				<template is="dom-repeat" items="{{item.questions}}">
-			    					<div>			    						
-			    						<question-block answer="{{answerChanged}}" question="{{index}}" data="{{item}}"></question-block>
-			    					</div>
-		    					</template>
-			    			</div>
+				    			<div id="blockStateList" class="horizontal layout center" style="margin-bottom: 0px;">
+				    				<span class="blockStateIcon"></span>
+				    				<span class="blockStateText" on-click="blockSelect" id="{{index}}">{{item.name}}</span>
+				    				<span class="infoIcon" on-mouseover="showDescription" on-mouseout="hideDescription"></span>
+				    			</div>
+				    			<div class="infoContainer">
+					    			<div id="informationOverlay" style="padding: 15px; background-color: rgba(76,183,255,1.0);">
+					    				<span class="menuChangeTitleText">{{item.description}}</span>
+					    			</div>
+					    		</div>
+					    	</div>
 		    			</template>
-		    		</iron-pages>
-		    		<div class="vertical layout" style="position: relative;	top: -3px;">
-		    			<div class="vertical layout center buttonContainer">
-				    		<div class="horizontal layout">
-				    			<link rel="import" href="../jr-button-outline/jr-button-outline.html">
-				    			<jr-button-outline id="leftButton" disabled="true" icon="arrow-back" on-click="prevQ"></jr-button-outline>	
-				    			<jr-button-outline id="rightButton" disabled="true" icon="arrow-forward" on-click="nextQ"></jr-button-outline>		
-			    			</div>	
-		    			</div>			    			
-		    			<div class="horizontal layout progressBar">
-		    				<div class="flex"></div>
-		    				<div>
-		    					<p class="progressText">{{progress}}</p>
-		    				</div>
-		    			</div>
-	    			</div>	
-    			</div>	    		
-	    	</div>
-	    </div>
-	    <div class="flex"></div>
-	</div>
+				    </div>
+			    </div>
+			</div>
+		    <div class="vertical layout">
+			    <div id="enquete" class="vertical layout middlePanel card">
+			    	<div class="vertical layout center">
+			    		<!-- <svg width="160" height="160">
+						  <rect id="rect" x="5" y="5" rx="20" ry="20" width="150" height="150"
+						  style="fill:red;stroke:black;stroke-width:5;opacity:0.5" />
+						</svg> -->
+				    	<iron-image class="clipContainer" width="180" height="74" src="../../images/LogoBlauwSmall.png">
+			    		</iron-image>
+			    	</div>
+			    	<div style="position: relative; top: -75px;">
+			    		<link rel="import" href="question-block.html">
+			    		<iron-pages id="blockSelector" selected="0">
+				    		<template is="dom-repeat" items="{{blocklist}}">
+				    			<div>
+				    				<p class="blockTitleText">{{item.name}}</p>
+				    				<template is="dom-repeat" items="{{item.questions}}">
+				    					<div>			    						
+				    						<question-block answer="{{answerChanged}}" question="{{index}}" data="{{item}}"></question-block>
+				    					</div>
+			    					</template>
+				    			</div>
+			    			</template>
+			    		</iron-pages>
+			    		<div class="vertical layout" style="position: relative;	top: -3px;">
+			    			<div class="vertical layout center buttonContainer">
+					    		<div class="horizontal layout">
+					    			<link rel="import" href="../jr-button-outline/jr-button-outline.html">
+					    			<jr-button-outline id="leftButton" disabled="true" icon="arrow-back" on-click="prevQ"></jr-button-outline>	
+					    			<jr-button-outline id="rightButton" disabled="true" icon="arrow-forward" on-click="nextQ"></jr-button-outline>		
+				    			</div>	
+			    			</div>			    			
+			    			<div class="horizontal layout progressBar">
+			    				<div class="flex"></div>
+			    				<div>
+			    					<p class="progressText">{{progress}}</p>
+			    				</div>
+			    			</div>
+		    			</div>	
+	    			</div>	    		
+		    	</div>
+		    </div>
+		    <div class="flex"></div>
+		</div>
+
+		<div>
+			<div class="horizontal layout">
+				<div class="flex"></div>
+				<div class="vertical layout">
+				    <div id="enquete" class="vertical layout middlePanel card">
+				    	<div class="vertical layout center">
+				    		<!-- <svg width="160" height="160">
+							  <rect id="rect" x="5" y="5" rx="20" ry="20" width="150" height="150"
+							  style="fill:red;stroke:black;stroke-width:5;opacity:0.5" />
+							</svg> -->
+					    	<iron-image class="clipContainer" width="180" height="74" src="../../images/LogoBlauwSmall.png">
+				    		</iron-image>
+
+				    		<p class="questionText" style="margin: 100px 50px 100px 50px;">Je hebt deze vragenlijst reeds volledig ingevuld. Ga naar de profielpagina om je resultaten te bekijken of vul de vragenlijst opnieuw in om inzicht te krijgen in je voortgang.</p>
+				    	</div>
+				    </div>
+				</div>
+				<div class="flex"></div>
+			</div>
+		</div>
+
+	</iron-pages>
 	<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 	<paper-toast id="confirmPost" style="font-family: Roboto;" duration="2000" text="Antwoorden zijn ingeleverd. Bekijk de profielpagina voor je resultaten."></paper-toast>
 </template>
@@ -122,12 +148,24 @@ HTMLImports.whenReady(function() {
     	},
     	invulmoment: {
     		type: Number
+    	},
+    	finished: {
+    		type: Boolean,
+    		value: false
     	}
     },
     observers: [
         'setEnquete(enquete)',
-        'answerHasChanged(answerChanged)'
+        'answerHasChanged(answerChanged)',
+        'ingevuldChanged(finished)'
     ],
+
+    ingevuldChanged: function(){
+    	console.log(this.finished);
+    	if(this.finished){
+    		this.$.finishedSelector.selected = 1;
+    	}
+    },
 
 	setEnquete: function(newEnquete) {
 		this.progress = 0;
@@ -172,7 +210,7 @@ HTMLImports.whenReady(function() {
 		//Check if finished
 		if (this.blockSelected == this.blocklist.length - 1){
 			this.postAnswers("true");
-			this.finished = "true";
+			this.$.finishedSelector.selected = 1;
 		}
 		else
 		{

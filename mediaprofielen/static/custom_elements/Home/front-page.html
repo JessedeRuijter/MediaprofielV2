@@ -12,13 +12,15 @@
     	<div class="headerPanel vertical layout center">
     		<link rel="import" href="../../bower_components/iron-image/iron-image.html">
 			<iron-image class="logo" src="../../images/LogoWit.png"></iron-image>
-			<div style="max-width:1300px; margin: 50px 10px 50px 10px;">
+			<div style="max-width:1300px; margin: 100px 10px 150px 10px;">
 				<p class="openingsText">
                 Wat kan ik online? Een mediaprofiel typeert je mediavaardigheden.<br>
                 Wat doe ik online? Een mediaprofiel meet je online interactie.<br>
                 Wat wil ik? Een mediaprofiel ontwikkelt zich in de richting die jij kiest.</p>
 			</div>
-			<p class="iconTexture noselect">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </p>
+			<p class="iconTexture noselect">                                                                                                                                                                                                                                                                                                                                                                                                 </p>
+
+            <!--                                                                                                                                                                                                                                                      -->
 			<div style="background-color: rgba(76,183,255,1.0); position: absolute; top:-24px; height:24px; width:100%"></div>
 
     	</div>
@@ -74,12 +76,7 @@
 						</div>
 						<div class="vertical layout center">
 							<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/StrateegMuppet.png"></iron-image>	
-			    			</div>
-						</div>
-						<div class="vertical layout center">
-							<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/NetwerkMuppet.png"></iron-image>	
+				    			<iron-image src="../../images/Screenshot4.jpg"></iron-image>	
 			    			</div>
 						</div>
 					</neon-animated-pages>
@@ -91,7 +88,6 @@
                 <div class="vertical layout center">
                     <div id="bulletsOne" class="horizontal layout center">
                         <span class="bulletActive"></span>
-                        <span class="bullet"></span>
                         <span class="bullet"></span>
                         <span class="bullet"></span>
                         <span class="bullet"></span>
@@ -132,7 +128,7 @@
     			</div>
     		</div>
 
-    		<div class="seperator"></div>
+    		<!-- <div class="seperator"></div>
 
     		<div class="vertical layout" style="height: 700px;">
     			<p class="contentText">Etiam porta sem malesuada</p>
@@ -182,7 +178,7 @@
                         <span class="bullet"></span>
                     </div>
                 </div>
-    		</div>
+    		</div> -->
 
     		<div class="seperator"></div>
 
@@ -240,7 +236,7 @@
   	    this.$.pagesOne.selected = (1 + parseInt(this.$.pagesOne.selected)).toString();
                 
         this.$.leftOne.disabled = false;
-        if (this.$.pagesOne.selected != 4){
+        if (this.$.pagesOne.selected != 3){
         	setTimeout(function(){ var b = document.getElementById("rightOne"); b.disabled = false;}, 500);
         }
         var e = document.getElementById("bulletsOne").children;
@@ -265,33 +261,33 @@
 
    
 
-    nextTwo: function(){
-    	this.$.rightTwo.disabled = true;
-    	this.entryAnimationTwo = 'slide-from-right-animation';
-        this.exitAnimationTwo = 'slide-left-animation';
-  	    this.$.pagesTwo.selected = (1 + parseInt(this.$.pagesTwo.selected)).toString();
-        this.$.leftTwo.disabled = false;
-        if (this.$.pagesTwo.selected != 4){
-        	setTimeout(function(){ var b = document.getElementById("rightTwo"); b.disabled = false;}, 500);
-        }
-        var e = document.getElementById("bulletsTwo").children;
-        e[parseInt(this.$.pagesTwo.selected) - 1].className = "bullet";
-        e[parseInt(this.$.pagesTwo.selected)].className = "bulletActive";
-    },
+    // nextTwo: function(){
+    // 	this.$.rightTwo.disabled = true;
+    // 	this.entryAnimationTwo = 'slide-from-right-animation';
+    //     this.exitAnimationTwo = 'slide-left-animation';
+  	 //    this.$.pagesTwo.selected = (1 + parseInt(this.$.pagesTwo.selected)).toString();
+    //     this.$.leftTwo.disabled = false;
+    //     if (this.$.pagesTwo.selected != 4){
+    //     	setTimeout(function(){ var b = document.getElementById("rightTwo"); b.disabled = false;}, 500);
+    //     }
+    //     var e = document.getElementById("bulletsTwo").children;
+    //     e[parseInt(this.$.pagesTwo.selected) - 1].className = "bullet";
+    //     e[parseInt(this.$.pagesTwo.selected)].className = "bulletActive";
+    // },
 
-    prevTwo: function(){
-    	this.$.leftTwo.disabled = true;
-    	this.entryAnimationTwo = 'slide-from-left-animation';
-        this.exitAnimationTwo = 'slide-right-animation'; 
-  	    this.$.pagesTwo.selected = (parseInt(this.$.pagesTwo.selected) - 1).toString();
-        this.$.rightTwo.disabled = false;
-        if (this.$.pagesTwo.selected != 0){
-        	setTimeout(function(){ var b = document.getElementById("leftTwo"); b.disabled = false;}, 500);
-        }
-        var e = document.getElementById("bulletsTwo").children;
-        e[parseInt(this.$.pagesTwo.selected) + 1].className = "bullet";
-        e[parseInt(this.$.pagesTwo.selected)].className = "bulletActive";
-    }
+    // prevTwo: function(){
+    // 	this.$.leftTwo.disabled = true;
+    // 	this.entryAnimationTwo = 'slide-from-left-animation';
+    //     this.exitAnimationTwo = 'slide-right-animation'; 
+  	 //    this.$.pagesTwo.selected = (parseInt(this.$.pagesTwo.selected) - 1).toString();
+    //     this.$.rightTwo.disabled = false;
+    //     if (this.$.pagesTwo.selected != 0){
+    //     	setTimeout(function(){ var b = document.getElementById("leftTwo"); b.disabled = false;}, 500);
+    //     }
+    //     var e = document.getElementById("bulletsTwo").children;
+    //     e[parseInt(this.$.pagesTwo.selected) + 1].className = "bullet";
+    //     e[parseInt(this.$.pagesTwo.selected)].className = "bulletActive";
+    // }
 
   });
 

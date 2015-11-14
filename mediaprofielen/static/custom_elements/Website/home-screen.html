@@ -91,9 +91,9 @@
 				<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
 
 				<neon-animated-pages id="pages" class="flex"  selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
-			    	<div>		    	
+			    	<div>	    	
 					    <link rel="import" href="enquete-page.html">
-					    <enquete-page id="enquetePage" invulmoment="{{currentuser.invulmoment.id}}" enquete="{{currentuser.invulmoment.enquete}}"></enquete-page>
+					    <enquete-page id="enquetePage" finished="{{currentuser.invulmoment_ingevuld}}" invulmoment="{{currentuser.invulmoment.id}}" enquete="{{currentuser.invulmoment.enquete}}"></enquete-page>
 					</div>
 
 					<div>
@@ -121,7 +121,7 @@
 
     handleResponse: function() {
     	this.organisationName = this.currentuser.invulmoment.organisation.name;
-    	console.log(this.currentuser.invulmoment);
+    	console.log(this.currentuser.invulmoment_ingevuld);
     	if(this.currentuser.user.account != null){
     		this.$.profileOverlay.style.display = "none";
     	}
