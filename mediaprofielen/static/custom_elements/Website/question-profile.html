@@ -16,7 +16,7 @@
        content-type='application/json'>
     </iron-ajax>
     
-    <div class="vertical layout middlePanel card" style="position:relative; top:180px;">
+    <div class="vertical layout middlePanel card" id="profileQuestionPanel">
       <div class="vertical layout center">
         <iron-image class="clipContainer" width="180" height="74" src="../../images/LogoBlauwSmall.png">
         </iron-image>
@@ -244,11 +244,11 @@
         return b ? b.pop() : '';
     },
     bigIconSelector: function(sender){
-      var elementList = sender.toElement.parentNode.parentNode.querySelectorAll("span");
+      var elementList = sender.target.parentNode.parentNode.querySelectorAll("span");
       for (i = 0; i < elementList.length; i++){
-        if (sender.toElement.id == elementList[i].id){
+        if (sender.target.id == elementList[i].id){
           elementList[i].className = "qSelectedBigIcon";
-          var question = sender.toElement.parentNode.parentNode.parentNode.id;
+          var question = sender.target.parentNode.parentNode.parentNode.id;
           if(question == "geslacht"){
             this.counter[0] = true;
             this.geslacht = this.geslachten[i];

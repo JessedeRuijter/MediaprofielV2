@@ -144,9 +144,9 @@
     
     setProfile: function(sender){
 
-      if(sender.toElement.nodeName == "IRON-IMAGE"){
+      if(sender.target.nodeName == "IRON-IMAGE"){
         var transitonTexts = ["Ontwikkel verder als Consument.",  "Van Consument naar Verzamelaar.", "Van Consument naar Strateeg.",  "Van Consument naar Netwerker.", "Van Consument naar Producent."];
-        var newSelected = sender.toElement.id;
+        var newSelected = sender.target.id;
         var children = this.$.imageElements.children;
         for (var i = 0; i < 5; i++){
 

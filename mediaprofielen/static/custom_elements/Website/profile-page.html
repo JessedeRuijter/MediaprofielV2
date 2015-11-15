@@ -72,7 +72,7 @@
           </div>
         </div>
 	  	</div>
-	    <div class="middlePanel relative vertical layout card">
+	    <div class="middlePanel relative vertical layout card" style="height: 856px;">
 
         <div class="horizontal layout center">
           <div class="flex"></div>
@@ -308,15 +308,16 @@
     },
 
     selectProfile: function(ding){
-      if(ding.toElement.id != "profileStateList"){
-        var next = ding.toElement.parentNode.children[0].id;
+      console.log(ding);
+      if(ding.target.id != "profileStateList"){
+        var next = ding.target.parentNode.children[0].id;
         if(parseInt(next) != this.$.profilePages.selected){
           this.setProfileGraph(next);
         }
       }
     },
     selectTab: function(ding){
-      var next = ding.toElement.id;
+      var next = ding.target.id;
       if(parseInt(next) != this.$.tabPages.selected){
         
         this.setAnimations(next, this.$.tabPages.selected);
