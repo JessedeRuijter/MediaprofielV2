@@ -104,7 +104,7 @@
 			</div>
     	</div>
 
-    	<div id="profileOverlay" class="vertical layout fit center" style="overflow-y: auto; background-color: rgba(0,0,0,0.1);">
+    	<div id="profileOverlay" class="vertical layout fit center" style="overflow-y: auto; background-color: rgba(0,0,0,0.1); display: none;">
     		<link rel="import" href="question-profile.html">
     		<question-profile user="{{currentuser.user.url}}"></question-profile>
     	</div>
@@ -121,8 +121,8 @@
 
     handleResponse: function() {
     	this.organisationName = this.currentuser.invulmoment.organisation.name;
-    	if(this.currentuser.user.account != null){
-    		this.$.profileOverlay.style.display = "none";
+    	if(this.currentuser.user.account == null){
+    		this.$.profileOverlay.style.display = "inline";
     	}
     },
     switchRight: function() {
@@ -178,6 +178,7 @@
         this.$.changePassword.generateRequest();
         //Change layout overlay
         this.closeOverlayLayout();
+        window.location.replace("/logout");
       },
 
       openOverlayLayout: function(){
@@ -189,6 +190,8 @@
         this.$.passwordCheck.value = "";
         document.getElementById("overlay").style.display = "none";
 		document.querySelector(".menuIcon").innerHTML =  ""
+		this.$.passwordIcon.innerHTML = "";
+		this.$.passwordCheckIcon.innerHTML = "";
       },
 
       passwordChanged: function(){

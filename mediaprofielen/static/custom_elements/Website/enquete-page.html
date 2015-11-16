@@ -153,11 +153,15 @@ HTMLImports.whenReady(function() {
     		value: false
     	}
     },
-    observers: [
-        'setEnquete(enquete)',
+    observers: [    
         'answerHasChanged(answerChanged)',
         'ingevuldChanged(finished)'
     ],
+
+    attached: function(){
+    	this.setEnquete(this.enquete);
+    	this.ingevuldChanged();
+    },
 
     ingevuldChanged: function(){
     	if(this.finished){
@@ -182,17 +186,19 @@ HTMLImports.whenReady(function() {
 	addBlock: function(data){
 		this.push('blocklist', data.detail.response);
 		this.loaded++;
-		if (this.loaded == this.enquete.blocks.length){
+		if (this.loaded == this.enquete.blocks.length && this.enquete.blocks.length > 0){
 			var b = document.querySelectorAll('#blockStateList');
-			b[0].children[0].style.borderColor = "#242d33";
-			b[0].children[1].style.color = "#242d33";
-			b[0].children[1].style.fontWeight = "500";
-			b[0].children[1].style.cursor = "default";
+			if(b.length > 0){
+				b[0].children[0].style.borderColor = "#242d33";
+				b[0].children[1].style.color = "#242d33";
+				b[0].children[1].style.fontWeight = "500";
+				b[0].children[1].style.cursor = "default";
 
-			b[0].children[0].style.height = "8px";
-			b[0].children[0].style.width = "8px";
-			b[0].children[0].style.margin = "0px 10px 0px 0px";
-			b[0].children[2].style.visibility = "visible";
+				b[0].children[0].style.height = "8px";
+				b[0].children[0].style.width = "8px";
+				b[0].children[0].style.margin = "0px 10px 0px 0px";
+				b[0].children[2].style.visibility = "visible";
+			}
 
 			this.blockAnswer = new Array(this.blocklist.length);
 			for (var i = 0; i < this.blockAnswer.length; i++){
@@ -263,6 +269,7 @@ HTMLImports.whenReady(function() {
 
 	answerHasChanged: function(answer){
 		//Check if answer was not initialized
+		console.log(answer);
 		if (answer != ""){
 			//Set new answer
 			var splitted = answer.split(" ");
