@@ -72,7 +72,7 @@
           </div>
         </div>
 	  	</div>
-	    <div class="middlePanel relative vertical layout card">
+	    <div class="middlePanel relative vertical layout card" style="height: 856px;">
 
         <div class="horizontal layout center">
           <div class="flex"></div>
@@ -267,39 +267,41 @@
     },
 
     handleResponsePoints: function(){
-      var profiles = this.currentuser.user.profiel;
-      this.rows = new Array(5);
+      if(this.currentuser.invulmoment_ingevuld){
+        var profiles = this.currentuser.user.profiel;
+        this.rows = new Array(5);
 
-      for (var i = 0; i < profiles.length; i++)
-        if (profiles[i].invulmoment.id == this.currentuser.invulmoment.id)
-          for (var j = 0; j < 5; j++)
-            this.rows[j] = [this.profileNames[j], profiles[i][this.profileNames[j]]/this.maxpoints[capitalizeFirstLetter(this.profileNames[j])]];
+        for (var i = 0; i < profiles.length; i++)
+          if (profiles[i].invulmoment.id == this.currentuser.invulmoment.id)
+            for (var j = 0; j < 5; j++)
+              this.rows[j] = [this.profileNames[j], profiles[i][this.profileNames[j]]/this.maxpoints[capitalizeFirstLetter(this.profileNames[j])]];
 
-      this.$.pieChart.rows = this.rows;
+        this.$.pieChart.rows = this.rows;
 
-      var data = new Array(profiles.length);
-      for (var i = 0; i < profiles.length; i++) {
-        data[i] = [
-          profiles[i].invulmoment.time, 
-          profiles[i].consument/this.maxpoints.Consument * 100, 
-          profiles[i].verzamelaar/this.maxpoints.Verzamelaar * 100, 
-          profiles[i].strateeg/this.maxpoints.Strateeg * 100, 
-          profiles[i].netwerker/this.maxpoints.Netwerker * 100, 
-          profiles[i].producent/this.maxpoints.Producent * 100];
+        var data = new Array(profiles.length);
+        for (var i = 0; i < profiles.length; i++) {
+          data[i] = [
+            profiles[i].invulmoment.time, 
+            profiles[i].consument/this.maxpoints.Consument * 100, 
+            profiles[i].verzamelaar/this.maxpoints.Verzamelaar * 100, 
+            profiles[i].strateeg/this.maxpoints.Strateeg * 100, 
+            profiles[i].netwerker/this.maxpoints.Netwerker * 100, 
+            profiles[i].producent/this.maxpoints.Producent * 100];
+        }
+
+        //console.log(sortData([], [["1990-20-11",1],["1950-20-11",1],["1960-15-12",1],["1960-15-11",1]]))
+        var dataTemp = sortData([], data);
+        dataTemp.unshift(["Invulmoment", "Consument", "Verzamelaar", "Strateeg", "Netwerker", "Producent"]);
+
+        this.$.lineChart.data = dataTemp;
+
+        var profileStates = document.querySelectorAll("#profileStateList");
+        profileStates[0].children[3].innerHTML = getStars(5*this.rows[0][1])
+        profileStates[1].children[3].innerHTML = getStars(5*this.rows[1][1])
+        profileStates[2].children[3].innerHTML = getStars(5*this.rows[2][1])
+        profileStates[3].children[3].innerHTML = getStars(5*this.rows[3][1])
+        profileStates[4].children[3].innerHTML = getStars(5*this.rows[4][1])
       }
-
-      //console.log(sortData([], [["1990-20-11",1],["1950-20-11",1],["1960-15-12",1],["1960-15-11",1]]))
-      var dataTemp = sortData([], data);
-      dataTemp.unshift(["Invulmoment", "Consument", "Verzamelaar", "Strateeg", "Netwerker", "Producent"]);
-
-      this.$.lineChart.data = dataTemp;
-
-      var profileStates = document.querySelectorAll("#profileStateList");
-      profileStates[0].children[3].innerHTML = getStars(5*this.rows[0][1])
-      profileStates[1].children[3].innerHTML = getStars(5*this.rows[1][1])
-      profileStates[2].children[3].innerHTML = getStars(5*this.rows[2][1])
-      profileStates[3].children[3].innerHTML = getStars(5*this.rows[3][1])
-      profileStates[4].children[3].innerHTML = getStars(5*this.rows[4][1])
     },
 
     pageHasChanged: function(){
@@ -308,15 +310,15 @@
     },
 
     selectProfile: function(ding){
-      if(ding.toElement.id != "profileStateList"){
-        var next = ding.toElement.parentNode.children[0].id;
+      if(ding.target.id != "profileStateList"){
+        var next = ding.target.parentNode.children[0].id;
         if(parseInt(next) != this.$.profilePages.selected){
           this.setProfileGraph(next);
         }
       }
     },
     selectTab: function(ding){
-      var next = ding.toElement.id;
+      var next = ding.target.id;
       if(parseInt(next) != this.$.tabPages.selected){
         
         this.setAnimations(next, this.$.tabPages.selected);
@@ -349,15 +351,18 @@
       elements[oldB].children[3].className = "scoreIcon";
       elements[newB].children[3].className = "scoreSelectedIcon";
 
-      this.$.pieChart.options.slices[oldB].color = this.colorLight[oldB];
-      this.$.pieChart.options.slices[oldB].textStyle.color = this.colorIntense[oldB];
-      this.$.pieChart.options.slices[newB].color = this.colorIntense[newB];
-      this.$.pieChart.options.slices[newB].textStyle.color = "#FFFFFF";
-      this.$.pieChart.drawChart();
+      if(this.currentuser.invulmoment_ingevuld){
 
-      this.$.lineChart.options.series[oldB].color = this.colorLight[oldB];
-      this.$.lineChart.options.series[newB].color = this.colorIntense[newB];
-      this.$.lineChart.drawChart();
+        this.$.pieChart.options.slices[oldB].color = this.colorLight[oldB];
+        this.$.pieChart.options.slices[oldB].textStyle.color = this.colorIntense[oldB];
+        this.$.pieChart.options.slices[newB].color = this.colorIntense[newB];
+        this.$.pieChart.options.slices[newB].textStyle.color = "#FFFFFF";
+        this.$.pieChart.drawChart();
+
+        this.$.lineChart.options.series[oldB].color = this.colorLight[oldB];
+        this.$.lineChart.options.series[newB].color = this.colorIntense[newB];
+        this.$.lineChart.drawChart();
+      }
 
       this.$.overviewGraphText.innerHTML = capitalizeFirstLetter(this.profileNames[newB]);
     }

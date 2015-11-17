@@ -86,7 +86,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="vertical layout fit" style="position: absolute; top:225px;">
+			<div class="vertical layout fit" id="contentPanel">
 				<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
 				<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
 
@@ -104,7 +104,7 @@
 			</div>
     	</div>
 
-    	<div id="profileOverlay" class="vertical layout fit center" style="overflow-y: auto; background-color: rgba(0,0,0,0.1);">
+    	<div id="profileOverlay" class="vertical layout fit center" style="overflow-y: auto; background-color: rgba(0,0,0,0.1); display: none;">
     		<link rel="import" href="question-profile.html">
     		<question-profile user="{{currentuser.user.url}}"></question-profile>
     	</div>
@@ -121,9 +121,8 @@
 
     handleResponse: function() {
     	this.organisationName = this.currentuser.invulmoment.organisation.name;
-    	console.log(this.currentuser.invulmoment_ingevuld);
-    	if(this.currentuser.user.account != null){
-    		this.$.profileOverlay.style.display = "none";
+    	if(this.currentuser.user.account == null){
+    		this.$.profileOverlay.style.display = "inline";
     	}
     },
     switchRight: function() {
@@ -179,6 +178,7 @@
         this.$.changePassword.generateRequest();
         //Change layout overlay
         this.closeOverlayLayout();
+        window.location.replace("/logout");
       },
 
       openOverlayLayout: function(){
@@ -190,6 +190,8 @@
         this.$.passwordCheck.value = "";
         document.getElementById("overlay").style.display = "none";
 		document.querySelector(".menuIcon").innerHTML =  ""
+		this.$.passwordIcon.innerHTML = "";
+		this.$.passwordCheckIcon.innerHTML = "";
       },
 
       passwordChanged: function(){

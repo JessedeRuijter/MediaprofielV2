@@ -95,9 +95,9 @@
     },
 
     bigIconSelector: function(sender){
-      var elementList = sender.toElement.parentNode.parentNode.querySelectorAll("span");
+      var elementList = sender.target.parentNode.parentNode.querySelectorAll("span");
       for (i = 0; i < elementList.length; i++){
-        if (sender.toElement.id == elementList[i].id){
+        if (sender.target.id == elementList[i].id){
           elementList[i].className = "qSelectedBigIcon";
           this.answer = this.question + " " + i;
         }
@@ -107,12 +107,12 @@
       }
     },
     smallIconSelector: function(sender){
-      var elementList = sender.toElement.parentNode.querySelectorAll("span");
+      var elementList = sender.target.parentNode.querySelectorAll("span");
       for (i = 0; i < elementList.length; i++){
-        if (sender.toElement.id >= elementList[i].id){
+        if (sender.target.id >= elementList[i].id){
           elementList[i].className = "qSelectedSmallIcon";
           
-          if(sender.toElement.id == elementList[i].id){
+          if(sender.target.id == elementList[i].id){
             this.selectedText = this.data.choices[i].choiceText;
             this.answer = this.question + " " + i;
           }
