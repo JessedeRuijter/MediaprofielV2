@@ -61,7 +61,7 @@ def addScore(user, id_of_last_block, id_invulmoment):
 	# profielObject = userObject.profiel.all()[0]
 	profielObject = Profiel(user=user, invulmoment=invulmoment)
 	for block in enquete_blocks:
-		answers = Answer.objects.filter(user=user, blockID=block)
+		answers = Answer.objects.filter(user=user, blockID=block, invulmoment=invulmoment)
 		print answers
 		questions = Question.objects.filter(block=block)
 		answers_split = answers[0].answers.encode('ascii','ignore').split(",")

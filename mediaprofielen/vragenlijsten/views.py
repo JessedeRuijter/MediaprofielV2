@@ -18,8 +18,14 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 class ManageForm(forms.Form):
     organisatie_naam = forms.CharField(max_length = 100, required = False)
-    mailchimp_lijst = forms.ChoiceField(choices = getLists())
-    enquete_id = forms.ChoiceField(choices = getEnquetes())
+    # mailchimp_lijst = forms.ChoiceField(choices = getLists())
+    # enquete_id = forms.ChoiceField(choices = getEnquetes())
+
+    def __init__(self, *args, **kwargs):
+        super(ManageForm, self).__init__(*args, **kwargs)
+        self.fields['mailchimp_lijst'] = forms.ChoiceField(choices = getLists())
+        self.fields['enquete_id'] = forms.ChoiceField(choices= getEnquetes())
+
 
 @staff_member_required
 def manageView(request):

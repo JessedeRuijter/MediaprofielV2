@@ -78,8 +78,8 @@ def makeOrganisation(name, list_id, enquete_id, color):
         new_organisation.members.add(newUser)
 
         # Create a profiel object for this user
-        newProfiel = Profiel(user=newUser, invulmoment=new_invulmoment)
-        newProfiel.save()
+        # newProfiel = Profiel(user=newUser, invulmoment=new_invulmoment)
+        # newProfiel.save()
 
 
     batch_endpoint = urlparse.urljoin(config.api_root, "batches")

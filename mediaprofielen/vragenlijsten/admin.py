@@ -31,7 +31,7 @@ class EnqueteAdmin(NestedModelAdmin):
 
 class OrganisationAdmin(admin.ModelAdmin):
     list_display = ('name',)
-    readonly_fields= ('members',)
+    # readonly_fields= ('members',)
 #     actions = ['mail_organisation']
 #     def mail_organisation(self, request, queryset):
 #         for org in queryset:
