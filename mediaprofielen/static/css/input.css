@@ -151,19 +151,6 @@ html,body {
 	background-color: rgba(76,183,255,1.0);
 	margin: 5px;
 }
-#leftOne{
-	margin-right: 60px;
-}
-#leftTwo{
-	margin-right: 60px;
-}
-#rightOne{
-	margin-left: 60px;
-}
-#rightTwo{
-	margin-left: 60px;
-}
-
 .inlogContainer{
   padding: 20px;
   margin-top: 100px;
@@ -192,6 +179,35 @@ html,body {
     user-select: none;
 }
 
+.openingsTextContainer{
+	max-width:1300px; 
+	margin: 100px 100px 150px 100px;
+}
+
+.buttonContainer{
+	height: 450px; 
+	background-color:white; 
+	z-index: 10;
+}
+
+#pagesOne{
+	height: 430px; 
+	width: 880px;
+}
+
+#pagesTwo{
+	height: 430px; 
+	width: 880px;
+}
+
+.screenshotContainer{
+	height: 750px;
+}
+
+.screenshotContainer2{
+	height: 750px;
+}
+
 @media all and (max-width: 1000px) {
 	.openingsText{
 		font-weight: 200;
@@ -203,6 +219,17 @@ html,body {
 		font-family: "Roboto";
 		text-align: center;
 	}	
+	.openingsTextContainer{
+		margin: 20px 30px 50px 30px;
+	}
+
+	.screenshotContainer{
+		height: 600px;
+	}
+
+	.screenshotContainer2{
+		height: 600px;
+	}
     
 }
 
@@ -217,5 +244,14 @@ html,body {
 		font-family: "Roboto";
 		text-align: center;
 	}	
-    
+
+	.screenshotContainer{
+		height: 450px;
+	}
+
+	.header{
+		padding: 45px;
+	}
+	#loginPanel{
+		margin-right: 20px;
 }

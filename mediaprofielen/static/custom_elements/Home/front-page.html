@@ -14,7 +14,7 @@
     	<div class="headerPanel vertical layout center">
     		<link rel="import" href="../../bower_components/iron-image/iron-image.html">
 			<iron-image class="logo" src="../../images/LogoWit.png"></iron-image>
-			<div style="max-width:1300px; margin: 100px 100px 150px 100px;">
+			<div class="openingsTextContainer">
 				<p class="openingsText">
                 Een mediaprofiel typeert je mediavaardigheden.<br>
                 Een mediaprofiel meet je online interactie.<br>
@@ -55,41 +55,25 @@
     	<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
 		<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
     	<div class="contentPanel vertical layout">
-    		<div class="vertical layout" style="height: 700px;">
+    		<div class="vertical layout screenshotContainer">
     			<p class="contentText">Test je online gedrag en vaardigheden</p>
     			<div class="horizontal layout center flex">
-    				<div class="horizontal layout flex center" style="height: 450px; background-color:white; z-index: 10;">
+    				<div class="horizontal layout flex center buttonContainer">
     					<div class="flex"></div>
     					<jr-button-outline id="leftOne" disabled="true" icon="arrow-back" on-click="prevOne"></jr-button-outline>
     				</div>
-					<neon-animated-pages id="pagesOne" selected="0" style="height: 430px; width: 830px;" entry-animation="[[entryAnimationOne]]" exit-animation="[[exitAnimationOne]]">
-				    	<div class="vertical layout center">
-				    		<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/Screenshot1.jpg"></iron-image>	
-				    		</div>
-						</div>
-						<div class="vertical layout center">
-							<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/Screenshot2.jpg"></iron-image>
-			    			</div>		
-						</div>
-						<div class="vertical layout center">
-							<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/Screenshot3.jpg"></iron-image>	
-				    		</div>
-						</div>
-						<div class="vertical layout center">
-							<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/Screenshot4.jpg"></iron-image>	
-			    			</div>
-						</div>
+					<neon-animated-pages id="pagesOne" selected="0" entry-animation="[[entryAnimationOne]]" exit-animation="[[exitAnimationOne]]">
+		    			<iron-image src="../../images/Screenshot1.jpg" sizing="contain"></iron-image>	
+		    			<iron-image src="../../images/Screenshot2.jpg" sizing="contain"></iron-image>
+		    			<iron-image src="../../images/Screenshot3.jpg" sizing="contain"></iron-image>	
+		    			<iron-image src="../../images/Screenshot4.jpg" sizing="contain"></iron-image>	
 					</neon-animated-pages>
-					<div class="horizontal layout flex center" style="height: 450px; background-color:white; z-index: 10;">
+					<div class="horizontal layout flex center buttonContainer" >
 			    		<jr-button-outline id="rightOne" icon="arrow-forward" on-click="nextOne"></jr-button-outline>
 			    		<div class="flex"></div>
 			    	</div>
     			</div>
-                <div class="vertical layout center">
+                <div class="vertical layout center" style="margin-top:30px;">
                     <div id="bulletsOne" class="horizontal layout center">
                         <span class="bulletActive"></span>
                         <span class="bullet"></span>
@@ -103,93 +87,77 @@
 
     		<div class="vertical layout center">
     			<p class="contentText">Ontdek binnen welk profiel je past</p>
-    			<div class="horizontal layout" style="margin-bottom: 50px;">
+    			<div class="horizontal layout wrap" style="margin-bottom: 50px;">
+                    <div class="flex"></div>
     				<div class="vertical layout center profilePanel">
     					<iron-image src="../../images/Consument.png"></iron-image>
     					<p class="profileTitleText">Consument</p>
     					<p class="profileDescriptionText">Iemand die kijkt en leest</p>
     				</div>
+                    <div class="flex"></div>
     				<div class="vertical layout center profilePanel">
     					<iron-image src="../../images/Verzamelaar.png"></iron-image>
     					<p class="profileTitleText">Verzamelaar</p>
     					<p class="profileDescriptionText">Iemand die zoekt en organiseert</p>
     				</div>
+                    <div class="flex"></div>
     				<div class="vertical layout center profilePanel">
     					<iron-image src="../../images/Strateeg.png"></iron-image>
     					<p class="profileTitleText">Strateeg</p>
     					<p class="profileDescriptionText">Iemand die onderzoekt en reflecteert</p>
     				</div>
+                    <div class="flex"></div>
     				<div class="vertical layout center profilePanel">
     					<iron-image src="../../images/Netwerker.png"></iron-image>
     					<p class="profileTitleText">Netwerker</p>
     					<p class="profileDescriptionText">Iemand die praat en deelt</p>
     				</div>
+                    <div class="flex"></div>
     				<div class="vertical layout center profilePanel">
     					<iron-image src="../../images/Producent.png"></iron-image>
     					<p class="profileTitleText">Producent</p>
     					<p class="profileDescriptionText">Iemand die maakt en deelt</p>
     				</div>
+                    <div class="flex"></div>
     			</div>
     		</div>
 
-    		<!-- <div class="seperator"></div>
+    		<div class="seperator"></div>
 
-    		<div class="vertical layout" style="height: 700px;">
-    			<p class="contentText">Etiam porta sem malesuada</p>
-    			<div class="horizontal layout center flex">
-    				<div class="horizontal layout flex center" style="height: 450px; background-color:white; z-index: 10;">
-    					<div class="flex"></div>
-    					<jr-button-outline id="leftTwo" disabled="true" icon="arrow-back" on-click="prevTwo"></jr-button-outline>
-    				</div>
-					<neon-animated-pages id="pagesTwo" selected="0" style="height: 430px; width: 830px;" entry-animation="[[entryAnimationTwo]]" exit-animation="[[exitAnimationTwo]]">
-				    	<div class="vertical layout center">
-				    		<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/ProducentMuppet.png"></iron-image>	
-				    		</div>
-						</div>
-						<div class="vertical layout center">
-							<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/VerzamelaarMuppet.png"></iron-image>
-			    			</div>		
-						</div>
-						<div class="vertical layout center">
-							<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/ConsumentMuppet.png"></iron-image>	
-				    		</div>
-						</div>
-						<div class="vertical layout center">
-							<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/StrateegMuppet.png"></iron-image>	
-			    			</div>
-						</div>
-						<div class="vertical layout center">
-							<div class="horizontal layout center flex">
-				    			<iron-image src="../../images/NetwerkMuppet.png"></iron-image>	
-			    			</div>
-						</div>
-					</neon-animated-pages>
-					<div class="horizontal layout flex center" style="height: 450px; background-color:white; z-index: 10;">
-			    		<jr-button-outline id="rightTwo" icon="arrow-forward" on-click="nextTwo"></jr-button-outline>
-			    		<div class="flex"></div>
-			    	</div>
-    			</div>
-                <div class="vertical layout center">
+    		<div class="vertical layout screenshotContainer2">
+                <p class="contentText">Test je online gedrag en vaardigheden</p>
+                <div class="horizontal layout center flex">
+                    <div class="horizontal layout flex center buttonContainer">
+                        <div class="flex"></div>
+                        <jr-button-outline id="leftTwo" disabled="true" icon="arrow-back" on-click="prevTwo"></jr-button-outline>
+                    </div>
+                    <neon-animated-pages id="pagesTwo" selected="0" entry-animation="[[entryAnimationTwo]]" exit-animation="[[exitAnimationTwo]]">
+                        <iron-image src="../../images/Screenshot5.png" sizing="contain"></iron-image>   
+                        <iron-image src="../../images/Screenshot6.png" sizing="contain"></iron-image>
+                        <iron-image src="../../images/Screenshot7.png" sizing="contain"></iron-image>   
+                        <iron-image src="../../images/Screenshot8.png" sizing="contain"></iron-image>   
+                    </neon-animated-pages>
+                    <div class="horizontal layout flex center buttonContainer" >
+                        <jr-button-outline id="rightTwo" icon="arrow-forward" on-click="nextTwo"></jr-button-outline>
+                        <div class="flex"></div>
+                    </div>
+                </div>
+                <div class="vertical layout center" style="margin-top:30px;">
                     <div id="bulletsTwo" class="horizontal layout center">
                         <span class="bulletActive"></span>
                         <span class="bullet"></span>
                         <span class="bullet"></span>
                         <span class="bullet"></span>
-                        <span class="bullet"></span>
                     </div>
                 </div>
-    		</div> -->
+            </div>
 
     		<div class="seperator"></div>
 
     		<div class="vertical layout center contactPanel">
                 <div class="vertical layout" style="max-width: 900px;">
     	    		<p class="contentText" style="margin-bottom: 10px;">Vraag naar de mogelijkheden van Mediaprofiel</p>
-                    <p class="profileDescriptionText" style="margin: 0px 0px 20px 0px; font-size: 20px;">Iets voor uw organisatie? Wij informeren u graag over alle mogelijkheden. De kosten zijn afhankelijk van het aantal deelnemers en de mate van begeleiding.</p>
+                    <p class="profileDescriptionText" style="margin: 0px 0px 20px 0px; font-size: 17.5px; font-weight:300;">Iets voor uw organisatie? Wij informeren u graag over alle mogelijkheden. De kosten zijn afhankelijk van het aantal deelnemers en de mate van begeleiding.</p>
                 </div>
 	    		<div class="horizontal layout center">
 	    			<div class="horizontal layout center" style="margin: 27px;">
@@ -202,7 +170,7 @@
 	    			</div>
 	    			<div class="horizontal layout center" style="margin: 27px;">
 	    				<span class="iconText"></span>
-	    				<a href="http://www.facebook.com/detransitie" class="contactText">facebook.com/detransitie</a>
+	    				<a href="https://www.facebook.com/Mediaprofiel-1521673804809722/timeline" class="contactText">facebook.com/mediaprofiel</a>
 	    			</div>
 	    		</div>
 
@@ -265,33 +233,33 @@
 
    
 
-    // nextTwo: function(){
-    // 	this.$.rightTwo.disabled = true;
-    // 	this.entryAnimationTwo = 'slide-from-right-animation';
-    //     this.exitAnimationTwo = 'slide-left-animation';
-  	 //    this.$.pagesTwo.selected = (1 + parseInt(this.$.pagesTwo.selected)).toString();
-    //     this.$.leftTwo.disabled = false;
-    //     if (this.$.pagesTwo.selected != 4){
-    //     	setTimeout(function(){ var b = document.getElementById("rightTwo"); b.disabled = false;}, 500);
-    //     }
-    //     var e = document.getElementById("bulletsTwo").children;
-    //     e[parseInt(this.$.pagesTwo.selected) - 1].className = "bullet";
-    //     e[parseInt(this.$.pagesTwo.selected)].className = "bulletActive";
-    // },
+    nextTwo: function(){
+    	this.$.rightTwo.disabled = true;
+    	this.entryAnimationTwo = 'slide-from-right-animation';
+        this.exitAnimationTwo = 'slide-left-animation';
+  	    this.$.pagesTwo.selected = (1 + parseInt(this.$.pagesTwo.selected)).toString();
+        this.$.leftTwo.disabled = false;
+        if (this.$.pagesTwo.selected != 3){
+        	setTimeout(function(){ var b = document.getElementById("rightTwo"); b.disabled = false;}, 500);
+        }
+        var e = document.getElementById("bulletsTwo").children;
+        e[parseInt(this.$.pagesTwo.selected) - 1].className = "bullet";
+        e[parseInt(this.$.pagesTwo.selected)].className = "bulletActive";
+    },
 
-    // prevTwo: function(){
-    // 	this.$.leftTwo.disabled = true;
-    // 	this.entryAnimationTwo = 'slide-from-left-animation';
-    //     this.exitAnimationTwo = 'slide-right-animation'; 
-  	 //    this.$.pagesTwo.selected = (parseInt(this.$.pagesTwo.selected) - 1).toString();
-    //     this.$.rightTwo.disabled = false;
-    //     if (this.$.pagesTwo.selected != 0){
-    //     	setTimeout(function(){ var b = document.getElementById("leftTwo"); b.disabled = false;}, 500);
-    //     }
-    //     var e = document.getElementById("bulletsTwo").children;
-    //     e[parseInt(this.$.pagesTwo.selected) + 1].className = "bullet";
-    //     e[parseInt(this.$.pagesTwo.selected)].className = "bulletActive";
-    // }
+    prevTwo: function(){
+    	this.$.leftTwo.disabled = true;
+    	this.entryAnimationTwo = 'slide-from-left-animation';
+        this.exitAnimationTwo = 'slide-right-animation'; 
+  	    this.$.pagesTwo.selected = (parseInt(this.$.pagesTwo.selected) - 1).toString();
+        this.$.rightTwo.disabled = false;
+        if (this.$.pagesTwo.selected != 0){
+        	setTimeout(function(){ var b = document.getElementById("leftTwo"); b.disabled = false;}, 500);
+        }
+        var e = document.getElementById("bulletsTwo").children;
+        e[parseInt(this.$.pagesTwo.selected) + 1].className = "bullet";
+        e[parseInt(this.$.pagesTwo.selected)].className = "bulletActive";
+    }
 
   });
 
