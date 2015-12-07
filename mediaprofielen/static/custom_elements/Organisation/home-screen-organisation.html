@@ -84,7 +84,7 @@
 				    		<div class="vertical layout flex">
 					    		<p class="overviewText">{{selectedOrganisation.Name}}</p>
 					    		<p class="overviewText">{{selectedOrganisation.Name}}</p>
-				    			<p class="overviewText">{{selectedOrganisation.Name}}</p>
+				    			<p class="overviewText">{{selectedOrganisation.memberCount}}</p>
 				    		</div>
 				    	</div>
 
@@ -102,10 +102,17 @@
 				    		</div>
 				    		<div class="flex"></div>
 				    		<div class="vertical layout flex">
-				    			<p class="overviewText">{{selectedOrganisation.Name}}</p>
+				    			<p class="overviewText">{{selectedOrganisation.invulmomenten.length}}</p>
 				    		</div>
 				    	</div>
 					</div>
+					<google-chart
+				      on-google-chart-select="chartSelect"
+				      id="pieChart"
+				      type='pie'
+				      class="pieChart"
+				      cols='[{"label":"Profile", "type":"string"}, {"label":"Score", "type":"number"}]'>
+				    </google-chart>  
 						<google-chart
 					        id="lineChart"
 					        type='line'
@@ -182,7 +189,7 @@
           }
         }
       };
-    }
+    },
 
      setSelected: function(){
     	this.selectedOrganisation = this.currentorganisation[0];
