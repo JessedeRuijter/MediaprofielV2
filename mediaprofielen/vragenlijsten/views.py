@@ -117,12 +117,13 @@ class currentOrganisationView(APIView):
         user            = request.user
         owned_organisations   = user.owners.all()
         if owned_organisations:
-            organisationDict = {}
+            organisationList = []
             for i, organisation in enumerate(owned_organisations):
                 orgDict = {} #Deze dict is voor alle info over de organisatie
                 orgDict['Name'] = organisation.name
                 orgDict['Id'] = organisation.id
                 orgDict['invulmomenten'] = {}
+                orgDict['Owners'] = map(lambda x: x.id, organisation.owners.all())
                 membercount = organisation.members.count()
                 orgDict['memberCount'] = membercount
                 for invulmoment in organisation.organisationInvulMoment.all():
@@ -143,8 +144,8 @@ class currentOrganisationView(APIView):
                     totalcount = sumProfiles(profielen)
                     orgDict['invulmomenten'][invulmoment.id]['totalCount'] = totalcount
                     orgDict['invulmomenten'][invulmoment.id]['averageCount'] = {k: float(v)/membercount for k, v in totalcount.items()}
-                organisationDict[organisation.name] = orgDict
-            return Response(organisationDict)
+                organisationList.append(orgDict)
+            return Response(organisationList)
         else:
             return Response("This user is no owner!")
 
