@@ -116,34 +116,37 @@ class currentOrganisationView(APIView):
     def get(self, request):
         user            = request.user
         owned_organisations   = user.owners.all()
-        member_organisations = user.members.all()
         if owned_organisations:
             organisationDict = {}
             for i, organisation in enumerate(owned_organisations):
                 orgDict = {} #Deze dict is voor alle info over de organisatie
-                orgDict['Type'] = 'Owner'
                 orgDict['Name'] = organisation.name
                 orgDict['Id'] = organisation.id
-                profileCount = {'geen profiel':0,
-                                'consument':0,
-                                'verzamelaar':0,
-                                'strateeg':0,
-                                'netwerker':0,
-                                'producent':0}
-                for member in organisation.members.all():
-                        profileCount[get_highest_profile(member.profiel.all()[0])] += 1
-                orgDict['profileCount'] = profileCount
-                organisationDict["Organisation" + str(i+1)] = orgDict
-                orgDict['totalCount'] = sumProfiles(Profiel.objects.filter(user =organisation.members.all()))
-                orgDict['averageCount'] = {}
-                for key, value in orgDict['totalCount'].items():
-                    orgDict['averageCount'][key] = float(value) / organisation.members.count()
-            return Response(organisationDict.values())
-        if member_organisations:
-            serialized = OrganisationSerializer(member_organisations[0], context={'request': request})
-            return Response(serialized.data)
+                orgDict['invulmomenten'] = {}
+                membercount = organisation.members.count()
+                orgDict['memberCount'] = membercount
+                for invulmoment in organisation.organisationInvulMoment.all():
+                    orgDict['invulmomenten'][invulmoment.id] = {}
+                    orgDict['invulmomenten'][invulmoment.id]['datum'] = invulmoment.time
+                    orgDict['invulmomenten'][invulmoment.id]['enquete'] = invulmoment.enquete.name
+                    orgDict['invulmomenten'][invulmoment.id]['ingevuldCount'] = invulmoment.invulmomentprofiel.count()
+                    profileCount = {'geen profiel':0,
+                                    'consument':0,
+                                    'verzamelaar':0,
+                                    'strateeg':0,
+                                    'netwerker':0,
+                                    'producent':0}
+                    profielen = invulmoment.invulmomentprofiel.all()
+                    for profiel in profielen:
+                            profileCount[get_highest_profile(profiel)] += 1
+                    orgDict['invulmomenten'][invulmoment.id]['profielCount'] = profileCount
+                    totalcount = sumProfiles(profielen)
+                    orgDict['invulmomenten'][invulmoment.id]['totalCount'] = totalcount
+                    orgDict['invulmomenten'][invulmoment.id]['averageCount'] = {k: float(v)/membercount for k, v in totalcount.items()}
+                organisationDict[organisation.name] = orgDict
+            return Response(organisationDict)
         else:
-            return Response("No organisation owner/member.")
+            return Response("This user is no owner!")
 
 
 def csv_view(request, index):
