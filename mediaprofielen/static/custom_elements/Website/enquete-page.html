@@ -37,7 +37,7 @@
 				    			<div id="blockStateList" class="horizontal layout center" style="margin-bottom: 0px;">
 				    				<span class="blockStateIcon"></span>
 				    				<span class="blockStateText" on-click="blockSelect" id="{{index}}">{{item.name}}</span>
-				    				<span class="infoIcon" on-mouseover="showDescription" on-mouseout="hideDescription"></span>
+				    				<span class="infoIcon" on-mouseover="showDescription" id="{{index}}" on-mouseout="hideDescription"></span>
 				    			</div>
 				    			<div class="infoContainer">
 					    			<div id="informationOverlay" style="padding: 15px; background-color: rgba(76,183,255,1.0);">
@@ -64,6 +64,7 @@
 			    		<template is="dom-repeat" items="{{blocklist}}">
 			    			<div>
 			    				<p class="blockTitleText">{{item.name}}</p>
+			    				<p class="blockDescriptionText">{{item.description}}</p>
 			    				<template is="dom-repeat" items="{{item.questions}}">
 			    					<div>			    						
 			    						<question-block answer="{{answerChanged}}" question="{{index}}" data="{{item}}"></question-block>
@@ -208,7 +209,7 @@ HTMLImports.whenReady(function() {
 				b[0].children[0].style.height = "8px";
 				b[0].children[0].style.width = "8px";
 				b[0].children[0].style.margin = "0px 10px 0px 0px";
-				b[0].children[2].style.visibility = "visible";
+				b[0].children[2].style.visibility = "hidden";
 			}
 
 			this.blockAnswer = new Array(this.blocklist.length);
@@ -260,12 +261,12 @@ HTMLImports.whenReady(function() {
 
 	},
 
-	showDescription: function(){
-		var d = document.querySelectorAll(".infoContainer")[this.blockSelected];
+	showDescription: function(sender){
+		var d = document.querySelectorAll(".infoContainer")[sender.target.id];
 		d.style.display = "block";
 	},
-	hideDescription: function(){
-		var d = document.querySelectorAll(".infoContainer")[this.blockSelected];
+	hideDescription: function(sender){
+		var d = document.querySelectorAll(".infoContainer")[sender.target.id];
 		d.style.display = "none";
 	},
 
@@ -412,8 +413,8 @@ HTMLImports.whenReady(function() {
 
 		elements[newB].children[0].style.borderColor = "#242d33";
 
-		elements[oldB].children[2].style.visibility = "hidden";
-		elements[newB].children[2].style.visibility = "visible";			
+		elements[oldB].children[2].style.visibility = "visible";
+		elements[newB].children[2].style.visibility = "hidden";			
 	};
 
 	function openBlock(elements, oldB, newB){
