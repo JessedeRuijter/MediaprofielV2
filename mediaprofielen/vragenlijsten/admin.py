@@ -2,6 +2,8 @@ from django.contrib import admin
 from vragenlijsten.models import *
 from nested_inline.admin import NestedStackedInline, NestedModelAdmin, NestedTabularInline
 from django.core.management import call_command
+from django.contrib import admin
+from ajax_select import make_ajax_form
 
 class ChoiceInline(NestedTabularInline):
     model = QuestionChoice
@@ -29,8 +31,16 @@ class EnqueteAdmin(NestedModelAdmin):
     ]
     inlines = [QuestionBlockInline]
 
+# @admin.register(Organisation)
 class OrganisationAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    readonly_fields= ('members',)
+    form = make_ajax_form(Organisation, {
+        # fieldname: channel_name
+        'owners': 'users'
+    })
+
+# class OrganisationAdmin(admin.ModelAdmin):
+#     list_display = ('name',)
     # readonly_fields= ('members',)
 #     actions = ['mail_organisation']
 #     def mail_organisation(self, request, queryset):
