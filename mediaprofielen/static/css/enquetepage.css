@@ -624,6 +624,10 @@ html,body {
 	letter-spacing: 0.018em;
 }
 
+#phoneSized{
+	display: none;
+}
+
 @media all and (max-width: 1300px) {
 	#hideRightPanel{
 		display: none;
@@ -644,11 +648,20 @@ html,body {
 	#sidePanel{
 		display: none;
 	}
+	#sidePPanel{
+		display: none;
+	}
 	#contentPanel{
 		top:140px;
 	}
 	#profileQuestionPanel{
 		top:140px;
+	}
+	#phoneSized{
+		display: block;
+	}
+	#desktopSized{
+		display: none;
 	}
 }
 
