@@ -135,8 +135,7 @@ HTMLImports.whenReady(function() {
     		value: 0
     	},
     	enquete: {
-    		type: Object,
-    		value: {}
+    		type: Object
     	},
     	answerChanged: {
     		type: String,
@@ -153,19 +152,31 @@ HTMLImports.whenReady(function() {
     		value: false
     	}
     },
-    observers: [    
+    observers: [   
+    	'getEnquete(enquete)',
         'answerHasChanged(answerChanged)',
         'ingevuldChanged(finished)'
     ],
 
+    created: function(){
+    	this.locked = false;
+    },
+
     attached: function(){
-    	this.setEnquete(this.enquete);
+    	this.getEnquete(this.enquete);
     	this.ingevuldChanged();
     },
 
     ingevuldChanged: function(){
     	if(this.finished){
     		this.$.finishedSelector.selected = 1;
+    	}
+    },
+
+    getEnquete: function(newEnquete){
+    	if(!this.locked){
+    		this.locked = true;
+    		this.setEnquete(this.enquete);
     	}
     },
 
@@ -204,7 +215,9 @@ HTMLImports.whenReady(function() {
 			for (var i = 0; i < this.blockAnswer.length; i++){
 				this.blockAnswer[i] = new Array(this.blocklist[i].questions.length);
 			}
-		}		
+			this.locked = false;
+		}
+
 	},
 
 	nextQ: function(){		
@@ -273,10 +286,15 @@ HTMLImports.whenReady(function() {
 		if (answer != ""){
 			//Set new answer
 			var splitted = answer.split(" ");
-			this.blockAnswer[this.blockSelected][parseInt(splitted[0])] = parseInt(splitted[1]);
-
-			//Check if block is finished and set button if finished
 			var filledIn = 0;
+
+			if(splitted[2] == "Y"){
+				console.log(this.blockAnswer)
+			}
+			
+			this.blockAnswer[this.blockSelected][parseInt(splitted[0])] = parseInt(splitted[1]);
+			
+			//Check if block is finished and set button if finished
 			for (var i=0; i<this.blockAnswer[this.blockSelected].length; i++){
 				if(this.blockAnswer[this.blockSelected][i] >= 0){
 					filledIn++;
@@ -292,6 +310,7 @@ HTMLImports.whenReady(function() {
 					openBlock(document.querySelectorAll('#blockStateList'), this.blockSelected, this.blockSelected);
 				}
 			}
+			console.log()
 		}
 	},
 	blockSelect: function(sender){

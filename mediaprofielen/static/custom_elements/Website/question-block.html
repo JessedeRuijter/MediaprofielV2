@@ -99,7 +99,11 @@
       for (i = 0; i < elementList.length; i++){
         if (sender.target.id == elementList[i].id){
           elementList[i].className = "qSelectedBigIcon";
-          this.answer = this.question + " " + i;
+          if(this.data.qType == "Y"){
+            this.answer = this.question + " " + i + " Y " + this.data.offset;
+          }
+          else
+            this.answer = this.question + " " + i;
         }
         else{
           elementList[i].className = "qBigIcon";
