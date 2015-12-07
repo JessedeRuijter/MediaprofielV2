@@ -9,12 +9,14 @@
   	<link rel="import" href="../../bower_components/font-roboto/roboto.html">
   	<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
   	<link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
+    <link rel="import" href="../../bower_components/google-chart/google-chart.html">
 
   	<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 	<iron-ajax auto
 	    id="currento"
 		url='/api/currentorganisation'
 		last-response="{{currentorganisation}}"
+		on-response="setSelected"
 		handleAs="json"
 	    debounce-duration="300">
 	</iron-ajax>
@@ -44,26 +46,26 @@
 				<div class="vertical layout">
 					<template is="dom-repeat" items="{{currentorganisation}}">
 						<div>
-							<p>{{item.Name}}</p>
+							<p class="organisationSelectText" id="{{index}}" on-tap="switchOrganisation">{{item.Name}}</p>
 						</div>
 					</template>
 				</div>
 				<div class="flex"></div>
 			</div>
-			<div class="middlePanel card" style="background-color: white;">
-				<div class="horizontal layout center">
-					<div class="flex"></div>
-					<p class="organisationTabSelectedText">Overzicht</p>
-					<p class="organisationTabText">Grafieken</p>
-					<p class="organisationTabText">Ledenlijst</p>
-				</div>
+			<div class="middlePanel card" style="height: 1000px; background-color: white;">
 
 				<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
 				<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
+				<div class="horizontal layout center" on-tap="selectTab">
+					<div class="flex"></div>
+					<p id="0" class="organisationTabText">Overzicht</p>
+					<p id="1" class="organisationTabText">Grafieken</p>
+					<p id="2" class="organisationTabText">Ledenlijst</p>
+				</div>
 
-				<neon-animated-pages id="pages" class="flex"  selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+				<neon-animated-pages id="pages" class="flex" style="height: 900px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 				    <div class="vertical layout" style="padding: 20px 120px 50px 120px;">
-				    	<p class="overviewTitleText">Broeitest</p>
+				    	<p class="overviewTitleText">{{selectedOrganisation.Name}}</p>
 
 				    	<div class="vertical layout center">
 				          <div class="seperator" style="margin: 20px;"></div>    
@@ -80,9 +82,9 @@
 				    		</div>
 				    		<div class="flex"></div>
 				    		<div class="vertical layout flex">
-					    		<p class="overviewText">Organisatie:</p>
-					    		<p class="overviewText">Eigenaren:</p>
-				    			<p class="overviewText">Leden aantal:</p>
+					    		<p class="overviewText">{{selectedOrganisation.Name}}</p>
+					    		<p class="overviewText">{{selectedOrganisation.Name}}</p>
+				    			<p class="overviewText">{{selectedOrganisation.memberCount}}</p>
 				    		</div>
 				    	</div>
 
@@ -100,18 +102,28 @@
 				    		</div>
 				    		<div class="flex"></div>
 				    		<div class="vertical layout flex">
-				    			<p class="overviewText">Aantal invulmomenten:</p>
+				    			<p class="overviewText">{{selectedOrganisation.invulmomenten.length}}</p>
 				    		</div>
 				    	</div>
 					</div>
-
+					<google-chart
+				      on-google-chart-select="chartSelect"
+				      id="pieChart"
+				      type='pie'
+				      class="pieChart"
+				      cols='[{"label":"Profile", "type":"string"}, {"label":"Score", "type":"number"}]'>
+				    </google-chart>  
+						<google-chart
+					        id="lineChart"
+					        type='line'
+					        class="lineChart">
+					     </google-chart>
 					<div>
 					</div>
 
 					<div>
 					</div>
 				</neon-animated-pages>
-
 			</div>
 			<div class="flex"></div>
 		</div>
@@ -125,6 +137,102 @@
     is: "home-screen-organisation",
 
     properties:{
+    	selectedOrganisation:{
+    		type: Object
+    	},
+    	oldSelected:{
+    		type: Number,
+    		value: 0
+    	},
+    	oldTab:{
+    		type: Number,
+    		value: 0
+    	}
+    },
+
+    ready: function(){
+    	this.$.pieChart.options = {
+	        legend: 'none',
+	        pieHole: 0.5,
+	        backgroundColor: { fill:'transparent' },
+	        chartArea: { left:10, top:10 },
+	        tooltip: { trigger: 'none' },
+	        height: 400,
+	        width: 400,
+	        slices: {
+	          0: { color: '#1cbbb4', textStyle: {color: "#FFFFFF"} },
+	          1: { color: '#e3f2e8', textStyle: {color: "#acd373"}  },
+	          2: { color: '#efece5', textStyle: {color: "#fbaf5d"}  },
+	          3: { color: '#eee2ea', textStyle: {color: "#f26d7d"}  },
+	          4: { color: '#e2e0f1', textStyle: {color: "#a864a8"}  }
+	        },
+	        pieSliceBorderColor: "transparent"
+	      };
+
+    	this.$.lineChart.options = {
+        legend: 'none',
+        width: 900,
+        height: 600,
+        backgroundColor: { fill:'transparent' },
+        chartArea: { left:90, top:50 },
+        pointSize: 10,
+        series: {
+          0: { color: "#1cbbb4" },
+          1: { color: '#e3f2e8' },
+          2: { color: '#efece5' },
+          3: { color: '#eee2ea' },
+          4: { color: '#e2e0f1' }
+        },
+        axes: {
+          x: {
+            0: {side: 'top'}
+          }
+        }
+      };
+    },
+
+     setSelected: function(){
+    	this.selectedOrganisation = this.currentorganisation[0];
+    	var rows = null;
+    	this.$.pieChart.rows = rows;
+    },
+
+    switchOrganisation: function(sender){
+    	this.selectedOrganisation = this.currentorganisation[sender.target.id]
+    	this.setOrg(this.oldSelected, sender.target.id);
+    	this.oldSelected = sender.target.id;
+    },
+
+    setOrg: function(oldS, newS){
+    	var e = document.querySelectorAll(".organisationSelectText");
+    	e[oldS].style.color = "#a3bccc";
+    	e[oldS].style.fontWeight = 300;
+    	e[newS].style.color = "#000000";
+    	e[newS].style.fontWeight = 500;
+    },
+    selectTab: function(sender){
+    	if(sender.target.localName = "p"){
+    		if(sender.target.id > this.oldTab){
+    			this.entryAnimation = 'slide-from-right-animation';
+        		this.exitAnimation = 'slide-left-animation';
+    		}
+    		else if(sender.target.id < this.oldTab){
+    			this.entryAnimation = 'slide-from-left-animation';
+        		this.exitAnimation = 'slide-right-animation'; 
+    		}
+
+    		this.$.pages.selected = sender.target.id;
+    		this.setTab(this.oldTab, sender.target.id);
+    		this.oldTab = sender.target.id;
+    	}
+    },
+
+    setTab: function(oldT, newT){
+    	var e = document.querySelectorAll(".organisationTabText");
+    	e[oldT].style.fontWeight = 300;
+    	e[oldT].style.cursor = "pointer";
+    	e[newT].style.fontWeight = 600;
+    	e[newT].style.cursor = "default";
     }
   });
 

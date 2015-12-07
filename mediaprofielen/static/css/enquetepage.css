@@ -87,6 +87,16 @@ html,body {
 	font-family: "Roboto";
 }
 
+.organisationSelectText{
+	font-weight: 300;
+	color: #a3bccc;
+	letter-spacing: 0.018em;
+	font-size: 15px;
+	font-family: "Roboto";
+	cursor: default;
+	margin: 10px;
+}
+
 .profileText{
 	font-weight: 300;
 	color: #000000;
