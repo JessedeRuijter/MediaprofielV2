@@ -93,7 +93,7 @@ html,body {
 	letter-spacing: 0.018em;
 	font-size: 15px;
 	font-family: "Roboto";
-	cursor: default;
+	cursor: pointer;
 	margin: 10px;
 }
 

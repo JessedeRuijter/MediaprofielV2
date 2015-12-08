@@ -10,8 +10,8 @@
   	<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
   	<link rel="import" href="../../bower_components/iron-fit-behavior/iron-fit-behavior.html">
     <link rel="import" href="../../bower_components/google-chart/google-chart.html">
-
   	<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
 	<iron-ajax auto
 	    id="currento"
 		url='/api/currentorganisation'
@@ -30,11 +30,29 @@
 	</iron-ajax>
 
 	<iron-ajax
-      id="getMaxPoints"
-      last-response="{{maxpoints}}"
-      on-response="handleResponsePoints"
-      handleAs="json">
-    </iron-ajax>
+    id="getMaxPoints"
+    last-response="{{maxpoints}}"
+    on-response="handleResponsePoints"
+    handleAs="json">
+  </iron-ajax>
+
+  <iron-ajax 
+    id="changePassword"
+    method="POST"
+    handleAs="json"
+    content-type='application/json'>
+  </iron-ajax>
+
+    <style is="custom-style">
+      .whiteInput{
+      --paper-input-container-color: white;
+      --paper-input-container-focus-color: white;
+      --paper-input-container-input-color: white;
+    }
+    </style>
+
+    <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+    <paper-toast id="confirmChange" style="font-family: Roboto;" duration="2000" text="Het wachtwoord is veranderd!"></paper-toast>
 
   	<div class="background vertical layout fit">
     	<div class="horizontal layout">
@@ -46,18 +64,48 @@
 		    	<span class="menuIcon" on-click="openOverlay"></span>
 		    </div>
 		</div>
-		<div style="height: 100px;"></div>
-		<div class="horizontal layout flex">
-			<div class="flex horizontal layout">
-				<div class="flex"></div>
-				<div class="vertical layout">
-					<template is="dom-repeat" items="{{currentorganisation}}">
-						<div>
-							<p class="organisationSelectText" id="{{index}}" on-tap="switchOrganisation">{{item.Name}}</p>
-						</div>
-					</template>
-				</div>
-				<div class="flex"></div>
+    <div class="horizontal layout">
+      <div class="flex" style="height: 270px;"></div>
+      <div class="vertical layout changeMenuPanel" id="overlay" style="display: none">
+        <p class="menuChangeTitleText">Verander wachtwoord</p>
+        <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+        <div class="horizontal layout center" style="margin: 0px 15px 0px 15px;">
+          <paper-input id="password" class="whiteInput" style="width:180px;" label="Nieuw wachtwoord" on-input="passwordChanged" type="password"></paper-input>
+          <span id="passwordIcon" class="passwordIcon"></span>
+        </div>
+        <div class="horizontal layout center" style="margin: 0px 15px 0px 15px;">
+          <paper-input id="passwordCheck" class="whiteInput" style="width:180px;" label="Bevestig wachtwoord" on-input="checkChanged" type="password"></paper-input>
+          <span id="passwordCheckIcon" class="passwordIcon"></span>
+        </div>
+        <link rel="import" href="../jr-button-outline/jr-button-outline-w.html">
+        <div class="vertical layout center">
+          <div class="horizontal layout center">
+            <jr-button-outline-w icon="clear" on-click="closeOverlayLayout"></jr-button-outline-w>
+              <jr-button-outline-w disabled="true" icon="done" id="changePasswordButton" on-click="changePassword"></jr-button-outline-w>
+            </div>  
+
+            <span class="seperatorTop"></span>
+
+            <div class="horizontal layout center flex" style="cursor: pointer;" on-click="logout">
+              <p class="menuChangeButtonText">log out</p>
+            </div>  
+          </div>
+
+      </div>
+    </div>
+		<div class="horizontal layout" style="position: absolute; top: 200px; width: 100%">
+			<div class="flex horizontal layout relative" style="height: 1000px; background-color: #FFFFFF; z-index:10; margin-right: 3px;">
+        <div class="horizontal layout fit" style="background-color: rgba(76,183,255,0.1);">
+  				<div class="flex"></div>
+  				<div class="vertical layout">
+  					<template is="dom-repeat" items="{{currentorganisation}}">
+  						<div>
+  							<p class="organisationSelectText" id="{{index}}" on-tap="switchOrganisation">{{item.Name}}</p>
+  						</div>
+  					</template>
+  				</div>
+  				<div class="flex"></div>
+        </div>
 			</div>
 			<div class="middlePanel card" style="height: 1000px; background-color: white;">
 
@@ -67,7 +115,6 @@
 					<div class="flex"></div>
 					<p id="0" class="organisationTabText">Overzicht</p>
 					<p id="1" class="organisationTabText">Grafieken</p>
-					<p id="2" class="organisationTabText">Ledenlijst</p>
 				</div>
 
 				<neon-animated-pages id="pages" class="flex" style="height: 900px;" selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
@@ -107,7 +154,7 @@
 				    			<span class="overviewText">Datum</span>
 				    			<template is="dom-repeat" items="{{selectedOrganisation.invulmomenten}}">
 				    				<div class="horizontal layout">
-					    				<span class="overviewText"><i>{{item.datum}}</i></span>
+					    				<span class="overviewText"><i>{{formatDate(item.datum)}}</i></span>
 					    			</div>
 				    			</template>
 				    		</div>
@@ -125,7 +172,7 @@
 							<p class="overviewText">Verdeling meest voorkomend profiel:</p>
 							<div class="horizontal layout">
 								<div class="vertical layout center">
-									<p class="overviewText"><i>{{firstIM.datum}}</i></p>
+									<p class="overviewText"><i>{{formatDate(firstIM.datum)}}</i></p>
 									<google-chart
 								      id="pieChartFirst"
 								      type='pie'
@@ -135,7 +182,7 @@
 								    </google-chart>  
 								</div>
 								<div class="vertical layout center">
-									<p class="overviewText"><i>{{lastIM.datum}}</i></p>
+									<p class="overviewText"><i>{{formatDate(lastIM.datum)}}</i></p>
 								    <google-chart
 								      id="pieChartLast"
 								      type='pie'
@@ -161,7 +208,9 @@
 					</div>
 				</neon-animated-pages>
 			</div>
-			<div class="flex"></div>
+			<div class="relative flex" style="height: 1000px; background-color: #FFFFFF; z-index:10; margin-left:3px;">
+        <div class="fit" style="background-color: rgba(76,183,255,0.1);"></div>
+      </div>  
 		</div>
 
   	</div>
@@ -187,6 +236,7 @@
     },
 
     ready: function(){
+      this.first = true;
     	this.profileNames = ["consument", "verzamelaar", "strateeg", "netwerker", "producent"];   
     	var options = {
 	        legend: 'none',
@@ -234,41 +284,66 @@
     setSelected: function(){
     	this.selectedOrganisation = this.currentorganisation[0];
     	this.invulmomentenLength = this.selectedOrganisation.invulmomenten.length;
-    	this.firstIM = this.selectedOrganisation.invulmomenten[0];
-    	this.lastIM = this.selectedOrganisation.invulmomenten[this.invulmomentenLength - 1];
 
-    	this.$.getMaxPoints.url = '/api/maxpoints/' + this.selectedOrganisation.invulmomenten[0].enquete;
+      this.getMP();
+    },
+
+    getMP: function(){
+      this.firstIM = this.selectedOrganisation.invulmomenten[0];
+      this.lastIM = this.selectedOrganisation.invulmomenten[this.invulmomentenLength - 1];
+
+      if(this.invulmomentenLength > 0){
+        this.$.getMaxPoints.url = '/api/maxpoints/' + this.selectedOrganisation.invulmomenten[0].enquete;
         this.$.getMaxPoints.generateRequest();
+      }
+      else{
+        this.$.lineChart.style.display = "none";
+      }
     },
 
     handleResponsePoints: function(){
     	var rowsFirst = new Array(5);
     	for (var j = 0; j < 5; j++)
-            rowsFirst[j] = [this.profileNames[j], this.selectedOrganisation.invulmomenten[2].profielCount[this.profileNames[j]]];
+            rowsFirst[j] = [this.profileNames[j], this.selectedOrganisation.invulmomenten[0].profielCount[this.profileNames[j]]];
     	this.$.pieChartFirst.rows = rowsFirst;
 
-    	var rowsLast = new Array(5);
-    	for (var j = 0; j < 5; j++)
-            rowsLast[j] = [this.profileNames[j], this.selectedOrganisation.invulmomenten[2].profielCount[this.profileNames[j]]];
-    	this.$.pieChartLast.rows = rowsLast;
+      if(this.invulmomentenLength > 1){
+      	var rowsLast = new Array(5);
+      	for (var j = 0; j < 5; j++)
+              rowsLast[j] = [this.profileNames[j], this.selectedOrganisation.invulmomenten[this.invulmomentenLength - 1].profielCount[this.profileNames[j]]];
+      	this.$.pieChartLast.rows = rowsLast;
+      }
 
-    	//var profiles = this.selectedOrganisation.invulmomenten
+      this.$.lineChart.style.display = "block";
 
     	var data = new Array(this.invulmomentenLength);
         for (var i = 0; i < this.invulmomentenLength; i++) {
           data[i] = [
             this.selectedOrganisation.invulmomenten[i].datum, 
-            this.selectedOrganisation.invulmomenten[i].averageCount.consument/this.maxpoints.Consument * 100, 
-            this.selectedOrganisation.invulmomenten[i].averageCount.verzamelaar/this.maxpoints.Verzamelaar * 100, 
-            this.selectedOrganisation.invulmomenten[i].averageCount.strateeg/this.maxpoints.Strateeg * 100, 
-            this.selectedOrganisation.invulmomenten[i].averageCount.netwerker/this.maxpoints.Netwerker * 100, 
-            this.selectedOrganisation.invulmomenten[i].averageCount.producent/this.maxpoints.Producent * 100];
+            Math.round(this.selectedOrganisation.invulmomenten[i].averageCount.consument/this.maxpoints.Consument * 100), 
+            Math.round(this.selectedOrganisation.invulmomenten[i].averageCount.verzamelaar/this.maxpoints.Verzamelaar * 100), 
+            Math.round(this.selectedOrganisation.invulmomenten[i].averageCount.strateeg/this.maxpoints.Strateeg * 100), 
+            Math.round(this.selectedOrganisation.invulmomenten[i].averageCount.netwerker/this.maxpoints.Netwerker * 100), 
+            Math.round(this.selectedOrganisation.invulmomenten[i].averageCount.producent/this.maxpoints.Producent * 100)];
         }
-
     	var dataTemp = sortData([], data);
-        dataTemp.unshift(["Invulmoment", "Consument", "Verzamelaar", "Strateeg", "Netwerker", "Producent"]);
+      dataTemp.unshift(["Invulmoment", "Consument", "Verzamelaar", "Strateeg", "Netwerker", "Producent"]);
 
-        this.$.lineChart.data = dataTemp;
+      this.$.lineChart.data = dataTemp;
+
+      if(this.first){
+        var e = document.querySelectorAll(".organisationSelectText");
+        e[0].style.color = "#000000";
+        e[0].style.fontWeight = 500;
+        e[0].style.cursor = "default";
+
+
+        var t = document.querySelectorAll(".organisationTabText");
+        t[0].style.fontWeight = 600;
+        t[0].style.cursor = "default";
+
+        this.first = false;
+      }
     },
 
     switchOrganisation: function(sender){
@@ -276,17 +351,21 @@
     	this.invulmomentenLength = Object.keys(this.selectedOrganisation.invulmomenten).length;
     	this.setOrg(this.oldSelected, sender.target.id);
     	this.oldSelected = sender.target.id;
+
+      this.getMP();
     },
 
     setOrg: function(oldS, newS){
     	var e = document.querySelectorAll(".organisationSelectText");
     	e[oldS].style.color = "#a3bccc";
     	e[oldS].style.fontWeight = 300;
+      e[oldS].style.cursor = "pointer";
     	e[newS].style.color = "#000000";
     	e[newS].style.fontWeight = 500;
+      e[newS].style.cursor = "default";
     },
     selectTab: function(sender){
-    	if(sender.target.localName = "p"){
+    	if(sender.target.localName == "p"){
     		if(sender.target.id > this.oldTab){
     			this.entryAnimation = 'slide-from-right-animation';
         		this.exitAnimation = 'slide-left-animation';
@@ -308,7 +387,75 @@
     	e[oldT].style.cursor = "pointer";
     	e[newT].style.fontWeight = 600;
     	e[newT].style.cursor = "default";
+    },
+    openOverlay: function(){
+    if(document.getElementById("overlay").style.display == 'block') {
+      this.closeOverlayLayout();
     }
+    else {
+      this.openOverlayLayout();
+    }
+  },
+  getCSRFCookie: function() {
+        b = document.cookie.match('(^|;)\\s*csrftoken\\s*=\\s*([^;]+)');
+        return b ? b.pop() : '';
+    },
+  changePassword: function(){
+    this.$.confirmChange.show();
+    var data = JSON.stringify({"password": this.$.password.value});
+    this.$.changePassword.headers = {
+    "X-CSRFToken": this.getCSRFCookie(),
+    "X-Requested-With": "XMLHttpRequest"
+        };
+        this.$.changePassword.url = "/api/changepassword/";
+        this.$.changePassword.body = data;
+        this.$.changePassword.generateRequest();
+        //Change layout overlay
+        this.closeOverlayLayout();
+        window.location.replace("/logout");
+      },
+
+      openOverlayLayout: function(){
+        document.getElementById("overlay").style.display = "block";
+    document.querySelector(".menuIcon").innerHTML =  "";
+      },
+      closeOverlayLayout: function(){
+        this.$.password.value = "";
+        this.$.passwordCheck.value = "";
+        document.getElementById("overlay").style.display = "none";
+    document.querySelector(".menuIcon").innerHTML =  ""
+    this.$.passwordIcon.innerHTML = "";
+    this.$.passwordCheckIcon.innerHTML = "";
+      },
+
+      passwordChanged: function(){
+        if(this.$.password.value.length > 5)
+          this.$.passwordIcon.innerHTML = "";
+        else
+          this.$.passwordIcon.innerHTML = "";
+        this.checkChanged();
+      },
+      checkChanged: function(){
+        if(this.$.password.value == this.$.passwordCheck.value){
+          this.$.passwordCheckIcon.innerHTML = "";
+          if(this.$.password.value.length > 5)
+            this.$.changePasswordButton.disabled = false;
+        }
+        else{
+          this.$.passwordCheckIcon.innerHTML = "";
+          this.$.changePasswordButton.disabled = true;
+        }
+      },
+
+      logout: function(){
+        window.location.replace("/logout");
+      },
+
+      formatDate: function(datum){
+        var splitted = datum.split("-");
+        var result = splitted[2] + "-" + splitted[1] + "-" + splitted[0];
+        return result;
+      }
   });
 
 function sortData(result, data){
@@ -320,7 +467,6 @@ function sortData(result, data){
         lowest = data[i][0];
         lowestIndex = i;
       }
-
     result.push(formatDate(data.splice(lowestIndex, 1)[0]));
     result = sortData(result, data);
     return result;
@@ -340,19 +486,19 @@ function formatDate(data){
 function compareTime(time1, time2){
   var t1 = time1.split('-');
   var t2 = time2.split('-');
-  if (t1[0] > t2[0])
+  if (t1[0] < t2[0])
     return true;
-  else if (t1[0] < t2[0])
+  else if (t1[0] > t2[0])
     return false;
   else{
-    if (t1[1] > t2[1])
+    if (t1[1] < t2[1])
       return true;
-    else if (t1[1] < t2[1])
+    else if (t1[1] > t2[1])
       return false;
     else{
-      if (t1[1] > t2[1])
+      if (t1[2] < t2[2])
         return true;
-      else if (t1[1] < t2[1])
+      else if (t1[2] > t2[2])
         return false;
       else
         return true;
