@@ -122,15 +122,15 @@ class currentOrganisationView(APIView):
                 orgDict = {} #Deze dict is voor alle info over de organisatie
                 orgDict['Name'] = organisation.name
                 orgDict['Id'] = organisation.id
-                orgDict['invulmomenten'] = {}
-                orgDict['Owners'] = map(lambda x: x.id, organisation.owners.all())
+                orgDict['invulmomenten'] = []
+                orgDict['Owners'] = map(lambda x: str(x), organisation.owners.all())
                 membercount = organisation.members.count()
                 orgDict['memberCount'] = membercount
                 for invulmoment in organisation.organisationInvulMoment.all():
-                    orgDict['invulmomenten'][invulmoment.id] = {}
-                    orgDict['invulmomenten'][invulmoment.id]['datum'] = invulmoment.time
-                    orgDict['invulmomenten'][invulmoment.id]['enquete'] = invulmoment.enquete.name
-                    orgDict['invulmomenten'][invulmoment.id]['ingevuldCount'] = invulmoment.invulmomentprofiel.count()
+                    invulmomentTemp = {}
+                    invulmomentTemp['datum'] = invulmoment.time
+                    invulmomentTemp['enquete'] = invulmoment.enquete.id
+                    invulmomentTemp['ingevuldCount'] = invulmoment.invulmomentprofiel.count()
                     profileCount = {'geen profiel':0,
                                     'consument':0,
                                     'verzamelaar':0,
@@ -140,10 +140,11 @@ class currentOrganisationView(APIView):
                     profielen = invulmoment.invulmomentprofiel.all()
                     for profiel in profielen:
                             profileCount[get_highest_profile(profiel)] += 1
-                    orgDict['invulmomenten'][invulmoment.id]['profielCount'] = profileCount
+                    invulmomentTemp['profielCount'] = profileCount
                     totalcount = sumProfiles(profielen)
-                    orgDict['invulmomenten'][invulmoment.id]['totalCount'] = totalcount
-                    orgDict['invulmomenten'][invulmoment.id]['averageCount'] = {k: float(v)/membercount for k, v in totalcount.items()}
+                    invulmomentTemp['totalCount'] = totalcount
+                    invulmomentTemp['averageCount'] = {k: float(v)/membercount for k, v in totalcount.items()}
+                    orgDict['invulmomenten'].append(invulmomentTemp)
                 organisationList.append(orgDict)
             return Response(organisationList)
         else:

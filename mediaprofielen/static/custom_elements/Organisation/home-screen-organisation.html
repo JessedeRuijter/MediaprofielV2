@@ -29,6 +29,13 @@
 	    debounce-duration="300">
 	</iron-ajax>
 
+	<iron-ajax
+      id="getMaxPoints"
+      last-response="{{maxpoints}}"
+      on-response="handleResponsePoints"
+      handleAs="json">
+    </iron-ajax>
+
   	<div class="background vertical layout fit">
     	<div class="horizontal layout">
     		<div class="organisationPanel">
@@ -83,7 +90,7 @@
 				    		<div class="flex"></div>
 				    		<div class="vertical layout flex">
 					    		<p class="overviewText">{{selectedOrganisation.Name}}</p>
-					    		<p class="overviewText">{{selectedOrganisation.Name}}</p>
+					    		<p class="overviewText">{{selectedOrganisation.Owners}}</p>
 				    			<p class="overviewText">{{selectedOrganisation.memberCount}}</p>
 				    		</div>
 				    	</div>
@@ -97,27 +104,56 @@
 				        <div class="horizontal layout">
 				    		<div class="vertical layout flex">
 				    			<p class="overviewText">Aantal invulmomenten:</p>
-				    			<!-- <template is="dom-repeat" items="{{invulmomenten}}">
-				    			</template> -->
+				    			<span class="overviewText">Datum</span>
+				    			<template is="dom-repeat" items="{{selectedOrganisation.invulmomenten}}">
+				    				<div class="horizontal layout">
+					    				<span class="overviewText"><i>{{item.datum}}</i></span>
+					    			</div>
+				    			</template>
 				    		</div>
 				    		<div class="flex"></div>
 				    		<div class="vertical layout flex">
-				    			<p class="overviewText">{{selectedOrganisation.invulmomenten.length}}</p>
+				    			<p class="overviewText">{{invulmomentenLength}}</p>
+				    			<span class="overviewText">Ingevuld door</span>
+				    			<template is="dom-repeat" items="{{selectedOrganisation.invulmomenten}}">
+					    			<span class="overviewText"><i>{{item.ingevuldCount}}/{{selectedOrganisation.memberCount}}</i></span>
+				    			</template>
 				    		</div>
 				    	</div>
 					</div>
-					<google-chart
-				      on-google-chart-select="chartSelect"
-				      id="pieChart"
-				      type='pie'
-				      class="pieChart"
-				      cols='[{"label":"Profile", "type":"string"}, {"label":"Score", "type":"number"}]'>
-				    </google-chart>  
-						<google-chart
-					        id="lineChart"
-					        type='line'
-					        class="lineChart">
-					     </google-chart>
+						<div class="vertical layout center">
+							<p class="overviewText">Verdeling meest voorkomend profiel:</p>
+							<div class="horizontal layout">
+								<div class="vertical layout center">
+									<p class="overviewText"><i>{{firstIM.datum}}</i></p>
+									<google-chart
+								      id="pieChartFirst"
+								      type='pie'
+								      class="pieChart"
+								      cols='[{"label":"Profile", "type":"string"}, {"label":"Score", "type":"number"}]'
+								      style="width:300px;">
+								    </google-chart>  
+								</div>
+								<div class="vertical layout center">
+									<p class="overviewText"><i>{{lastIM.datum}}</i></p>
+								    <google-chart
+								      id="pieChartLast"
+								      type='pie'
+								      class="pieChart"
+								      cols='[{"label":"Profile", "type":"string"}, {"label":"Score", "type":"number"}]'
+								      style="width:300px;">
+								    </google-chart>  
+								</div>
+							</div>
+
+							<p class="overviewText">Gemiddeld gescoord aantal punten per profiel:</p>
+							<google-chart
+						        id="lineChart"
+						        type='line'
+						        class="lineChart">
+						     </google-chart>
+
+						</div>
 					<div>
 					</div>
 
@@ -151,16 +187,17 @@
     },
 
     ready: function(){
-    	this.$.pieChart.options = {
+    	this.profileNames = ["consument", "verzamelaar", "strateeg", "netwerker", "producent"];   
+    	var options = {
 	        legend: 'none',
 	        pieHole: 0.5,
+	        chartArea: { left: 85, top: 0},
 	        backgroundColor: { fill:'transparent' },
-	        chartArea: { left:10, top:10 },
 	        tooltip: { trigger: 'none' },
-	        height: 400,
-	        width: 400,
+	        height: 300,
+	        width: 300,
 	        slices: {
-	          0: { color: '#1cbbb4', textStyle: {color: "#FFFFFF"} },
+	          0: { color: '#cbeef3', textStyle: {color: "#1cbbb4"} },
 	          1: { color: '#e3f2e8', textStyle: {color: "#acd373"}  },
 	          2: { color: '#efece5', textStyle: {color: "#fbaf5d"}  },
 	          3: { color: '#eee2ea', textStyle: {color: "#f26d7d"}  },
@@ -178,10 +215,10 @@
         pointSize: 10,
         series: {
           0: { color: "#1cbbb4" },
-          1: { color: '#e3f2e8' },
-          2: { color: '#efece5' },
-          3: { color: '#eee2ea' },
-          4: { color: '#e2e0f1' }
+          1: { color: '#acd373' },
+          2: { color: '#fbaf5d' },
+          3: { color: '#f26d7d' },
+          4: { color: '#a864a8' }
         },
         axes: {
           x: {
@@ -189,16 +226,54 @@
           }
         }
       };
+      this.$.pieChartFirst.options = options;
+      this.$.pieChartLast.options = options;
+
     },
 
-     setSelected: function(){
+    setSelected: function(){
     	this.selectedOrganisation = this.currentorganisation[0];
-    	var rows = null;
-    	this.$.pieChart.rows = rows;
+    	this.invulmomentenLength = this.selectedOrganisation.invulmomenten.length;
+    	this.firstIM = this.selectedOrganisation.invulmomenten[0];
+    	this.lastIM = this.selectedOrganisation.invulmomenten[this.invulmomentenLength - 1];
+
+    	this.$.getMaxPoints.url = '/api/maxpoints/' + this.selectedOrganisation.invulmomenten[0].enquete;
+        this.$.getMaxPoints.generateRequest();
+    },
+
+    handleResponsePoints: function(){
+    	var rowsFirst = new Array(5);
+    	for (var j = 0; j < 5; j++)
+            rowsFirst[j] = [this.profileNames[j], this.selectedOrganisation.invulmomenten[2].profielCount[this.profileNames[j]]];
+    	this.$.pieChartFirst.rows = rowsFirst;
+
+    	var rowsLast = new Array(5);
+    	for (var j = 0; j < 5; j++)
+            rowsLast[j] = [this.profileNames[j], this.selectedOrganisation.invulmomenten[2].profielCount[this.profileNames[j]]];
+    	this.$.pieChartLast.rows = rowsLast;
+
+    	//var profiles = this.selectedOrganisation.invulmomenten
+
+    	var data = new Array(this.invulmomentenLength);
+        for (var i = 0; i < this.invulmomentenLength; i++) {
+          data[i] = [
+            this.selectedOrganisation.invulmomenten[i].datum, 
+            this.selectedOrganisation.invulmomenten[i].averageCount.consument/this.maxpoints.Consument * 100, 
+            this.selectedOrganisation.invulmomenten[i].averageCount.verzamelaar/this.maxpoints.Verzamelaar * 100, 
+            this.selectedOrganisation.invulmomenten[i].averageCount.strateeg/this.maxpoints.Strateeg * 100, 
+            this.selectedOrganisation.invulmomenten[i].averageCount.netwerker/this.maxpoints.Netwerker * 100, 
+            this.selectedOrganisation.invulmomenten[i].averageCount.producent/this.maxpoints.Producent * 100];
+        }
+
+    	var dataTemp = sortData([], data);
+        dataTemp.unshift(["Invulmoment", "Consument", "Verzamelaar", "Strateeg", "Netwerker", "Producent"]);
+
+        this.$.lineChart.data = dataTemp;
     },
 
     switchOrganisation: function(sender){
-    	this.selectedOrganisation = this.currentorganisation[sender.target.id]
+    	this.selectedOrganisation = this.currentorganisation[sender.target.id];
+    	this.invulmomentenLength = Object.keys(this.selectedOrganisation.invulmomenten).length;
     	this.setOrg(this.oldSelected, sender.target.id);
     	this.oldSelected = sender.target.id;
     },
@@ -235,5 +310,54 @@
     	e[newT].style.cursor = "default";
     }
   });
+
+function sortData(result, data){
+  if(data.length > 1){
+    var lowest = "9999-99-99";
+    var lowestIndex = 0;
+    for (var i = 0; i < data.length; i++)
+      if (compareTime(data[i][0], lowest)){
+        lowest = data[i][0];
+        lowestIndex = i;
+      }
+
+    result.push(formatDate(data.splice(lowestIndex, 1)[0]));
+    result = sortData(result, data);
+    return result;
+  }
+  else{
+    result.push(formatDate(data[0]));
+    return result;
+  }
+}
+
+function formatDate(data){
+  var splitted = data[0].split("-");
+  data[0] = splitted[2] + "-" + splitted[1] + "-" + splitted[0];
+  return data;
+}
+
+function compareTime(time1, time2){
+  var t1 = time1.split('-');
+  var t2 = time2.split('-');
+  if (t1[0] > t2[0])
+    return true;
+  else if (t1[0] < t2[0])
+    return false;
+  else{
+    if (t1[1] > t2[1])
+      return true;
+    else if (t1[1] < t2[1])
+      return false;
+    else{
+      if (t1[1] > t2[1])
+        return true;
+      else if (t1[1] < t2[1])
+        return false;
+      else
+        return true;
+    }
+  }
+};
 
 </script>
