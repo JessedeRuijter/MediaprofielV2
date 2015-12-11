@@ -103,7 +103,7 @@ class Answer(models.Model):
 	"""Antwoorden op questionblocks bij een specifiek invulmoment"""
 	invulmoment = models.ForeignKey(Invulmoment)
 	user = models.ForeignKey(User)
-	blockID = models.ForeignKey(QuestionBlock)
+	blockID = models.ForeignKey(QuestionBlock, related_name="blockanswers")
 	answers = models.CharField(max_length=1000)
 	def __unicode__(self):
 		return str(self.user) + " " + str(self.blockID) + " " + str(self.answers)

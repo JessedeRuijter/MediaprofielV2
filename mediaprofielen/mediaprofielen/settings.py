@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'vragenlijsten',
-    'csvimport.app.CSVImportConf', 
+    # 'csvimport.app.CSVImportConf', 
     'mediaprofielen_front',
     'ajax_select',
 )

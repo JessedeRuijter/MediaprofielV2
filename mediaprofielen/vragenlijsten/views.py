@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import detail_route, list_route
 from serializers import *
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from models import *
@@ -169,6 +169,48 @@ def csv_view(request, index):
     except IndexError:
         return HttpResponse("Invalid Index!")
 
+def csv_answer_view(request, inv_id):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="mediaprofielen.csv"'
+    try:
+        user = request.user
+        organisations = user.owners.all()
+        csv_header = ['gebruikersnaam', 'voornaam', 'achternaam', 'geslacht', 'leeftijd', 'opleiding', 'provincie']
+        writer = csv.writer(response, delimiter=';')
+
+        current_invulmoment = Invulmoment.objects.get(id=inv_id)
+        if not current_invulmoment.organisation in organisations:
+            return HttpResponseForbidden("Not the owner of this organisation")
+        current_enquete =  current_invulmoment.enquete
+        current_blocks = current_enquete.blocks.all()
+        user_answer_dict = {}
+        users = current_invulmoment.organisation.members.all()
+        for user in users:
+            user_answer_dict[user.username] = []
+        print users
+        for block in current_blocks:
+            for question in block.questions.all():
+                csv_header.append(question.questionText)
+            for user in users:
+                try:
+                    answer = block.blockanswers.get(invulmoment=current_invulmoment, user=user)
+                    user_answer_dict[user.username] += (answer.answers.split(","))
+                except Answer.DoesNotExist:
+                    user_answer_dict[user.username] += ["Niet beschikbaar" for question in block.questions.all()]
+        writer.writerow(csv_header)
+        for key, value in user_answer_dict.items():
+            user = User.objects.get(username=key)
+            print user
+            try:
+                writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.first_name).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.last_name).encode('ascii','ignore'), user.account.geslacht, user.account.leeftijd, user.account.opleiding, user.account.provincie] + value)
+            except Account.DoesNotExist:
+                writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar"]+ value)
+        return response
+    except Invulmoment.DoesNotExist:
+        return HttpResponseBadRequest("No invulmoment with that id!")
+
+
+
 def get_blocks_list():
     blocks = QuestionBlock.objects.all()
     result = []
@@ -231,7 +273,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
         return AnswerSerializer
 
     def perform_create(self, serializer):
-        Answer.objects.filter(user=self.request.user, blockID=serializer.data['blockID'], invulmoment=serializer.data['invulmoment']).delete()
+        Answer.objects.filter(user=self.request.user, blockID=serializer.validated_data['blockID'], invulmoment=serializer.validated_data['invulmoment']).delete()
         serializer.save(user=self.request.user)
         if 'last' in self.request.data:
             if self.request.data['last'] == "true":
