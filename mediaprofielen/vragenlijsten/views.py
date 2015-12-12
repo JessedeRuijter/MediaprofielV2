@@ -128,6 +128,7 @@ class currentOrganisationView(APIView):
                 orgDict['memberCount'] = membercount
                 for invulmoment in organisation.organisationInvulMoment.all():
                     invulmomentTemp = {}
+                    invulmomentTemp['id']   = invulmoment.id 
                     invulmomentTemp['datum'] = invulmoment.time
                     invulmomentTemp['enquete'] = invulmoment.enquete.id
                     invulmomentTemp['ingevuldCount'] = invulmoment.invulmomentprofiel.count()
@@ -171,7 +172,7 @@ def csv_view(request, index):
 
 def csv_answer_view(request, inv_id):
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="mediaprofielen.csv"'
+    response['Content-Disposition'] = 'attachment; filename="mediaprofielen_invulmoment_' + inv_id + '.csv"'
     try:
         user = request.user
         organisations = user.owners.all()

@@ -154,7 +154,7 @@
 				    			<span class="overviewText">Datum</span>
 				    			<template is="dom-repeat" items="{{selectedOrganisation.invulmomenten}}">
 				    				<div class="horizontal layout">
-					    				<span class="overviewText"><i>{{formatDate(item.datum)}}</i></span>
+					    				<span class="overviewText"><a href="/api/csva/{{item.id}}">{{formatDate(item.datum)}}</a></span>
 					    			</div>
 				    			</template>
 				    		</div>
