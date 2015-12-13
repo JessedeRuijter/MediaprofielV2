@@ -30,7 +30,7 @@
 	    }
   	</style>
 </head>
-<body class="background">
+<body>
 	<div class="vertical layout">
 		<div class="horizontal layout center header">
 			<div class="flex"></div>
@@ -62,7 +62,7 @@
 			</div>
 		</div>
 		<link rel="import" href="{% static 'custom_elements/Home/front-page.html' %}">
-		<div class="fit" style="top: 105px;">
+		<div class="fit background" style="top: 55px;">
 			<front-page></front-page>
 		</div>
 	</div>
@@ -84,9 +84,8 @@
 		}
 		function scrollBottom(){
 			var b = document.querySelector(".background");
-			console.log(b);
-			console.log(document.body.scrollHeight);
-			scrollTo(b, document.body.scrollHeight, 1000);
+			console.log(b.scrollHeight);
+			scrollTo(b, b.scrollHeight, 1000);
 		}
 		function scrollTo(element, to, duration) {
 		    var start = element.scrollTop,
