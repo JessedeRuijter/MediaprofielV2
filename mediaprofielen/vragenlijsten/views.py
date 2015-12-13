@@ -176,7 +176,7 @@ def csv_answer_view(request, inv_id):
     try:
         user = request.user
         organisations = user.owners.all()
-        csv_header = ['gebruikersnaam', 'voornaam', 'achternaam', 'geslacht', 'leeftijd', 'opleiding', 'provincie']
+        csv_header = [u'gebruikersnaam', u'voornaam', u'achternaam', u'geslacht', u'leeftijd', u'opleiding', u'provincie']
         writer = csv.writer(response, delimiter=';')
 
         current_invulmoment = Invulmoment.objects.get(id=inv_id)
@@ -198,7 +198,7 @@ def csv_answer_view(request, inv_id):
                     user_answer_dict[user.username] += (answer.answers.split(","))
                 except Answer.DoesNotExist:
                     user_answer_dict[user.username] += ["Niet beschikbaar" for question in block.questions.all()]
-        writer.writerow(csv_header)
+        writer.writerow(map(lambda s: unicodedata.normalize('NFKD', s).encode('ascii','ignore'), csv_header))
         for key, value in user_answer_dict.items():
             user = User.objects.get(username=key)
             print user

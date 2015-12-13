@@ -43,3 +43,4 @@ Temporary Items
 .apdisk
 env
 *.pyc
+db_production.sqlite3
