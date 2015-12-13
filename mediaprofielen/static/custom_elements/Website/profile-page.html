@@ -77,7 +77,7 @@
           <div style="width: 250px;">
             <google-chart
               on-google-chart-select="chartSelectM"
-              id="pieChart"
+              id="pieChartM"
               type='pie'
               class="pieChart"
               cols='[{"label":"Profile", "type":"string"}, {"label":"Score", "type":"number"}]'>
@@ -256,6 +256,24 @@
         pieSliceBorderColor: "transparent"
       };
 
+      this.$.pieChartM.options = {
+        legend: 'none',
+        pieHole: 0.5,
+        backgroundColor: { fill:'transparent' },
+        chartArea: { left:10, top:10 },
+        tooltip: { trigger: 'none' },
+        height: 400,
+        width: 400,
+        slices: {
+          0: { color: '#1cbbb4', textStyle: {color: "#FFFFFF"} },
+          1: { color: '#e3f2e8', textStyle: {color: "#acd373"}  },
+          2: { color: '#efece5', textStyle: {color: "#fbaf5d"}  },
+          3: { color: '#eee2ea', textStyle: {color: "#f26d7d"}  },
+          4: { color: '#e2e0f1', textStyle: {color: "#a864a8"}  }
+        },
+        pieSliceBorderColor: "transparent"
+      };
+
       this.$.lineChart.options = {
         chart: {
           title: 'Box Office Earnings in First Two Weeks of Opening',
@@ -346,6 +364,7 @@
               this.rows[j] = [this.profileNames[j], profiles[i][this.profileNames[j]]/this.maxpoints[capitalizeFirstLetter(this.profileNames[j])]];
 
         this.$.pieChart.rows = this.rows;
+        this.$.pieChartM.rows = this.rows;
 
         var data = new Array(profiles.length);
         for (var i = 0; i < profiles.length; i++) {
