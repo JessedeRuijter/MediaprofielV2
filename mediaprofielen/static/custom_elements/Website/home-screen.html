@@ -104,7 +104,7 @@
 			</div>
     	</div>
 
-    	<div id="profileOverlay" class="vertical layout fit center" style="overflow-y: auto; background-color: rgba(0,0,0,0.1); display: none;">
+    	<div id="profileOverlay" class="vertical layout fit center" style="overflow-y: auto; background-color: rgba(0,0,0,0.1); visibility:hidden;">
     		<link rel="import" href="question-profile.html">
     		<question-profile user="{{currentuser.user.url}}"></question-profile>
     	</div>
@@ -122,7 +122,7 @@
     handleResponse: function() {
     	this.organisationName = this.currentuser.invulmoment.organisation.name;
     	if(this.currentuser.user.account == null){
-    		this.$.profileOverlay.style.display = "inline";
+    		this.$.profileOverlay.style.visibility = "visible";
     	}
     },
     switchRight: function() {

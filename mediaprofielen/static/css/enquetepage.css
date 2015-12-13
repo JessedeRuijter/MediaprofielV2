@@ -155,19 +155,19 @@ html,body {
 
 .blockTitleText{
 	margin: 100px 0px 30px 0px;
-	color: #a3bccc;
+	color: #7B8B95;
 	letter-spacing: 0.018em;
-	font-size: 12.5px;
+	font-size: 15px;
 	font-family: "Roboto";
 	text-align: center;
 }
 
 .blockDescriptionText{
-	margin: 20px 0px 20px 0px;
+	margin: 50px 0px 50px 0px;
 	font-weight: 300;
-	color: #a3bccc;
+	color: #7B8B95;
 	letter-spacing: 0.018em;
-	font-size: 12.5px;
+	font-size: 15px;
 	font-family: "Roboto";
 	text-align: center;
 }
