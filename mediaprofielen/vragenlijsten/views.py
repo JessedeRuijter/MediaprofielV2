@@ -176,7 +176,7 @@ def csv_answer_view(request, inv_id):
     try:
         user = request.user
         organisations = user.owners.all()
-        csv_header = [u'gebruikersnaam', u'voornaam', u'achternaam', u'geslacht', u'leeftijd', u'opleiding', u'provincie']
+        csv_header = [u'gebruikersnaam', u'voornaam', u'achternaam', u'geslacht', u'leeftijd', u'opleiding', u'provincie', u'consument', u'verzamelaar', u'strateeg', u'netwerker', u'producent']
         writer = csv.writer(response, delimiter=';')
 
         current_invulmoment = Invulmoment.objects.get(id=inv_id)
@@ -201,11 +201,12 @@ def csv_answer_view(request, inv_id):
         writer.writerow(map(lambda s: unicodedata.normalize('NFKD', s).encode('ascii','ignore'), csv_header))
         for key, value in user_answer_dict.items():
             user = User.objects.get(username=key)
-            print user
+            user_profile = user.profiel.get(invulmoment=current_invulmoment)
+            print user_profile
             try:
-                writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.first_name).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.last_name).encode('ascii','ignore'), user.account.geslacht, user.account.leeftijd, user.account.opleiding, user.account.provincie] + value)
+                writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.first_name).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.last_name).encode('ascii','ignore'), user.account.geslacht, user.account.leeftijd, user.account.opleiding, user.account.provincie, user_profile.consument, user_profile.verzamelaar, user_profile.strateeg, user_profile.netwerker, user_profile.producent] + value)
             except Account.DoesNotExist:
-                writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar"]+ value)
+                writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar"]+ value)
         return response
     except Invulmoment.DoesNotExist:
         return HttpResponseBadRequest("No invulmoment with that id!")
