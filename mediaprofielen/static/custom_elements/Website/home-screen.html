@@ -56,7 +56,7 @@
 				    </div>
 				</div>
 
-				<div class="horizontal layout">
+				<div class="horizontal layout center">
 					<div class="flex" style="height: 270px;"></div>
 					<div class="vertical layout changeMenuPanel" id="overlay" style="display: none;">
 						<p class="menuChangeTitleText">Verander wachtwoord</p>
@@ -93,7 +93,7 @@
 				<neon-animated-pages id="pages" class="flex"  selected="0" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 			    	<div>	    	
 					    <link rel="import" href="enquete-page.html">
-					    <enquete-page id="enquetePage" finished="{{currentuser.invulmoment_ingevuld}}" invulmoment="{{currentuser.invulmoment.id}}" enquete="{{currentuser.invulmoment.enquete}}"></enquete-page>
+					    <enquete-page id="enquetePage" finished="{{currentuser.invulmoment_ingevuld}}"></enquete-page>
 					</div>
 
 					<div>
@@ -144,10 +144,7 @@
 
 	updateSidePanelPos: function(){
 		var sp = document.getElementById("sidePanel");
-		var en = document.getElementById("enquete");
-
 		var sp2 = document.getElementById("sidePPanel");
-
 		var bg = document.querySelector(".background");
 
 		sp.style.top = (parseFloat(bg.scrollTop)).toString() + "px";

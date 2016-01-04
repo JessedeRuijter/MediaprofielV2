@@ -32,7 +32,7 @@
 
     	<div class="introPanel vertical layout center" style="top: 70px;">
     		<div class="horizontal layout center" style="max-width:900px;">
-                <div class="vertical layout" style="margin: 30px 50px 30px 50px; width: 100%;">
+                <div class="vertical layout" style="padding: 30px; width: 100%;">
         			<p class="introText">Mediaprofiel brengt je mediavaardigheden in kaart en typeert je online interactie.<br>
                     Leveren social media je als mens en professional voldoende op?
                     Ken je mediaprofiel, stel je doelen - voor werk en privé - en weet wat je te doen staat. 
@@ -57,22 +57,28 @@
 		<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
     	<div class="contentPanel vertical layout">
     		<div class="vertical layout screenshotContainer">
-    			<p class="contentText">Test je online gedrag en vaardigheden</p>
-    			<div class="horizontal layout center flex">
-    				<div class="horizontal layout flex center buttonContainer">
-    					<div class="flex"></div>
-    					<jr-button-outline id="leftOne" disabled="true" icon="arrow-back" on-click="prevOne"></jr-button-outline>
-    				</div>
+                <div>
+    			 <p class="contentText">Test je online gedrag en vaardigheden</p>
+                </div>
+    			<div class="horizontal layout flex">
+                    <div class="vertical layout flex buttonContainer">
+        				<div class="horizontal layout flex center">
+        					<div class="flex"></div>
+        					<jr-button-outline id="leftOne" disabled="true" icon="arrow-back" on-click="prevOne"></jr-button-outline>
+        				</div>
+                    </div>
 					<neon-animated-pages id="pagesOne" selected="0" entry-animation="[[entryAnimationOne]]" exit-animation="[[exitAnimationOne]]">
 		    			<iron-image src="../../images/Screenshot1.jpg" sizing="contain"></iron-image>	
 		    			<iron-image src="../../images/Screenshot2.jpg" sizing="contain"></iron-image>
 		    			<iron-image src="../../images/Screenshot3.jpg" sizing="contain"></iron-image>	
 		    			<iron-image src="../../images/Screenshot4.jpg" sizing="contain"></iron-image>	
 					</neon-animated-pages>
-					<div class="horizontal layout flex center buttonContainer" >
-			    		<jr-button-outline id="rightOne" icon="arrow-forward" on-click="nextOne"></jr-button-outline>
-			    		<div class="flex"></div>
-			    	</div>
+                    <div class="vertical layout flex buttonContainer">
+    					<div class="horizontal layout flex center" >
+    			    		<jr-button-outline id="rightOne" icon="arrow-forward" on-click="nextOne"></jr-button-outline>
+    			    		<div class="flex"></div>
+    			    	</div>
+                    </div>
     			</div>
                 <div class="vertical layout center" style="margin-top:30px;">
                     <div id="bulletsOne" class="horizontal layout center">
@@ -91,31 +97,31 @@
     			<div class="horizontal layout wrap" style="margin-bottom: 50px;">
                     <div class="flex"></div>
     				<div class="vertical layout center profilePanel">
-    					<iron-image src="../../images/Consument.png"></iron-image>
+    					<iron-image src="../../images/Consument.png" sizing="contain" class="profileImage"></iron-image>
     					<p class="profileTitleText">Consument</p>
     					<p class="profileDescriptionText">Iemand die kijkt en leest</p>
     				</div>
                     <div class="flex"></div>
     				<div class="vertical layout center profilePanel">
-    					<iron-image src="../../images/Verzamelaar.png"></iron-image>
+    					<iron-image src="../../images/Verzamelaar.png" sizing="contain" class="profileImage"></iron-image>
     					<p class="profileTitleText">Verzamelaar</p>
     					<p class="profileDescriptionText">Iemand die zoekt en organiseert</p>
     				</div>
                     <div class="flex"></div>
     				<div class="vertical layout center profilePanel">
-    					<iron-image src="../../images/Strateeg.png"></iron-image>
+    					<iron-image src="../../images/Strateeg.png" sizing="contain" class="profileImage"></iron-image>
     					<p class="profileTitleText">Strateeg</p>
     					<p class="profileDescriptionText">Iemand die onderzoekt en reflecteert</p>
     				</div>
                     <div class="flex"></div>
     				<div class="vertical layout center profilePanel">
-    					<iron-image src="../../images/Netwerker.png"></iron-image>
+    					<iron-image src="../../images/Netwerker.png" sizing="contain" class="profileImage"></iron-image>
     					<p class="profileTitleText">Netwerker</p>
     					<p class="profileDescriptionText">Iemand die praat en deelt</p>
     				</div>
                     <div class="flex"></div>
     				<div class="vertical layout center profilePanel">
-    					<iron-image src="../../images/Producent.png"></iron-image>
+    					<iron-image src="../../images/Producent.png" sizing="contain" class="profileImage"></iron-image>
     					<p class="profileTitleText">Producent</p>
     					<p class="profileDescriptionText">Iemand die maakt en deelt</p>
     				</div>
@@ -127,20 +133,24 @@
 
     		<div class="vertical layout screenshotContainer2">
                 <p class="contentText">Test je online gedrag en vaardigheden</p>
-                <div class="horizontal layout center flex">
-                    <div class="horizontal layout flex center buttonContainer">
-                        <div class="flex"></div>
-                        <jr-button-outline id="leftTwo" disabled="true" icon="arrow-back" on-click="prevTwo"></jr-button-outline>
+                <div class="horizontal layout flex">
+                    <div class="vertical layout flex buttonContainer">
+                        <div class="horizontal layout flex center">
+                            <div class="flex"></div>
+                            <jr-button-outline id="leftTwo" disabled="true" icon="arrow-back" on-click="prevTwo"></jr-button-outline>
+                        </div>
                     </div>
-                    <neon-animated-pages id="pagesTwo" selected="0" entry-animation="[[entryAnimationTwo]]" exit-animation="[[exitAnimationTwo]]">
+                    <neon-animated-pages id="pagesTwo" selected="0" entry-animation="[[entryAnimationTwo]]" exit-animation="[[exitAnimationTwo]]" class="horizontal layout center">
                         <iron-image src="../../images/Screenshot5.png" sizing="contain"></iron-image>   
                         <iron-image src="../../images/Screenshot6.png" sizing="contain"></iron-image>
                         <iron-image src="../../images/Screenshot7.png" sizing="contain"></iron-image>   
                         <iron-image src="../../images/Screenshot8.png" sizing="contain"></iron-image>   
                     </neon-animated-pages>
-                    <div class="horizontal layout flex center buttonContainer" >
-                        <jr-button-outline id="rightTwo" icon="arrow-forward" on-click="nextTwo"></jr-button-outline>
-                        <div class="flex"></div>
+                    <div class="vertical layout flex buttonContainer">
+                        <div class="horizontal layout flex center">
+                            <jr-button-outline id="rightTwo" icon="arrow-forward" on-click="nextTwo"></jr-button-outline>
+                            <div class="flex"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="vertical layout center" style="margin-top:30px;">
@@ -156,20 +166,20 @@
     		<div class="seperator"></div>
 
     		<div class="vertical layout center contactPanel">
-                <div class="vertical layout" style="max-width: 900px;">
+                <div class="vertical layout">
     	    		<p class="contentText" style="margin-bottom: 10px;">Vraag naar de mogelijkheden van Mediaprofiel</p>
                     <p class="profileDescriptionText" style="margin: 0px 0px 20px 0px; font-size: 17.5px; font-weight:300;">Iets voor uw organisatie? Wij informeren u graag over alle mogelijkheden. De kosten zijn afhankelijk van het aantal deelnemers en de mate van begeleiding.</p>
                 </div>
-	    		<div class="horizontal layout center">
-	    			<div class="horizontal layout center" style="margin: 27px;">
+	    		<div class="horizontal layout center wrap" style="margin: 27px 0px 27px 0px;">
+	    			<div class="horizontal layout center" style="margin: 0px 27px 0px 27px;">
 	    				<span class="iconText"></span>
 	    				<a href="mailto:mediaprofiel@gmail.com" class="contactText">mediaprofiel@gmail.com</a>
 	    			</div>
-	    			<div class="horizontal layout center" style="margin: 27px;">
+	    			<div class="horizontal layout center" style="margin: 0px 27px 0px 27px;">
 	    				<span class="iconText"></span>
 	    				<a href="http://www.twitter.com/JelVanRijn" class="contactText">twitter.com/JelVanRijn</a>
 	    			</div>
-	    			<div class="horizontal layout center" style="margin: 27px;">
+	    			<div class="horizontal layout center" style="margin: 0px 27px 0px 27px;">
 	    				<span class="iconText"></span>
 	    				<a href="https://www.facebook.com/Mediaprofiel-1521673804809722/timeline" class="contactText">facebook.com/mediaprofiel</a>
 	    			</div>

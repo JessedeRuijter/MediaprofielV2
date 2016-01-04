@@ -5,6 +5,15 @@
 <dom-module id="enquete-page">
   <template>
 
+  	<iron-ajax auto
+	    id="currentu"
+		url='/api/currentuser'
+		last-response="{{currentuser}}"
+		on-response="handleResponse"
+		handleAs="json"
+	    debounce-duration="300">
+	</iron-ajax>
+
 	<iron-ajax
 	    id="blocks"
 		on-response="addBlock"
@@ -62,7 +71,7 @@
 		    		<link rel="import" href="question-block.html">
 		    		<iron-pages id="blockSelector" selected="0">
 			    		<template is="dom-repeat" items="{{blocklist}}">
-			    			<div>
+			    			<div class="vertical layout center">
 			    				<p class="blockTitleText">{{item.name}}</p>
 			    				<p class="blockDescriptionText">{{item.description}}</p>
 			    				<template is="dom-repeat" items="{{item.questions}}">
@@ -154,20 +163,24 @@ HTMLImports.whenReady(function() {
     	}
     },
     observers: [   
-    	'getEnquete(enquete)',
         'answerHasChanged(answerChanged)',
         'ingevuldChanged(finished)'
     ],
 
-    created: function(){
-    	this.observed = false;
-    	this.initialized = false;
-    },
-
-    attached: function(){
-    	this.initialized = true;
-    	this.setEnquete(this.enquete);
-    	this.ingevuldChanged();
+    handleResponse: function(){
+    	this.invulmoment = this.currentuser.invulmoment.id;
+    	this.enquete = this.currentuser.invulmoment.enquete;
+    	this.progress = 0;
+		this.blocklist = [];
+		this.loaded = 0;
+		this.open = 0;
+    	if (!isEmpty(this.enquete))	{
+			for (var i = 0; i < this.enquete.blocks.length; i++) {
+				this.$.blocks.url = "/api/blocks/" + this.enquete.blocks[i].toString();
+				this.$.blocks.generateRequest();
+			}
+			this.calcProgress();
+		}
     },
 
     ingevuldChanged: function(){
@@ -175,26 +188,6 @@ HTMLImports.whenReady(function() {
     		this.$.finishedSelector.selected = 1;
     },
 
-    getEnquete: function(newEnquete){
-		this.observed = true;
-		this.setEnquete(this.enquete);
-    },
-
-	setEnquete: function(newEnquete) {
-		if((!this.observed && this.initialized) || (this.observed && !this.initialized)){
-			this.progress = 0;
-			this.blocklist = [];
-			this.loaded = 0;
-			this.open = 0;
-	    	if (!isEmpty(this.enquete))	{
-				for (var i = 0; i < this.enquete.blocks.length; i++) {
-					this.$.blocks.url = "/api/blocks/" + this.enquete.blocks[i].toString();
-					this.$.blocks.generateRequest();
-				}
-				this.calcProgress();
-			}
-		}
-	}, 
 	addBlock: function(data){
 		this.push('blocklist', data.detail.response);
 		this.loaded++;
@@ -216,7 +209,6 @@ HTMLImports.whenReady(function() {
 			for (var i = 0; i < this.blockAnswer.length; i++)
 				this.blockAnswer[i] = new Array(this.blocklist[i].questions.length);
 		}
-
 	},
 
 	nextQ: function(){		

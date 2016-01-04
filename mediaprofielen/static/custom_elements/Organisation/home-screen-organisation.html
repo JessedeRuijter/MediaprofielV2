@@ -54,7 +54,7 @@
     <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
     <paper-toast id="confirmChange" style="font-family: Roboto;" duration="2000" text="Het wachtwoord is veranderd!"></paper-toast>
 
-  	<div class="background vertical layout fit">
+  	<div class="background vertical layout fit" on-scroll="updateSidePanelPos">
     	<div class="horizontal layout">
     		<div class="organisationPanel">
     			<span class="organisationText">{{currentuser.user.username}}</span>
@@ -209,7 +209,30 @@
 				</neon-animated-pages>
 			</div>
 			<div class="relative flex" style="height: 1000px; background-color: #FFFFFF; z-index:10; margin-left:3px;">
-        <div class="fit" style="background-color: rgba(76,183,255,0.1);"></div>
+        <div class="fit" style="background-color: rgba(76,183,255,0.1);">
+          <div class="vertical layout" style="margin: 50px; display: none;" id="sidePanel">
+            <div class="horizontal layout center">
+              <span class="legendaIcon" style="background-color: #1cbbb4;"></span>
+              <p class="legendaText">Consument</p>
+            </div>
+            <div class="horizontal layout center">
+              <span class="legendaIcon" style="background-color: #acd373;"></span>
+              <p class="legendaText">Verzamelaar</p>
+            </div>
+            <div class="horizontal layout center">
+              <span class="legendaIcon" style="background-color: #fbaf5d;"></span>
+              <p class="legendaText">Strateeg</p>
+            </div>
+            <div class="horizontal layout center">
+              <span class="legendaIcon" style="background-color: #f26d7d;"></span>
+              <p class="legendaText">Netwerker</p>
+            </div>
+            <div class="horizontal layout center">
+              <span class="legendaIcon" style="background-color: #a864a8;"></span>
+              <p class="legendaText">Producent</p>
+            </div>
+          </div>
+        </div>
       </div>  
 		</div>
 
@@ -281,6 +304,13 @@
 
     },
 
+    updateSidePanelPos: function(){
+      var sp = document.getElementById("sidePanel");
+      var bg = document.querySelector(".background");
+
+      sp.style.top = (parseFloat(bg.scrollTop)).toString() + "px";
+    },
+
     setSelected: function(){
     	this.selectedOrganisation = this.currentorganisation[0];
     	this.invulmomentenLength = this.selectedOrganisation.invulmomenten.length;
@@ -304,13 +334,13 @@
     handleResponsePoints: function(){
     	var rowsFirst = new Array(5);
     	for (var j = 0; j < 5; j++)
-            rowsFirst[j] = [this.profileNames[j], this.selectedOrganisation.invulmomenten[0].profielCount[this.profileNames[j]]];
+        rowsFirst[j] = [this.profileNames[j], this.selectedOrganisation.invulmomenten[0].profielCount[this.profileNames[j]]];
     	this.$.pieChartFirst.rows = rowsFirst;
 
       if(this.invulmomentenLength > 1){
       	var rowsLast = new Array(5);
       	for (var j = 0; j < 5; j++)
-              rowsLast[j] = [this.profileNames[j], this.selectedOrganisation.invulmomenten[this.invulmomentenLength - 1].profielCount[this.profileNames[j]]];
+          rowsLast[j] = [this.profileNames[j], this.selectedOrganisation.invulmomenten[this.invulmomentenLength - 1].profielCount[this.profileNames[j]]];
       	this.$.pieChartLast.rows = rowsLast;
       }
 
@@ -376,6 +406,12 @@
     		}
 
     		this.$.pages.selected = sender.target.id;
+        if(this.$.pages.selected == 0){
+          this.$.sidePanel.style.display = "none";
+        }
+        else{
+          this.$.sidePanel.style.display = "block";
+        }
     		this.setTab(this.oldTab, sender.target.id);
     		this.oldTab = sender.target.id;
     	}

@@ -185,7 +185,6 @@ html,body {
 }
 
 .buttonContainer{
-	height: 450px; 
 	background-color:white; 
 	z-index: 10;
 }
@@ -206,6 +205,11 @@ html,body {
 
 .screenshotContainer2{
 	height: 750px;
+}
+
+.profileImage{
+	width: 152px;
+	height: 182px;
 }
 
 @media all and (max-width: 1000px) {
@@ -230,18 +234,23 @@ html,body {
 	.screenshotContainer2{
 		height: 600px;
 	}
+
+	.profileImage{
+		width: 100px;
+		height: 120px;
+	}
+
+	.profilePanel{
+		margin: 0px;
+	}
     
 }
 
 @media all and (max-width: 700px) {
 	.openingsText{
-		font-weight: 200;
 		margin: 0px;
-		line-height: 40px;
-		color: white;
-		letter-spacing: 0.018em;
-		font-size: 30px;
-		font-family: "Roboto";
+		line-height: 30px;
+		font-size: 25px;
 		text-align: center;
 	}	
 
@@ -250,8 +259,14 @@ html,body {
 	}
 
 	.header{
-		padding: 45px;
+		padding-right: 45px;
 	}
 	#loginPanel{
 		margin-right: 20px;
+	}
+	.introText{
+		line-height: 25px;
+		font-size: 18px;
+		font-family: "Roboto";
+	}
 }
