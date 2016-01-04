@@ -12,7 +12,7 @@ import csv, unicodedata
 from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404, render
 from django import forms
-from mailchimp_utils import getLists, makeOrganisation
+from mailchimp_utils import getLists, makeOrganisation, addUsersOrganisation
 import random
 from django.contrib.admin.views.decorators import staff_member_required
 
@@ -43,7 +43,11 @@ def manageView(request):
                 else:
                     return render(request, 'vragenlijsten/manage.html', {'message':"Organisatie toegevoegd!"})
             else:
-                return render(request, 'vragenlijsten/manage.html', {'message':"Er bestaat al een organisatie met deze naam(niet toegevoegd)!"})
+                result = addUsersOrganisation(formdata['organisatie_naam'], formdata['mailchimp_lijst'], formdata['enquete_id'])
+                if result == True:
+                    return render(request, 'vragenlijsten/manage.html', {'message':"Alle gebruikers toegevoegd en voorzien van wachtwoord!"})
+                else:
+                    return render(request, 'vragenlijsten/manage.html', {'message':result})
         else:
             return render(request, 'vragenlijsten/manage.html', {'message':"Verkeerde input!"})
     form = ManageForm() 

@@ -17,6 +17,48 @@ def getLists():
         result.append((apilist['id'], apilist['name']))
     return result
 
+def addUsersOrganisation(name, list_id, enquete_id):
+    userlist = []
+    # Create a batch operation
+    batch = {"operations":[]}
+    # Get the config
+    config = MailChimpConfig()
+    # This exists because it passed the test!
+    organisation = Organisation.objects.get(name=name)
+    list_endpoint_string = 'lists/' + list_id + '/members'
+    list_endpoint = urlparse.urljoin(config.api_root, list_endpoint_string)
+    list_response = requests.get(list_endpoint, auth=('apikey', config.apikey), verify=False)
+    if not 'PWD' in list_response.json()['members'][0]['merge_fields']:
+        return "Deze mailchimp lijst heeft nog geen PWD merge tag, gebruik een lijst die het wel heeft of maak een nieuwe organisatie aan!"
+    for member in list_response.json()['members']:
+        if not member['merge_fields']['PWD']:
+            userCheck = User.objects.filter(username=member['email_address'].lower())
+            if not userCheck.count() == 0:
+                return "Gebruiker bestaat al: " + member['email_address'].lower() + " (Niet toegevoegd!)"
+            else:
+                newUser = User(username=member['email_address'].lower(), email=member['email_address'])
+                password = User.objects.make_random_password()
+                newUser.set_password(password)
+                newUser.save()
+                userlist.append(newUser)
+                # Patch the user (add it to batch operation)
+                path_string = "/lists/" + list_id + "/members/" + member['id']
+                operation_data = {"merge_fields":{"PWD":password}}
+                operation = {"method":"PATCH", "path":path_string, "body":json.dumps(operation_data)}
+                batch["operations"].append(operation)
+                # Add the user to the organisation
+                organisation.members.add(newUser)
+                
+    batch_endpoint = urlparse.urljoin(config.api_root, "batches")
+    
+    batch_response = requests.post(batch_endpoint, auth=('apikey', config.apikey), verify=False, data=json.dumps(batch))
+    if batch_response.reason != "OK":
+        if len(userlist) > 0:
+            for user in userlist:
+                user.delete()
+        return "Response Error!: " + batch_response.reason
+    return True
+
 def makeOrganisation(name, list_id, enquete_id, color):
     # Keep a list of added users for the deletion upon error
     userlist = []
