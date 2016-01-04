@@ -160,40 +160,40 @@ HTMLImports.whenReady(function() {
     ],
 
     created: function(){
-    	this.locked = false;
+    	this.observed = false;
+    	this.initialized = false;
     },
 
     attached: function(){
-    	this.getEnquete(this.enquete);
+    	this.initialized = true;
+    	this.setEnquete(this.enquete);
     	this.ingevuldChanged();
     },
 
     ingevuldChanged: function(){
-    	if(this.finished){
+    	if(this.finished)
     		this.$.finishedSelector.selected = 1;
-    	}
     },
 
     getEnquete: function(newEnquete){
-    	if(!this.locked){
-    		this.locked = true;
-    		this.setEnquete(this.enquete);
-    	}
+		this.observed = true;
+		this.setEnquete(this.enquete);
     },
 
 	setEnquete: function(newEnquete) {
-		this.progress = 0;
-		this.blocklist = [];
-		this.loaded = 0;
-		this.open = 0;
-    	if (!isEmpty(this.enquete))	{
-			for (var i = 0; i < this.enquete.blocks.length; i++) {
-				this.$.blocks.url = "/api/blocks/" + this.enquete.blocks[i].toString();
-				this.$.blocks.generateRequest();
+		if((!this.observed && this.initialized) || (this.observed && !this.initialized)){
+			this.progress = 0;
+			this.blocklist = [];
+			this.loaded = 0;
+			this.open = 0;
+	    	if (!isEmpty(this.enquete))	{
+				for (var i = 0; i < this.enquete.blocks.length; i++) {
+					this.$.blocks.url = "/api/blocks/" + this.enquete.blocks[i].toString();
+					this.$.blocks.generateRequest();
+				}
+				this.calcProgress();
 			}
-			this.calcProgress();
 		}
-		
 	}, 
 	addBlock: function(data){
 		this.push('blocklist', data.detail.response);
@@ -213,10 +213,8 @@ HTMLImports.whenReady(function() {
 			}
 
 			this.blockAnswer = new Array(this.blocklist.length);
-			for (var i = 0; i < this.blockAnswer.length; i++){
+			for (var i = 0; i < this.blockAnswer.length; i++)
 				this.blockAnswer[i] = new Array(this.blocklist[i].questions.length);
-			}
-			this.locked = false;
 		}
 
 	},
