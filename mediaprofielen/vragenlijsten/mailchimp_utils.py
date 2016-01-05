@@ -81,7 +81,11 @@ def makeOrganisation(name, list_id, enquete_id, color):
     # Get the list members
     list_endpoint_string = 'lists/' + list_id + '/members'
     list_endpoint = urlparse.urljoin(config.api_root, list_endpoint_string)
-    list_response = requests.get(list_endpoint, auth=('apikey', config.apikey), verify=False)
+    params = {
+    # Pagination in API v3.0 is always done with count and offset
+    'count': 1000, 'offset': 0
+    }   
+    list_response = requests.get(list_endpoint, auth=('apikey', config.apikey), params=params, verify=False)
     
     # Add a new Merge tag to the list
     mergetags_endpoint_string = 'lists/' + list_id +'/merge-fields'
