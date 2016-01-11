@@ -129,6 +129,8 @@ class currentOrganisationView(APIView):
                 orgDict['invulmomenten'] = []
                 orgDict['Owners'] = map(lambda x: str(x), organisation.owners.all())
                 membercount = organisation.members.count()
+                membercountprofile = organisation.members.filter(profiel__isnull=False).distinct().count()
+                print "membercountprofile:", membercountprofile
                 orgDict['memberCount'] = membercount
                 for invulmoment in organisation.organisationInvulMoment.all():
                     invulmomentTemp = {}
@@ -148,7 +150,7 @@ class currentOrganisationView(APIView):
                     invulmomentTemp['profielCount'] = profileCount
                     totalcount = sumProfiles(profielen)
                     invulmomentTemp['totalCount'] = totalcount
-                    invulmomentTemp['averageCount'] = {k: float(v)/membercount for k, v in totalcount.items()}
+                    invulmomentTemp['averageCount'] = {k: float(v)/membercountprofile for k, v in totalcount.items()}
                     orgDict['invulmomenten'].append(invulmomentTemp)
                 organisationList.append(orgDict)
             return Response(organisationList)
@@ -205,12 +207,15 @@ def csv_answer_view(request, inv_id):
         writer.writerow(map(lambda s: unicodedata.normalize('NFKD', s).encode('ascii','ignore'), csv_header))
         for key, value in user_answer_dict.items():
             user = User.objects.get(username=key)
-            user_profile = user.profiel.get(invulmoment=current_invulmoment)
-            print user_profile
             try:
-                writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.first_name).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.last_name).encode('ascii','ignore'), user.account.geslacht, user.account.leeftijd, user.account.opleiding, user.account.provincie, user_profile.consument, user_profile.verzamelaar, user_profile.strateeg, user_profile.netwerker, user_profile.producent] + value)
+                user_profile = user.profiel.get(invulmoment=current_invulmoment)
+                profiel_part = [user_profile.consument, user_profile.verzamelaar, user_profile.strateeg, user_profile.netwerker, user_profile.producent]
+            except Profiel.DoesNotExist:
+                profiel_part = ["Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar"]
+            try:
+                writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.first_name).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.last_name).encode('ascii','ignore'), user.account.geslacht, user.account.leeftijd, user.account.opleiding, user.account.provincie] + profiel_part + value)
             except Account.DoesNotExist:
-                writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar"]+ value)
+                writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar"]+ profiel_part + value)
         return response
     except Invulmoment.DoesNotExist:
         return HttpResponseBadRequest("No invulmoment with that id!")
