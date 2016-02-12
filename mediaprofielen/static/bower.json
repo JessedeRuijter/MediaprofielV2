@@ -21,6 +21,7 @@
     "iron-elements": "polymerelements/iron-elements#~1.0.4",
     "paper-elements": "polymerelements/paper-elements#~1.0.5",
     "neon-elements": "polymerelements/neon-elements#~1.0.0",
-    "google-chart": "~1.0.3"
+    "google-chart": "~1.0.3",
+    "google-youtube": "GoogleWebComponents/google-youtube#~1.2.0"
   }
 }

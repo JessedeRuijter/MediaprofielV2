@@ -20,6 +20,7 @@ html,body {
 }
 .introPanel{
 	background-color: rgba(76,183,255,0.1);
+	z-index: 10;
 }
 .contentPanel{
 	padding: 0px;
@@ -28,6 +29,11 @@ html,body {
 	width: 160px;
 	margin: 20px;
 }
+.imagePanel{
+	width: 200px;
+	margin: 20px;
+}
+
 .footerPanel{
 	background-color: rgba(76,183,255,1.0);
 }
@@ -160,6 +166,7 @@ html,body {
 	border-bottom-style: solid;
 	border-bottom-width: 2px;
 	border-bottom-color: rgba(76,183,255,0.1);
+	width: 80%;
 	margin: 30px;
 }
 .smallSeperator{
@@ -212,6 +219,11 @@ html,body {
 	height: 182px;
 }
 
+.teamImage{
+	width: 200px;
+	height: 200px;
+}
+
 @media all and (max-width: 1000px) {
 	.openingsText{
 		font-weight: 200;
@@ -243,7 +255,22 @@ html,body {
 	.profilePanel{
 		margin: 0px;
 	}
-    
+    .imagePanel{
+		margin: 0px;
+	}
+	.teamImage{
+		width: 150px;
+		height: 150px;
+	}
+	.imagePanel{
+		width: 150px;
+		margin: 10px;
+	}
+
+	#pagesOne{
+		height: 300px; 
+		width: 500px;
+	}
 }
 
 @media all and (max-width: 700px) {
@@ -268,5 +295,20 @@ html,body {
 		line-height: 25px;
 		font-size: 18px;
 		font-family: "Roboto";
+	}
+
+	.teamImage{
+		width: 100px;
+		height: 100px;
+	}
+
+	.imagePanel{
+		width: 100px;
+		margin: 5px;
+	}
+
+	#pagesOne{
+		height: 200px; 
+		width: 300px;
 	}
 }
