@@ -283,6 +283,11 @@ html,body {
 		height: 300px; 
 		width: 500px;
 	}
+
+	#pagesContainer{
+		height: 300px; 
+		width: 500px;
+	}
 }
 
 @media all and (max-width: 850px) {
@@ -330,6 +335,10 @@ html,body {
 	}
 
 	#pagesOne{
+		height: 200px; 
+		width: 300px;
+	}
+	#pagesContainer{
 		height: 200px; 
 		width: 300px;
 	}
