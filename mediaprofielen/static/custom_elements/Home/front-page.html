@@ -47,24 +47,33 @@
                     <p class="profileDescriptionText">Iemand die zoekt en organiseert</p>
                 </div>
                 <div class="flex"></div>
-                <div class="vertical layout center profilePanel">
-                    <iron-image src="../../images/Strateeg.png" sizing="contain" class="profileImage"></iron-image>
-                    <p class="profileTitleText">Strateeg</p>
-                    <p class="profileDescriptionText">Iemand die onderzoekt en reflecteert</p>
+
+                <div class=" horizontal layout wrappersmall">
+                    <div class="flex flexersmall"></div>
+                    <div class="vertical layout center profilePanel">
+                        <iron-image src="../../images/Strateeg.png" sizing="contain" class="profileImage"></iron-image>
+                        <p class="profileTitleText">Strateeg</p>
+                        <p class="profileDescriptionText">Iemand die onderzoekt en reflecteert</p>
+                    </div>
+                    <div class="flex flexersmall"></div>
                 </div>
-                <div class="flex"></div>
-                <div class="vertical layout center profilePanel">
-                    <iron-image src="../../images/Netwerker.png" sizing="contain" class="profileImage"></iron-image>
-                    <p class="profileTitleText">Netwerker</p>
-                    <p class="profileDescriptionText">Iemand die praat en deelt</p>
+                <div class="flex flexer"></div>
+
+                <div class=" horizontal layout wrapper">
+                    <div class="flex"></div>
+                    <div class="vertical layout center profilePanel">
+                        <iron-image src="../../images/Netwerker.png" sizing="contain" class="profileImage"></iron-image>
+                        <p class="profileTitleText">Netwerker</p>
+                        <p class="profileDescriptionText">Iemand die praat en deelt</p>
+                    </div>
+                    <div class="flex"></div>
+                    <div class="vertical layout center profilePanel">
+                        <iron-image src="../../images/Producent.png" sizing="contain" class="profileImage"></iron-image>
+                        <p class="profileTitleText">Producent</p>
+                        <p class="profileDescriptionText">Iemand die maakt en deelt</p>
+                    </div>
+                    <div class="flex"></div>
                 </div>
-                <div class="flex"></div>
-                <div class="vertical layout center profilePanel">
-                    <iron-image src="../../images/Producent.png" sizing="contain" class="profileImage"></iron-image>
-                    <p class="profileTitleText">Producent</p>
-                    <p class="profileDescriptionText">Iemand die maakt en deelt</p>
-                </div>
-                <div class="flex"></div>
             </div>
         </div>
 
@@ -98,7 +107,9 @@
                 <p class="contentText">Meet je digitale polsslag</p>
 
                 <link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
-                <google-youtube style="margin-bottom:20px;"
+                <google-youtube 
+                  id="video"
+                  style="margin-bottom:20px;"
                   video-id="91_fxhIdg3o"
                   height="405px"
                   width="720px"
@@ -169,6 +180,12 @@
                             <iron-image src="../../images/Jesse.png" sizing="contain" class="teamImage"></iron-image>
                             <p class="profileTitleText">Jesse de Ruijter</p>
                             <p class="profileTitleText" style="margin: 0px;"><i>Software developer</i></p>
+                        </div>
+                        <div class="flex"></div>
+                        <div class="vertical layout center imagePanel">
+                            <iron-image src="../../images/Wim.png" sizing="contain" class="teamImage"></iron-image>
+                            <p class="profileTitleText">Wim Luteijn</p>
+                            <p class="profileTitleText" style="margin: 0px;"><i>Co-founder</i></p>
                         </div>
                         <div class="flex"></div>
                     </div>

@@ -201,18 +201,18 @@ html,body {
 	width: 880px;
 }
 
-#pagesTwo{
+/*#pagesTwo{
 	height: 430px; 
 	width: 880px;
-}
+}*/
 
 .screenshotContainer{
 	height: 750px;
 }
 
-.screenshotContainer2{
+/*.screenshotContainer2{
 	height: 750px;
-}
+}*/
 
 .profileImage{
 	width: 152px;
@@ -223,6 +223,26 @@ html,body {
 	width: 200px;
 	height: 200px;
 }
+
+.flexer{
+	display: none;
+}
+.flexersmall{
+	display: none;
+}
+
+
+@media all and (max-width: 1050px) {
+	.profileImage{
+		width: 100px;
+		height: 120px;
+	}
+
+	.profilePanel{
+		margin: 0px;
+	}
+}
+
 
 @media all and (max-width: 1000px) {
 	.openingsText{
@@ -243,18 +263,10 @@ html,body {
 		height: 600px;
 	}
 
-	.screenshotContainer2{
+	/*.screenshotContainer2{
 		height: 600px;
-	}
+	}*/
 
-	.profileImage{
-		width: 100px;
-		height: 120px;
-	}
-
-	.profilePanel{
-		margin: 0px;
-	}
     .imagePanel{
 		margin: 0px;
 	}
@@ -270,6 +282,16 @@ html,body {
 	#pagesOne{
 		height: 300px; 
 		width: 500px;
+	}
+}
+
+@media all and (max-width: 850px) {
+	.wrapper{
+		width: 100%;
+	}
+
+	.flexer{
+		display: block;
 	}
 }
 
@@ -310,5 +332,19 @@ html,body {
 	#pagesOne{
 		height: 200px; 
 		width: 300px;
+	}
+
+	#video{
+		height: 202px;
+        width: 360px;
+	}
+}
+
+@media all and (max-width: 500px) {
+	.flexersmall{
+		display: block;
+	}
+	.wrappersmall{
+		width: 100%;
 	}
 }
