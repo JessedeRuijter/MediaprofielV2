@@ -44,3 +44,5 @@ Temporary Items
 env
 *.pyc
 db_production.sqlite3
+.idea
+*.sqlite3

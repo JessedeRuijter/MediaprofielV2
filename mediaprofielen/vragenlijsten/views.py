@@ -150,7 +150,10 @@ class currentOrganisationView(APIView):
                     invulmomentTemp['profielCount'] = profileCount
                     totalcount = sumProfiles(profielen)
                     invulmomentTemp['totalCount'] = totalcount
-                    invulmomentTemp['averageCount'] = {k: float(v)/membercountprofile for k, v in totalcount.items()}
+                    if membercountprofile > 0:
+                        invulmomentTemp['averageCount'] = {k: float(v)/membercountprofile for k, v in totalcount.items()}
+                    else:
+                        invulmomentTemp['averageCount'] = {k: 0 for k, v in totalcount.items()}
                     orgDict['invulmomenten'].append(invulmomentTemp)
                 organisationList.append(orgDict)
             return Response(organisationList)
@@ -212,6 +215,13 @@ def csv_answer_view(request, inv_id):
                 profiel_part = [user_profile.consument, user_profile.verzamelaar, user_profile.strateeg, user_profile.netwerker, user_profile.producent]
             except Profiel.DoesNotExist:
                 profiel_part = ["Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar", "Niet beschikbaar"]
+            except Profiel.MultipleObjectsReturned:
+                user_profile = user.profiel.filter(invulmoment=current_invulmoment)
+                # DELETE DOUBLE ACCOUNTS, THIS IS A BUG THAT SHOULD BE FIXED!
+                for fake in user_profile[:len(user_profile)]:
+                    fake.delete()
+                user_profile = user_profile[len(user_profile)]
+                profiel_part = [user_profile.consument, user_profile.verzamelaar, user_profile.strateeg, user_profile.netwerker, user_profile.producent]
             try:
                 writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.first_name).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.last_name).encode('ascii','ignore'), user.account.geslacht, user.account.leeftijd, user.account.opleiding, user.account.provincie] + profiel_part + value)
             except Account.DoesNotExist:
