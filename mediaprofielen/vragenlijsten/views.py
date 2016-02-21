@@ -218,9 +218,9 @@ def csv_answer_view(request, inv_id):
             except Profiel.MultipleObjectsReturned:
                 user_profile = user.profiel.filter(invulmoment=current_invulmoment)
                 # DELETE DOUBLE ACCOUNTS, THIS IS A BUG THAT SHOULD BE FIXED!
-                for fake in user_profile[:len(user_profile)]:
+                for fake in user_profile[:len(user_profile)-1]:
                     fake.delete()
-                user_profile = user_profile[len(user_profile)]
+                user_profile = user.profiel.get(invulmoment=current_invulmoment)
                 profiel_part = [user_profile.consument, user_profile.verzamelaar, user_profile.strateeg, user_profile.netwerker, user_profile.producent]
             try:
                 writer.writerow([unicodedata.normalize('NFKD',user.username).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.first_name).encode('ascii','ignore'), unicodedata.normalize('NFKD',user.account.last_name).encode('ascii','ignore'), user.account.geslacht, user.account.leeftijd, user.account.opleiding, user.account.provincie] + profiel_part + value)
