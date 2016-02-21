@@ -59,6 +59,10 @@ def addScore(user, id_of_last_block, id_invulmoment):
 	# else:
 	# 	profielObject = profielObject[0]
 	# profielObject = userObject.profiel.all()[0]
+	user_profile = user.profiel.filter(invulmoment=invulmoment)
+	if len(user_profile) == 0:
+		print "User already has a profiel with this invulmoment"
+		return
 	profielObject = Profiel(user=user, invulmoment=invulmoment)
 	for block in enquete_blocks:
 		answers = Answer.objects.filter(user=user, blockID=block, invulmoment=invulmoment)
@@ -88,13 +92,13 @@ def addScore(user, id_of_last_block, id_invulmoment):
 			elif currentq.profiel == "Ve":
 			  	profielObject.verzamelaar = profielObject.verzamelaar + int(currenta)
 			elif currentq.profiel == "St":
-			  	profielObject.strateeg = profielObject.strateeg + int(currenta)  
+			  	profielObject.strateeg = profielObject.strateeg + int(currenta)
 			elif currentq.profiel == "Ne":
 			  	profielObject.netwerker = profielObject.netwerker + int(currenta)
 			elif currentq.profiel == "On":
 			  	profielObject.producent = profielObject.producent + int(currenta)
 	profielObject.save()
-	
+
 
 	# print getMaxPoints()
 	# blockId = answer['blockID']
