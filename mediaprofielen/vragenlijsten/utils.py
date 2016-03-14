@@ -60,7 +60,7 @@ def addScore(user, id_of_last_block, id_invulmoment):
 	# 	profielObject = profielObject[0]
 	# profielObject = userObject.profiel.all()[0]
 	user_profile = user.profiel.filter(invulmoment=invulmoment)
-	if len(user_profile) == 0:
+	if len(user_profile) != 0:
 		print "User already has a profiel with this invulmoment"
 		return
 	profielObject = Profiel(user=user, invulmoment=invulmoment)

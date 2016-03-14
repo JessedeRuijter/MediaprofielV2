@@ -37,6 +37,9 @@ class Account(models.Model):
 		("AN", "Andere"))
 	provincie = models.CharField(max_length='2', choices=provincie_choices)
 
+	def __unicode__(self):
+		return str(self.user.username)
+
 # De vragen in database
 class Enquete(models.Model):
 	name 			= models.CharField(max_length=200)
@@ -129,7 +132,7 @@ class Profiel(models.Model):
 	netwerker   	= models.IntegerField(default=0)
 	producent   	= models.IntegerField(default=0)
 	def __unicode__(self):
-		return str(self.consument)+ " " + str(self.verzamelaar)+ " " + str(self.strateeg)+ " " + str(self.netwerker)+ " " + str(self.producent)
+		return str(self.user.username) + ": " + str(self.consument)+ " " + str(self.verzamelaar)+ " " + str(self.strateeg)+ " " + str(self.netwerker)+ " " + str(self.producent)
 
 
 # Signals:

@@ -191,8 +191,12 @@ def csv_answer_view(request, inv_id):
         current_invulmoment = Invulmoment.objects.get(id=inv_id)
         if not current_invulmoment.organisation in organisations:
             return HttpResponseForbidden("Not the owner of this organisation")
-        current_enquete =  current_invulmoment.enquete
-        current_blocks = current_enquete.blocks.all()
+        current_enquete = current_invulmoment.enquete
+        ordering_list = [20, 19, 21, 18, 23, 22, 24]
+        current_blocks = []
+        for block_id in ordering_list:
+            print block_id
+            current_blocks.append(QuestionBlock.objects.get(id=block_id))
         user_answer_dict = {}
         users = current_invulmoment.organisation.members.all()
         for user in users:

@@ -25,7 +25,9 @@
 	   id="answerPost"
        method="POST"
        handleAs="json"
-       content-type='application/json'>
+       content-type='application/json'
+	   on-error="handleError"
+	   on-response="handleSucces">
     </iron-ajax>
 
   	<link rel="stylesheet" href="../../css/enquetepage.css">
@@ -126,7 +128,8 @@
 
 	</iron-pages>
 	<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
-	<paper-toast id="confirmPost" style="font-family: Roboto;" duration="2000" text="Antwoorden zijn ingeleverd. Bekijk de profielpagina voor je resultaten."></paper-toast>
+	<paper-toast id="confirmPost" style="font-family: Roboto;" duration="5000" text="Antwoorden zijn ingeleverd. Bekijk de profielpagina voor je resultaten."></paper-toast>
+	  <paper-toast id="errorPost" style="font-family: Roboto;" duration="5000" text="Er is een probleem met uw internetverbinding, probeer het zo opnieuw."></paper-toast>
 </template>
 
 </dom-module>
@@ -218,11 +221,20 @@ HTMLImports.whenReady(function() {
 		//Check if finished
 		if (this.blockSelected == this.blocklist.length - 1){
 			this.postAnswers("true");
-			this.$.finishedSelector.selected = 1;
 		}
 		else
 		{
 			this.postAnswers("false");
+		}		
+	},
+	handleError: function(){
+		this.$.errorPost.show();
+	},
+	handleSucces: function(){
+		if (this.blockSelected == this.blocklist.length - 1) {
+			this.$.finishedSelector.selected = 1;
+		}
+		else {
 			//Set new block
 			this.$.blockSelector.selected++;
 			this.blockSelected++;
@@ -233,10 +245,9 @@ HTMLImports.whenReady(function() {
 			//Change layout progressbar and sidepanel
 			this.calcProgress();
 			selectBlock(document.querySelectorAll('#blockStateList'), this.blockSelected - 1, this.blockSelected)
-		}		
+		}
 	},
 	prevQ: function(){
-		this.postAnswers("false");
 		//Set new block
 		this.$.blockSelector.selected--;
 		this.blockSelected--;
